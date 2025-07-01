@@ -1313,6 +1313,183 @@ export default function CandidateProfileEdit() {
           </div>
         </div>
       )}
+
+      {/* Course Modal */}
+      {showCourseModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold mb-4">Adicionar Curso</h3>
+            <div className="space-y-4">
+              <div>
+                <Label>Nome do Curso *</Label>
+                <Input
+                  value={newCourse.name}
+                  onChange={(e) =>
+                    setNewCourse({ ...newCourse, name: e.target.value })
+                  }
+                  placeholder="Ex: React Avançado"
+                />
+              </div>
+              <div>
+                <Label>Instituição *</Label>
+                <Input
+                  value={newCourse.institution}
+                  onChange={(e) =>
+                    setNewCourse({ ...newCourse, institution: e.target.value })
+                  }
+                  placeholder="Ex: Alura, Udemy"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label>Carga Horária *</Label>
+                  <Input
+                    type="number"
+                    value={newCourse.hours}
+                    onChange={(e) =>
+                      setNewCourse({
+                        ...newCourse,
+                        hours: parseInt(e.target.value) || 0,
+                      })
+                    }
+                    placeholder="40"
+                  />
+                </div>
+                <div>
+                  <Label>Ano *</Label>
+                  <Input
+                    value={newCourse.year}
+                    onChange={(e) =>
+                      setNewCourse({ ...newCourse, year: e.target.value })
+                    }
+                    placeholder="2023"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end space-x-2 mt-6">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowCourseModal(false);
+                  setNewCourse({
+                    name: "",
+                    institution: "",
+                    hours: 0,
+                    year: "",
+                  });
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleAddCourse}
+                disabled={
+                  !newCourse.name || !newCourse.institution || !newCourse.year
+                }
+              >
+                Adicionar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Language Modal */}
+      {showLanguageModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold mb-4">Adicionar Idioma</h3>
+            <div className="space-y-4">
+              <div>
+                <Label>Idioma *</Label>
+                <Input
+                  value={newLanguage.name}
+                  onChange={(e) =>
+                    setNewLanguage({ ...newLanguage, name: e.target.value })
+                  }
+                  placeholder="Ex: Inglês, Espanhol"
+                />
+              </div>
+              <div>
+                <Label>Nível *</Label>
+                <Select
+                  value={newLanguage.level}
+                  onValueChange={(value) =>
+                    setNewLanguage({ ...newLanguage, level: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione o nível" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Básico">Básico</SelectItem>
+                    <SelectItem value="Intermediário">Intermediário</SelectItem>
+                    <SelectItem value="Avançado">Avançado</SelectItem>
+                    <SelectItem value="Fluente">Fluente</SelectItem>
+                    <SelectItem value="Nativo">Nativo</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Proficiência (0-100) *</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={newLanguage.proficiency}
+                  onChange={(e) =>
+                    setNewLanguage({
+                      ...newLanguage,
+                      proficiency: parseInt(e.target.value) || 0,
+                    })
+                  }
+                  placeholder="80"
+                />
+              </div>
+              <div>
+                <Label>Certificação</Label>
+                <Input
+                  value={newLanguage.certification}
+                  onChange={(e) =>
+                    setNewLanguage({
+                      ...newLanguage,
+                      certification: e.target.value,
+                    })
+                  }
+                  placeholder="Ex: TOEFL 580, DELE B2"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end space-x-2 mt-6">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowLanguageModal(false);
+                  setNewLanguage({
+                    name: "",
+                    level: "",
+                    proficiency: 0,
+                    certification: "",
+                  });
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleAddLanguage}
+                disabled={
+                  !newLanguage.name ||
+                  !newLanguage.level ||
+                  newLanguage.proficiency < 0
+                }
+              >
+                Adicionar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
