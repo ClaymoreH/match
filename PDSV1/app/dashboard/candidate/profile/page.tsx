@@ -214,24 +214,28 @@ export default function CandidateProfile() {
                     <div>
                       <h4 className="font-semibold mb-3">Educação</h4>
                       <div className="space-y-4">
-                        <div>
-                          <h5 className="font-medium">
-                            Bacharelado em Ciência da Computação
-                          </h5>
-                          <p className="text-sm text-gray-600">
-                            Universidade Federal XYZ
+                        {candidateData.education.length > 0 ? (
+                          candidateData.education.map((edu) => (
+                            <div key={edu.id}>
+                              <h5 className="font-medium">{edu.degree}</h5>
+                              <p className="text-sm text-gray-600">
+                                {edu.institution}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {edu.completionYear}
+                              </p>
+                              {edu.description && (
+                                <p className="text-xs text-gray-600 mt-1">
+                                  {edu.description}
+                                </p>
+                              )}
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-sm text-gray-500">
+                            Nenhuma formação acadêmica adicionada.
                           </p>
-                          <p className="text-xs text-gray-500">2017 - 2021</p>
-                        </div>
-                        <div>
-                          <h5 className="font-medium">
-                            Pós-graduação em Engenharia de Software
-                          </h5>
-                          <p className="text-sm text-gray-600">
-                            Instituto Tecnológico ABC
-                          </p>
-                          <p className="text-xs text-gray-500">2022 - 2023</p>
-                        </div>
+                        )}
                       </div>
                     </div>
 
