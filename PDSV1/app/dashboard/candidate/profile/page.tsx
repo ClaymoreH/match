@@ -243,27 +243,31 @@ export default function CandidateProfile() {
                     <div>
                       <h4 className="font-semibold mb-3">Idiomas</h4>
                       <div className="space-y-3">
-                        <div>
-                          <div className="flex justify-between mb-1">
-                            <span className="text-sm">Português</span>
-                            <span className="text-sm">Nativo</span>
-                          </div>
-                          <Progress value={100} className="h-2" />
-                        </div>
-                        <div>
-                          <div className="flex justify-between mb-1">
-                            <span className="text-sm">Inglês</span>
-                            <span className="text-sm">Avançado</span>
-                          </div>
-                          <Progress value={85} className="h-2" />
-                        </div>
-                        <div>
-                          <div className="flex justify-between mb-1">
-                            <span className="text-sm">Espanhol</span>
-                            <span className="text-sm">Intermediário</span>
-                          </div>
-                          <Progress value={60} className="h-2" />
-                        </div>
+                        {candidateData.languages.length > 0 ? (
+                          candidateData.languages.map((language) => (
+                            <div key={language.id}>
+                              <div className="flex justify-between mb-1">
+                                <span className="text-sm">{language.name}</span>
+                                <span className="text-sm">
+                                  {language.level}
+                                </span>
+                              </div>
+                              <Progress
+                                value={language.proficiency}
+                                className="h-2"
+                              />
+                              {language.certification && (
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {language.certification}
+                                </p>
+                              )}
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-sm text-gray-500">
+                            Nenhum idioma adicionado.
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
