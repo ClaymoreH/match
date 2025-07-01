@@ -93,7 +93,7 @@ export default function CandidateProfile() {
               <div className="relative inline-block">
                 <Image
                   src="/assets/img/sauro.jpg"
-                  alt="Enzo Gabriel"
+                  alt={candidateData.personal.fullName}
                   width={80}
                   height={80}
                   className="rounded-full border-4 border-white shadow-lg"
@@ -375,77 +375,175 @@ export default function CandidateProfile() {
 
                   {candidateData.behavioralAnalysis ? (
                     <div className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <h4 className="font-semibold mb-3">Perfil</h4>
-                          <div className="bg-gray-50 rounded-lg p-4">
-                            <p className="text-gray-600">
-                              Perfil em branco - será gerado pela IA
-                            </p>
-                          </div>
-                        </div>
+                      {candidateData.behavioralAnalysis.aiInsights ? (
+                        <>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <h4 className="font-semibold mb-3">
+                                Perfil Comportamental
+                              </h4>
+                              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <p className="text-sm text-blue-800 leading-relaxed">
+                                  {
+                                    candidateData.behavioralAnalysis.aiInsights
+                                      .profile
+                                  }
+                                </p>
+                              </div>
+                            </div>
 
-                        <div>
-                          <h4 className="font-semibold mb-3">
-                            Resumo do Perfil
-                          </h4>
-                          <div className="bg-gray-50 rounded-lg p-4">
-                            <p className="text-gray-600">
-                              Resumo em branco - será gerado pela IA
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <h4 className="font-semibold mb-3">
-                            Distribuição de Traços
-                          </h4>
-                          <div className="h-48 bg-gray-100 rounded-lg flex items-center justify-center">
-                            <p className="text-gray-500">
-                              Gráfico será gerado pela IA
-                            </p>
-                          </div>
-                        </div>
-
-                        <div>
-                          <h4 className="font-semibold mb-3">
-                            Destaques Comportamentais
-                          </h4>
-                          <div className="space-y-2">
-                            <div className="bg-gray-50 rounded p-2">
-                              <p className="text-gray-600">
-                                Destaques serão gerados pela IA
-                              </p>
+                            <div>
+                              <h4 className="font-semibold mb-3">
+                                Resumo do Perfil
+                              </h4>
+                              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                                <p className="text-sm text-green-800 font-medium">
+                                  {
+                                    candidateData.behavioralAnalysis.aiInsights
+                                      .profileSummary
+                                  }
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
 
-                      <div>
-                        <h4 className="font-semibold mb-3">
-                          Descrição do Perfil
-                        </h4>
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <p className="text-sm text-blue-800">
-                            Descrição detalhada será gerada pela IA baseada nas
-                            respostas da análise comportamental.
-                          </p>
-                        </div>
-                      </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <h4 className="font-semibold mb-3">
+                                Distribuição de Traços (Big Five)
+                              </h4>
+                              <div className="space-y-3">
+                                {Object.entries(
+                                  candidateData.behavioralAnalysis.aiInsights
+                                    .bigFiveDistribution,
+                                ).map(([trait, value]) => (
+                                  <div key={trait}>
+                                    <div className="flex justify-between mb-1">
+                                      <span className="text-sm capitalize">
+                                        {trait === "openness"
+                                          ? "Abertura"
+                                          : trait === "conscientiousness"
+                                            ? "Conscienciosidade"
+                                            : trait === "extraversion"
+                                              ? "Extroversão"
+                                              : trait === "agreeableness"
+                                                ? "Amabilidade"
+                                                : "Neuroticismo"}
+                                      </span>
+                                      <span className="text-sm">{value}%</span>
+                                    </div>
+                                    <Progress value={value} className="h-2" />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
 
-                      <div>
-                        <h4 className="font-semibold mb-3">
-                          Sugestões Baseadas
-                        </h4>
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                          <p className="text-sm text-green-800">
-                            Sugest��es personalizadas serão geradas pela IA para
-                            desenvolvimento profissional.
+                            <div>
+                              <h4 className="font-semibold mb-3">
+                                Destaques Comportamentais
+                              </h4>
+                              <div className="space-y-3">
+                                {Object.entries(
+                                  candidateData.behavioralAnalysis.aiInsights
+                                    .behavioralHighlights,
+                                ).map(([key, value]) => (
+                                  <div
+                                    key={key}
+                                    className="bg-gray-50 rounded p-3"
+                                  >
+                                    <p className="text-sm">
+                                      <span className="font-medium capitalize">
+                                        {key === "problemSolving"
+                                          ? "Resolução de Problemas"
+                                          : key === "communication"
+                                            ? "Comunicação"
+                                            : key === "decision"
+                                              ? "Tomada de Decisão"
+                                              : key === "leadership"
+                                                ? "Liderança"
+                                                : "Adaptabilidade"}
+                                        :
+                                      </span>{" "}
+                                      {value}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                              <h4 className="font-semibold mb-3">
+                                Posições Recomendadas
+                              </h4>
+                              <div className="space-y-2">
+                                {candidateData.behavioralAnalysis.aiInsights.suggestions.recommendedPositions.map(
+                                  (position, index) => (
+                                    <Badge
+                                      key={index}
+                                      variant="secondary"
+                                      className="block text-center py-2"
+                                    >
+                                      {position}
+                                    </Badge>
+                                  ),
+                                )}
+                              </div>
+                            </div>
+
+                            <div>
+                              <h4 className="font-semibold mb-3">
+                                Dicas para se Destacar
+                              </h4>
+                              <div className="space-y-2">
+                                {candidateData.behavioralAnalysis.aiInsights.suggestions.standoutTips.map(
+                                  (tip, index) => (
+                                    <div
+                                      key={index}
+                                      className="bg-yellow-50 border border-yellow-200 rounded p-2"
+                                    >
+                                      <p className="text-xs text-yellow-800">
+                                        • {tip}
+                                      </p>
+                                    </div>
+                                  ),
+                                )}
+                              </div>
+                            </div>
+
+                            <div>
+                              <h4 className="font-semibold mb-3">
+                                Áreas de Desenvolvimento
+                              </h4>
+                              <div className="space-y-2">
+                                {candidateData.behavioralAnalysis.aiInsights.suggestions.developmentAreas.map(
+                                  (area, index) => (
+                                    <div
+                                      key={index}
+                                      className="bg-orange-50 border border-orange-200 rounded p-2"
+                                    >
+                                      <p className="text-xs text-orange-800">
+                                        • {area}
+                                      </p>
+                                    </div>
+                                  ),
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-center py-8">
+                          <p className="text-gray-500 mb-4">
+                            Análise completada, mas insights ainda não foram
+                            gerados.
                           </p>
+                          <Button variant="outline">
+                            Gerar Insights com IA
+                          </Button>
                         </div>
-                      </div>
+                      )}
                     </div>
                   ) : (
                     <div className="text-center py-8">
@@ -463,79 +561,6 @@ export default function CandidateProfile() {
           </Card>
         </div>
       </div>
-
-      {/* Applications Section */}
-      <Card>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2">Vaga</th>
-                  <th className="text-left py-2">Empresa</th>
-                  <th className="text-left py-2">Status</th>
-                  <th className="text-left py-2">Data</th>
-                  <th className="text-left py-2">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  {
-                    title: "Desenvolvedor Full Stack Pleno",
-                    description: "React, Node.js, MongoDB",
-                    company: "Tech Solutions Ltda",
-                    status: "Em análise",
-                    date: "15/05/2024",
-                    statusColor: "bg-yellow-100 text-yellow-800",
-                  },
-                  {
-                    title: "Engenheiro de Software Python",
-                    description: "Django, Flask, AWS",
-                    company: "InovaTech S.A.",
-                    status: "Processo seletivo",
-                    date: "22/05/2024",
-                    statusColor: "bg-blue-100 text-blue-800",
-                  },
-                  {
-                    title: "Front-end Developer",
-                    description: "React, TypeScript, GraphQL",
-                    company: "Digital Creative",
-                    status: "Entrevista agendada",
-                    date: "30/05/2024",
-                    statusColor: "bg-green-100 text-green-800",
-                  },
-                ].map((application, index) => (
-                  <tr key={index} className="border-b">
-                    <td className="py-3">
-                      <div>
-                        <p className="font-medium">{application.title}</p>
-                        <p className="text-sm text-gray-600">
-                          {application.description}
-                        </p>
-                      </div>
-                    </td>
-                    <td className="py-3">{application.company}</td>
-                    <td className="py-3">
-                      <Badge className={application.statusColor}>
-                        {application.status}
-                      </Badge>
-                    </td>
-                    <td className="py-3">{application.date}</td>
-                    <td className="py-3">
-                      <Button variant="outline" size="sm">
-                        Detalhes
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="mt-4 text-center">
-            <Button variant="outline">Ver todas as candidaturas</Button>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }
