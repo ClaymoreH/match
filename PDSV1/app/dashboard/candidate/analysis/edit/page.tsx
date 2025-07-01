@@ -38,6 +38,7 @@ interface FormData {
 export default function CandidateAnalysisEdit() {
   const router = useRouter();
   const [currentSection, setCurrentSection] = useState(1);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     section1: {},
     section2: {
@@ -513,9 +514,9 @@ export default function CandidateAnalysisEdit() {
 
           <div>
             <Label className="text-sm font-semibold text-gray-900 mb-3 block">
-              Em uma situação onde há um conflito de prioridades ou opini��es
+              Em uma situação onde há um conflito de prioridades ou opiniões
               fortes entre dois colegas de equipe que afeta o andamento do
-              projeto, como você interviria ou o que você faria para ajudar a
+              projeto, como voc�� interviria ou o que você faria para ajudar a
               resolver a situação e restabelecer a harmonia, mesmo que não seja
               seu papel direto de liderança?
             </Label>
