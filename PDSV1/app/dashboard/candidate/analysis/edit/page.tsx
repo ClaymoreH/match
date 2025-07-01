@@ -17,6 +17,12 @@ import {
 } from "@/components/ui/select";
 import { CheckCircle, ArrowRight, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import {
+  getCurrentUserCPF,
+  updateCandidateBehavioralAnalysis,
+  getCandidateData,
+  type BehavioralAnalysis,
+} from "@/lib/storage";
 
 interface FormData {
   section1: Record<string, string>;
