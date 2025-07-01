@@ -580,54 +580,69 @@ export default function CandidateProfileEdit() {
                 <h3 className="text-lg font-semibold">
                   Experiência Profissional
                 </h3>
-                <Button>
+                <Button onClick={() => setShowExperienceModal(true)}>
                   <Plus className="w-4 h-4 mr-2" />
                   Adicionar Experiência
                 </Button>
               </div>
 
               <div className="space-y-4">
-                {[
-                  {
-                    title: "Desenvolvedor Front-end Sênior",
-                    company: "Empresa XYZ",
-                    period: "Jan 2020 - Presente (3 anos)",
-                    description:
-                      "Desenvolvimento de interfaces web utilizando React.js, Vue.js e tecnologias relacionadas.",
-                  },
-                  {
-                    title: "Desenvolvedor Front-end Pleno",
-                    company: "Empresa ABC",
-                    period: "Mar 2017 - Dez 2019 (2 anos 9 meses)",
-                    description:
-                      "Desenvolvimento de aplicações web responsivas utilizando HTML5, CSS3 e JavaScript.",
-                  },
-                ].map((experience, index) => (
-                  <Card key={index}>
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <h4 className="font-semibold">{experience.title}</h4>
-                          <p className="text-blue-600">{experience.company}</p>
-                          <p className="text-sm text-gray-500">
-                            {experience.period}
-                          </p>
-                          <p className="text-sm text-gray-600 mt-2">
-                            {experience.description}
-                          </p>
+                {experiences.length > 0 ? (
+                  experiences.map((experience) => (
+                    <Card key={experience.id}>
+                      <CardContent className="p-4">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <h4 className="font-semibold">
+                              {experience.title}
+                            </h4>
+                            <p className="text-blue-600">
+                              {experience.company}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {experience.startDate} -{" "}
+                              {experience.isCurrent
+                                ? "Presente"
+                                : experience.endDate}
+                            </p>
+                            <p className="text-sm text-gray-600 mt-2">
+                              {experience.description}
+                            </p>
+                          </div>
+                          <div className="flex space-x-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEditExperience(experience)}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                handleDeleteExperience(experience.id)
+                              }
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>Nenhuma experiência profissional adicionada ainda.</p>
+                    <Button
+                      variant="outline"
+                      className="mt-2"
+                      onClick={() => setShowExperienceModal(true)}
+                    >
+                      Adicionar primeira experiência
+                    </Button>
+                  </div>
+                )}
               </div>
             </TabsContent>
 
