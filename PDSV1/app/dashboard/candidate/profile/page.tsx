@@ -204,12 +204,8 @@ export default function CandidateProfile() {
                       Resumo Profissional
                     </h3>
                     <p className="text-gray-600 leading-relaxed">
-                      Desenvolvedora Full Stack com 5 anos de experiência em
-                      criação de aplicações web responsivas e escaláveis.
-                      Especializada em JavaScript (React, Node.js) e Python
-                      (Django), com sólidos conhecimentos em arquitetura de
-                      software, bancos de dados relacionais e metodologias
-                      ágeis.
+                      {candidateData.personal.about ||
+                        "Nenhuma descrição pessoal adicionada ainda."}
                     </p>
                   </div>
 
