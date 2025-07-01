@@ -71,6 +71,46 @@ export default function CandidateProfileEdit() {
   const [documents, setDocuments] = useState<CandidateDocuments>({});
   const [newSkill, setNewSkill] = useState("");
 
+  // Modal states
+  const [showExperienceModal, setShowExperienceModal] = useState(false);
+  const [showEducationModal, setShowEducationModal] = useState(false);
+  const [showCourseModal, setShowCourseModal] = useState(false);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const [editingExperience, setEditingExperience] =
+    useState<CandidateExperience | null>(null);
+  const [editingEducation, setEditingEducation] =
+    useState<CandidateEducation | null>(null);
+
+  // Form states for new items
+  const [newExperience, setNewExperience] = useState({
+    title: "",
+    company: "",
+    startDate: "",
+    endDate: "",
+    isCurrent: false,
+    description: "",
+  });
+  const [newEducation, setNewEducation] = useState({
+    degree: "",
+    institution: "",
+    completionYear: "",
+    description: "",
+  });
+  const [newCourse, setNewCourse] = useState({
+    name: "",
+    institution: "",
+    hours: 0,
+    year: "",
+  });
+  const [newLanguage, setNewLanguage] = useState({
+    name: "",
+    level: "",
+    proficiency: 0,
+    certification: "",
+  });
+  const [knowledgeSkills, setKnowledgeSkills] = useState<string[]>([]);
+  const [newKnowledge, setNewKnowledge] = useState("");
+
   const tabs = ["info", "experience", "education", "skills"];
   const currentTabIndex = tabs.indexOf(currentTab);
 
