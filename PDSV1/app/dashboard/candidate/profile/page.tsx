@@ -100,23 +100,41 @@ export default function CandidateProfile() {
                 />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mt-4">
-                Enzo Gabriel
+                {candidateData.personal.fullName || "Nome não informado"}
               </h3>
-              <p className="text-gray-600 mb-4">Desenvolvedor Full Stack</p>
+              <p className="text-gray-600 mb-4">
+                {candidateData.experiences.length > 0
+                  ? candidateData.experiences[0].title
+                  : "Profissional"}
+              </p>
 
               <div className="space-y-3 text-left">
-                <div className="flex items-center space-x-3 text-sm">
-                  <Mail className="w-4 h-4 text-blue-600" />
-                  <span>enzogabriel@email.com</span>
-                </div>
-                <div className="flex items-center space-x-3 text-sm">
-                  <Phone className="w-4 h-4 text-blue-600" />
-                  <span>(11) 91234-5678</span>
-                </div>
-                <div className="flex items-center space-x-3 text-sm">
-                  <MapPin className="w-4 h-4 text-blue-600" />
-                  <span>São Paulo, SP</span>
-                </div>
+                {candidateData.personal.email && (
+                  <div className="flex items-center space-x-3 text-sm">
+                    <Mail className="w-4 h-4 text-blue-600" />
+                    <span>{candidateData.personal.email}</span>
+                  </div>
+                )}
+                {candidateData.personal.phone && (
+                  <div className="flex items-center space-x-3 text-sm">
+                    <Phone className="w-4 h-4 text-blue-600" />
+                    <span>{candidateData.personal.phone}</span>
+                  </div>
+                )}
+                {(candidateData.personal.city ||
+                  candidateData.personal.state) && (
+                  <div className="flex items-center space-x-3 text-sm">
+                    <MapPin className="w-4 h-4 text-blue-600" />
+                    <span>
+                      {[
+                        candidateData.personal.city,
+                        candidateData.personal.state,
+                      ]
+                        .filter(Boolean)
+                        .join(", ")}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="flex justify-center space-x-2 mt-4">
