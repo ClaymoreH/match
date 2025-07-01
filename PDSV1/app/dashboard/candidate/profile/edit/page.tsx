@@ -961,6 +961,220 @@ export default function CandidateProfileEdit() {
           </div>
         </div>
       </Card>
+
+      {/* Experience Modal */}
+      {showExperienceModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold mb-4">
+              {editingExperience
+                ? "Editar Experiência"
+                : "Adicionar Experiência"}
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <Label>Cargo *</Label>
+                <Input
+                  value={newExperience.title}
+                  onChange={(e) =>
+                    setNewExperience({
+                      ...newExperience,
+                      title: e.target.value,
+                    })
+                  }
+                  placeholder="Ex: Desenvolvedor Front-end"
+                />
+              </div>
+              <div>
+                <Label>Empresa *</Label>
+                <Input
+                  value={newExperience.company}
+                  onChange={(e) =>
+                    setNewExperience({
+                      ...newExperience,
+                      company: e.target.value,
+                    })
+                  }
+                  placeholder="Nome da empresa"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label>Data de Início *</Label>
+                  <Input
+                    type="date"
+                    value={newExperience.startDate}
+                    onChange={(e) =>
+                      setNewExperience({
+                        ...newExperience,
+                        startDate: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <Label>Data de Fim</Label>
+                  <Input
+                    type="date"
+                    value={newExperience.endDate}
+                    onChange={(e) =>
+                      setNewExperience({
+                        ...newExperience,
+                        endDate: e.target.value,
+                      })
+                    }
+                    disabled={newExperience.isCurrent}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="current"
+                  checked={newExperience.isCurrent}
+                  onCheckedChange={(checked) =>
+                    setNewExperience({
+                      ...newExperience,
+                      isCurrent: checked as boolean,
+                      endDate: checked ? "" : newExperience.endDate,
+                    })
+                  }
+                />
+                <Label htmlFor="current">Trabalho atualmente aqui</Label>
+              </div>
+              <div>
+                <Label>Descrição</Label>
+                <Textarea
+                  value={newExperience.description}
+                  onChange={(e) =>
+                    setNewExperience({
+                      ...newExperience,
+                      description: e.target.value,
+                    })
+                  }
+                  placeholder="Descreva suas principais responsabilidades..."
+                  rows={3}
+                />
+              </div>
+            </div>
+            <div className="flex justify-end space-x-2 mt-6">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowExperienceModal(false);
+                  setEditingExperience(null);
+                  setNewExperience({
+                    title: "",
+                    company: "",
+                    startDate: "",
+                    endDate: "",
+                    isCurrent: false,
+                    description: "",
+                  });
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleAddExperience}
+                disabled={
+                  !newExperience.title ||
+                  !newExperience.company ||
+                  !newExperience.startDate
+                }
+              >
+                {editingExperience ? "Atualizar" : "Adicionar"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Education Modal */}
+      {showEducationModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold mb-4">Adicionar Formação</h3>
+            <div className="space-y-4">
+              <div>
+                <Label>Curso/Graduação *</Label>
+                <Input
+                  value={newEducation.degree}
+                  onChange={(e) =>
+                    setNewEducation({ ...newEducation, degree: e.target.value })
+                  }
+                  placeholder="Ex: Bacharelado em Ciência da Computação"
+                />
+              </div>
+              <div>
+                <Label>Instituição *</Label>
+                <Input
+                  value={newEducation.institution}
+                  onChange={(e) =>
+                    setNewEducation({
+                      ...newEducation,
+                      institution: e.target.value,
+                    })
+                  }
+                  placeholder="Nome da universidade/escola"
+                />
+              </div>
+              <div>
+                <Label>Ano de Conclusão *</Label>
+                <Input
+                  value={newEducation.completionYear}
+                  onChange={(e) =>
+                    setNewEducation({
+                      ...newEducation,
+                      completionYear: e.target.value,
+                    })
+                  }
+                  placeholder="Ex: 2023"
+                />
+              </div>
+              <div>
+                <Label>Descrição</Label>
+                <Textarea
+                  value={newEducation.description}
+                  onChange={(e) =>
+                    setNewEducation({
+                      ...newEducation,
+                      description: e.target.value,
+                    })
+                  }
+                  placeholder="Informações adicionais..."
+                  rows={2}
+                />
+              </div>
+            </div>
+            <div className="flex justify-end space-x-2 mt-6">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowEducationModal(false);
+                  setNewEducation({
+                    degree: "",
+                    institution: "",
+                    completionYear: "",
+                    description: "",
+                  });
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleAddEducation}
+                disabled={
+                  !newEducation.degree ||
+                  !newEducation.institution ||
+                  !newEducation.completionYear
+                }
+              >
+                Adicionar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
