@@ -125,6 +125,7 @@ export default function CandidateProfileEdit() {
         setEducation(candidateData.education);
         setSkills(candidateData.skills);
         setDocuments(candidateData.documents);
+        setKnowledgeSkills(candidateData.skills.soft || []);
         setProfileCompletion(calculateProfileCompletion(candidateData));
       }
     }
