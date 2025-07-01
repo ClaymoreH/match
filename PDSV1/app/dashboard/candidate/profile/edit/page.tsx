@@ -1,18 +1,32 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
-import { Camera, Plus, Edit, Trash2, ArrowLeft, ArrowRight, Check } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import {
+  Camera,
+  Plus,
+  Edit,
+  Trash2,
+  ArrowLeft,
+  ArrowRight,
+  Check,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import {
   getCandidateData,
   updateCandidatePersonalData,
@@ -31,296 +45,309 @@ import {
   type CandidateExperience,
   type CandidateEducation,
   type CandidateSkills,
-  type CandidateDocuments
-} from "@/lib/storage"
+  type CandidateDocuments,
+} from "@/lib/storage";
 
 export default function CandidateProfileEdit() {
-  const [currentTab, setCurrentTab] = useState("info")
-  const [profileCompletion, setProfileCompletion] = useState(0)
+  const [currentTab, setCurrentTab] = useState("info");
+  const [profileCompletion, setProfileCompletion] = useState(0);
   const [personalData, setPersonalData] = useState<CandidatePersonalData>({
-    cpf: '',
-    fullName: '',
-    birthDate: '',
-    gender: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    state: '',
-    cep: '',
-    about: ''
-  })
-  const [experiences, setExperiences] = useState<CandidateExperience[]>([])
-  const [education, setEducation] = useState<CandidateEducation[]>([])
-  const [skills, setSkills] = useState<CandidateSkills>({ technical: [], soft: [] })
-  const [documents, setDocuments] = useState<CandidateDocuments>({})
-  const [newSkill, setNewSkill] = useState('')
+    cpf: "",
+    fullName: "",
+    birthDate: "",
+    gender: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    cep: "",
+    about: "",
+  });
+  const [experiences, setExperiences] = useState<CandidateExperience[]>([]);
+  const [education, setEducation] = useState<CandidateEducation[]>([]);
+  const [skills, setSkills] = useState<CandidateSkills>({
+    technical: [],
+    soft: [],
+  });
+  const [documents, setDocuments] = useState<CandidateDocuments>({});
+  const [newSkill, setNewSkill] = useState("");
 
   // Modal states
-  const [showExperienceModal, setShowExperienceModal] = useState(false)
-  const [showEducationModal, setShowEducationModal] = useState(false)
-  const [showCourseModal, setShowCourseModal] = useState(false)
-  const [showLanguageModal, setShowLanguageModal] = useState(false)
-  const [editingExperience, setEditingExperience] = useState<CandidateExperience | null>(null)
-  const [editingEducation, setEditingEducation] = useState<CandidateEducation | null>(null)
+  const [showExperienceModal, setShowExperienceModal] = useState(false);
+  const [showEducationModal, setShowEducationModal] = useState(false);
+  const [showCourseModal, setShowCourseModal] = useState(false);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const [editingExperience, setEditingExperience] =
+    useState<CandidateExperience | null>(null);
+  const [editingEducation, setEditingEducation] =
+    useState<CandidateEducation | null>(null);
 
   // Form states for new items
   const [newExperience, setNewExperience] = useState({
-    title: '',
-    company: '',
-    startDate: '',
-    endDate: '',
+    title: "",
+    company: "",
+    startDate: "",
+    endDate: "",
     isCurrent: false,
-    description: ''
-  })
+    description: "",
+  });
   const [newEducation, setNewEducation] = useState({
-    degree: '',
-    institution: '',
-    completionYear: '',
-    description: ''
-  })
+    degree: "",
+    institution: "",
+    completionYear: "",
+    description: "",
+  });
   const [newCourse, setNewCourse] = useState({
-    name: '',
-    institution: '',
+    name: "",
+    institution: "",
     hours: 0,
-    year: ''
-  })
+    year: "",
+  });
   const [newLanguage, setNewLanguage] = useState({
-    name: '',
-    level: '',
+    name: "",
+    level: "",
     proficiency: 0,
-    certification: ''
-  })
-  const [knowledgeSkills, setKnowledgeSkills] = useState<string[]>([])
-  const [newKnowledge, setNewKnowledge] = useState('')
+    certification: "",
+  });
+  const [knowledgeSkills, setKnowledgeSkills] = useState<string[]>([]);
+  const [newKnowledge, setNewKnowledge] = useState("");
 
-  const tabs = ["info", "experience", "education", "skills"]
-  const currentTabIndex = tabs.indexOf(currentTab)
+  const tabs = ["info", "experience", "education", "skills"];
+  const currentTabIndex = tabs.indexOf(currentTab);
 
   // Load existing data
   useEffect(() => {
-    const currentCPF = getCurrentUserCPF()
+    const currentCPF = getCurrentUserCPF();
     if (currentCPF) {
-      const candidateData = getCandidateData(currentCPF)
+      const candidateData = getCandidateData(currentCPF);
       if (candidateData) {
-        setPersonalData(candidateData.personal)
-        setExperiences(candidateData.experiences)
-        setEducation(candidateData.education)
-        setSkills(candidateData.skills)
-        setDocuments(candidateData.documents)
-        setKnowledgeSkills(candidateData.skills.soft || [])
-        setProfileCompletion(calculateProfileCompletion(candidateData))
+        setPersonalData(candidateData.personal);
+        setExperiences(candidateData.experiences);
+        setEducation(candidateData.education);
+        setSkills(candidateData.skills);
+        setDocuments(candidateData.documents);
+        setKnowledgeSkills(candidateData.skills.soft || []);
+        setProfileCompletion(calculateProfileCompletion(candidateData));
       }
     }
-  }, [])
+  }, []);
 
-  const updatePersonalField = (field: keyof CandidatePersonalData, value: string) => {
-    setPersonalData(prev => ({ ...prev, [field]: value }))
-  }
+  const updatePersonalField = (
+    field: keyof CandidatePersonalData,
+    value: string,
+  ) => {
+    setPersonalData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSavePersonalData = () => {
     if (!validateCPF(personalData.cpf)) {
-      alert('CPF inválido')
-      return
+      alert("CPF inválido");
+      return;
     }
 
-    const cleanCPF = personalData.cpf.replace(/\D/g, '')
-    const success = updateCandidatePersonalData(cleanCPF, personalData)
+    const cleanCPF = personalData.cpf.replace(/\D/g, "");
+    const success = updateCandidatePersonalData(cleanCPF, personalData);
 
     if (success) {
-      setCurrentUserCPF(cleanCPF)
-      alert('Dados pessoais salvos com sucesso!')
+      setCurrentUserCPF(cleanCPF);
+      alert("Dados pessoais salvos com sucesso!");
 
       // Update profile completion
-      const updatedData = getCandidateData(cleanCPF)
+      const updatedData = getCandidateData(cleanCPF);
       if (updatedData) {
-        setProfileCompletion(calculateProfileCompletion(updatedData))
+        setProfileCompletion(calculateProfileCompletion(updatedData));
       }
     } else {
-      alert('Erro ao salvar dados pessoais')
+      alert("Erro ao salvar dados pessoais");
     }
-  }
+  };
 
   const handleAddSkill = () => {
     if (newSkill.trim()) {
       const updatedSkills = {
         ...skills,
-        technical: [...skills.technical, newSkill.trim()]
-      }
-      setSkills(updatedSkills)
-      setNewSkill('')
+        technical: [...skills.technical, newSkill.trim()],
+      };
+      setSkills(updatedSkills);
+      setNewSkill("");
 
-      const currentCPF = getCurrentUserCPF()
+      const currentCPF = getCurrentUserCPF();
       if (currentCPF) {
-        updateCandidateSkills(currentCPF, updatedSkills)
+        updateCandidateSkills(currentCPF, updatedSkills);
       }
     }
-  }
+  };
 
-  const handleRemoveSkill = (skillToRemove: string, type: 'technical' | 'soft') => {
+  const handleRemoveSkill = (
+    skillToRemove: string,
+    type: "technical" | "soft",
+  ) => {
     const updatedSkills = {
       ...skills,
-      [type]: skills[type].filter(skill => skill !== skillToRemove)
-    }
-    setSkills(updatedSkills)
+      [type]: skills[type].filter((skill) => skill !== skillToRemove),
+    };
+    setSkills(updatedSkills);
 
-    const currentCPF = getCurrentUserCPF()
+    const currentCPF = getCurrentUserCPF();
     if (currentCPF) {
-      updateCandidateSkills(currentCPF, updatedSkills)
+      updateCandidateSkills(currentCPF, updatedSkills);
     }
-  }
+  };
 
   // Experience management
   const handleAddExperience = () => {
-    const currentCPF = getCurrentUserCPF()
-    if (!currentCPF) return
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
 
     if (editingExperience) {
       // Update existing experience
-      const updatedExperiences = experiences.map(exp =>
+      const updatedExperiences = experiences.map((exp) =>
         exp.id === editingExperience.id
           ? { ...newExperience, id: editingExperience.id }
-          : exp
-      )
-      setExperiences(updatedExperiences)
+          : exp,
+      );
+      setExperiences(updatedExperiences);
 
-      const candidateData = getCandidateData(currentCPF)
+      const candidateData = getCandidateData(currentCPF);
       if (candidateData) {
         saveCandidateData({
           ...candidateData,
-          experiences: updatedExperiences
-        })
+          experiences: updatedExperiences,
+        });
       }
     } else {
       // Add new experience
-      const success = addCandidateExperience(currentCPF, newExperience)
+      const success = addCandidateExperience(currentCPF, newExperience);
       if (success) {
-        const updatedData = getCandidateData(currentCPF)
+        const updatedData = getCandidateData(currentCPF);
         if (updatedData) {
-          setExperiences(updatedData.experiences)
+          setExperiences(updatedData.experiences);
         }
       }
     }
 
     // Reset form
     setNewExperience({
-      title: '',
-      company: '',
-      startDate: '',
-      endDate: '',
+      title: "",
+      company: "",
+      startDate: "",
+      endDate: "",
       isCurrent: false,
-      description: ''
-    })
-    setEditingExperience(null)
-    setShowExperienceModal(false)
-  }
+      description: "",
+    });
+    setEditingExperience(null);
+    setShowExperienceModal(false);
+  };
 
   const handleEditExperience = (experience: CandidateExperience) => {
     setNewExperience({
       title: experience.title,
       company: experience.company,
       startDate: experience.startDate,
-      endDate: experience.endDate || '',
+      endDate: experience.endDate || "",
       isCurrent: experience.isCurrent,
-      description: experience.description
-    })
-    setEditingExperience(experience)
-    setShowExperienceModal(true)
-  }
+      description: experience.description,
+    });
+    setEditingExperience(experience);
+    setShowExperienceModal(true);
+  };
 
   const handleDeleteExperience = (experienceId: string) => {
-    const currentCPF = getCurrentUserCPF()
-    if (!currentCPF) return
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
 
-    if (confirm('Tem certeza que deseja remover esta experiência?')) {
-      const success = deleteCandidateExperience(currentCPF, experienceId)
+    if (confirm("Tem certeza que deseja remover esta experiência?")) {
+      const success = deleteCandidateExperience(currentCPF, experienceId);
       if (success) {
-        const updatedData = getCandidateData(currentCPF)
+        const updatedData = getCandidateData(currentCPF);
         if (updatedData) {
-          setExperiences(updatedData.experiences)
+          setExperiences(updatedData.experiences);
         }
       }
     }
-  }
+  };
 
   // Education management
   const handleAddEducation = () => {
-    const currentCPF = getCurrentUserCPF()
-    if (!currentCPF) return
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
 
-    const success = addCandidateEducation(currentCPF, newEducation)
+    const success = addCandidateEducation(currentCPF, newEducation);
     if (success) {
-      const updatedData = getCandidateData(currentCPF)
+      const updatedData = getCandidateData(currentCPF);
       if (updatedData) {
-        setEducation(updatedData.education)
+        setEducation(updatedData.education);
       }
     }
 
     setNewEducation({
-      degree: '',
-      institution: '',
-      completionYear: '',
-      description: ''
-    })
-    setShowEducationModal(false)
-  }
+      degree: "",
+      institution: "",
+      completionYear: "",
+      description: "",
+    });
+    setShowEducationModal(false);
+  };
 
   // Knowledge skills management
   const handleAddKnowledge = () => {
     if (newKnowledge.trim() && !knowledgeSkills.includes(newKnowledge.trim())) {
-      const updatedKnowledge = [...knowledgeSkills, newKnowledge.trim()]
-      setKnowledgeSkills(updatedKnowledge)
-      setNewKnowledge('')
+      const updatedKnowledge = [...knowledgeSkills, newKnowledge.trim()];
+      setKnowledgeSkills(updatedKnowledge);
+      setNewKnowledge("");
 
-      const currentCPF = getCurrentUserCPF()
+      const currentCPF = getCurrentUserCPF();
       if (currentCPF) {
         const updatedSkills = {
           ...skills,
-          soft: updatedKnowledge // Using soft skills array for knowledge
-        }
-        setSkills(updatedSkills)
-        updateCandidateSkills(currentCPF, updatedSkills)
+          soft: updatedKnowledge, // Using soft skills array for knowledge
+        };
+        setSkills(updatedSkills);
+        updateCandidateSkills(currentCPF, updatedSkills);
       }
     }
-  }
+  };
 
   const handleRemoveKnowledge = (knowledge: string) => {
-    const updatedKnowledge = knowledgeSkills.filter(k => k !== knowledge)
-    setKnowledgeSkills(updatedKnowledge)
+    const updatedKnowledge = knowledgeSkills.filter((k) => k !== knowledge);
+    setKnowledgeSkills(updatedKnowledge);
 
-    const currentCPF = getCurrentUserCPF()
+    const currentCPF = getCurrentUserCPF();
     if (currentCPF) {
       const updatedSkills = {
         ...skills,
-        soft: updatedKnowledge
-      }
-      setSkills(updatedSkills)
-      updateCandidateSkills(currentCPF, updatedSkills)
+        soft: updatedKnowledge,
+      };
+      setSkills(updatedSkills);
+      updateCandidateSkills(currentCPF, updatedSkills);
     }
-  }
+  };
 
   const handleNext = () => {
     // Save current tab data before moving
     if (currentTab === "info") {
-      handleSavePersonalData()
+      handleSavePersonalData();
     }
 
     if (currentTabIndex < tabs.length - 1) {
-      setCurrentTab(tabs[currentTabIndex + 1])
+      setCurrentTab(tabs[currentTabIndex + 1]);
     }
-  }
+  };
 
   const handlePrevious = () => {
     if (currentTabIndex > 0) {
-      setCurrentTab(tabs[currentTabIndex - 1])
+      setCurrentTab(tabs[currentTabIndex - 1]);
     }
-  }
+  };
 
   return (
     <div className="p-6 space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Editar Perfil do Candidato</h1>
+        <h1 className="text-2xl font-bold text-gray-900">
+          Editar Perfil do Candidato
+        </h1>
         <nav className="flex space-x-2 text-sm text-gray-600 mt-2">
           <span>Candidato</span>
           <span>›</span>
@@ -333,7 +360,9 @@ export default function CandidateProfileEdit() {
           <div className="flex justify-between items-center">
             <CardTitle>Meu Perfil</CardTitle>
             <div className="flex items-center space-x-3">
-              <span className="text-sm text-gray-600">Completo: {profileCompletion}%</span>
+              <span className="text-sm text-gray-600">
+                Completo: {profileCompletion}%
+              </span>
               <Progress value={profileCompletion} className="w-32" />
             </div>
           </div>
@@ -366,7 +395,9 @@ export default function CandidateProfileEdit() {
                       <Camera size={16} />
                     </button>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">Formatos: JPG, PNG (Máx. 1MB)</p>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Formatos: JPG, PNG (Máx. 1MB)
+                  </p>
                   <Button variant="link" className="text-red-600 text-sm">
                     Remover foto
                   </Button>
@@ -382,7 +413,9 @@ export default function CandidateProfileEdit() {
                         id="fullName"
                         placeholder="Digite seu nome completo"
                         value={personalData.fullName}
-                        onChange={(e) => updatePersonalField('fullName', e.target.value)}
+                        onChange={(e) =>
+                          updatePersonalField("fullName", e.target.value)
+                        }
                       />
                     </div>
                     <div>
@@ -391,7 +424,9 @@ export default function CandidateProfileEdit() {
                         id="birthDate"
                         type="date"
                         value={personalData.birthDate}
-                        onChange={(e) => updatePersonalField('birthDate', e.target.value)}
+                        onChange={(e) =>
+                          updatePersonalField("birthDate", e.target.value)
+                        }
                       />
                     </div>
                   </div>
@@ -403,13 +438,20 @@ export default function CandidateProfileEdit() {
                         id="cpf"
                         placeholder="000.000.000-00"
                         value={personalData.cpf}
-                        onChange={(e) => updatePersonalField('cpf', formatCPF(e.target.value))}
+                        onChange={(e) =>
+                          updatePersonalField("cpf", formatCPF(e.target.value))
+                        }
                         maxLength={14}
                       />
                     </div>
                     <div>
                       <Label htmlFor="gender">Gênero</Label>
-                      <Select value={personalData.gender} onValueChange={(value) => updatePersonalField('gender', value)}>
+                      <Select
+                        value={personalData.gender}
+                        onValueChange={(value) =>
+                          updatePersonalField("gender", value)
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione" />
                         </SelectTrigger>
@@ -417,7 +459,9 @@ export default function CandidateProfileEdit() {
                           <SelectItem value="female">Feminino</SelectItem>
                           <SelectItem value="male">Masculino</SelectItem>
                           <SelectItem value="other">Outro</SelectItem>
-                          <SelectItem value="prefer-not-to-say">Prefiro não dizer</SelectItem>
+                          <SelectItem value="prefer-not-to-say">
+                            Prefiro não dizer
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -431,7 +475,9 @@ export default function CandidateProfileEdit() {
                         type="email"
                         placeholder="exemplo@email.com"
                         value={personalData.email}
-                        onChange={(e) => updatePersonalField('email', e.target.value)}
+                        onChange={(e) =>
+                          updatePersonalField("email", e.target.value)
+                        }
                       />
                     </div>
                     <div>
@@ -440,7 +486,9 @@ export default function CandidateProfileEdit() {
                         id="phone"
                         placeholder="(XX) XXXXX-XXXX"
                         value={personalData.phone}
-                        onChange={(e) => updatePersonalField('phone', e.target.value)}
+                        onChange={(e) =>
+                          updatePersonalField("phone", e.target.value)
+                        }
                       />
                     </div>
                   </div>
@@ -451,7 +499,9 @@ export default function CandidateProfileEdit() {
                       id="address"
                       placeholder="Rua, número, complemento"
                       value={personalData.address}
-                      onChange={(e) => updatePersonalField('address', e.target.value)}
+                      onChange={(e) =>
+                        updatePersonalField("address", e.target.value)
+                      }
                     />
                   </div>
 
@@ -462,12 +512,19 @@ export default function CandidateProfileEdit() {
                         id="city"
                         placeholder="Cidade"
                         value={personalData.city}
-                        onChange={(e) => updatePersonalField('city', e.target.value)}
+                        onChange={(e) =>
+                          updatePersonalField("city", e.target.value)
+                        }
                       />
                     </div>
                     <div>
                       <Label htmlFor="state">Estado</Label>
-                      <Select value={personalData.state} onValueChange={(value) => updatePersonalField('state', value)}>
+                      <Select
+                        value={personalData.state}
+                        onValueChange={(value) =>
+                          updatePersonalField("state", value)
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione" />
                         </SelectTrigger>
@@ -490,7 +547,9 @@ export default function CandidateProfileEdit() {
                         id="cep"
                         placeholder="00000-000"
                         value={personalData.cep}
-                        onChange={(e) => updatePersonalField('cep', e.target.value)}
+                        onChange={(e) =>
+                          updatePersonalField("cep", e.target.value)
+                        }
                       />
                     </div>
                   </div>
@@ -502,7 +561,9 @@ export default function CandidateProfileEdit() {
                       rows={3}
                       placeholder="Fale um pouco sobre você..."
                       value={personalData.about}
-                      onChange={(e) => updatePersonalField('about', e.target.value)}
+                      onChange={(e) =>
+                        updatePersonalField("about", e.target.value)
+                      }
                       maxLength={500}
                     />
                     <p className="text-sm text-gray-500 mt-1">
@@ -516,7 +577,9 @@ export default function CandidateProfileEdit() {
             {/* Experience Tab */}
             <TabsContent value="experience" className="space-y-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">Experiência Profissional</h3>
+                <h3 className="text-lg font-semibold">
+                  Experiência Profissional
+                </h3>
                 <Button onClick={() => setShowExperienceModal(true)}>
                   <Plus className="w-4 h-4 mr-2" />
                   Adicionar Experiência
@@ -530,12 +593,21 @@ export default function CandidateProfileEdit() {
                       <CardContent className="p-4">
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
-                            <h4 className="font-semibold">{experience.title}</h4>
-                            <p className="text-blue-600">{experience.company}</p>
-                            <p className="text-sm text-gray-500">
-                              {experience.startDate} - {experience.isCurrent ? 'Presente' : experience.endDate}
+                            <h4 className="font-semibold">
+                              {experience.title}
+                            </h4>
+                            <p className="text-blue-600">
+                              {experience.company}
                             </p>
-                            <p className="text-sm text-gray-600 mt-2">{experience.description}</p>
+                            <p className="text-sm text-gray-500">
+                              {experience.startDate} -{" "}
+                              {experience.isCurrent
+                                ? "Presente"
+                                : experience.endDate}
+                            </p>
+                            <p className="text-sm text-gray-600 mt-2">
+                              {experience.description}
+                            </p>
                           </div>
                           <div className="flex space-x-2">
                             <Button
@@ -548,7 +620,9 @@ export default function CandidateProfileEdit() {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDeleteExperience(experience.id)}
+                              onClick={() =>
+                                handleDeleteExperience(experience.id)
+                              }
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>
@@ -590,9 +664,13 @@ export default function CandidateProfileEdit() {
                         <div>
                           <h4 className="font-semibold">{edu.degree}</h4>
                           <p className="text-blue-600">{edu.institution}</p>
-                          <p className="text-sm text-gray-500">Concluído em {edu.completionYear}</p>
+                          <p className="text-sm text-gray-500">
+                            Concluído em {edu.completionYear}
+                          </p>
                           {edu.description && (
-                            <p className="text-sm text-gray-600 mt-2">{edu.description}</p>
+                            <p className="text-sm text-gray-600 mt-2">
+                              {edu.description}
+                            </p>
                           )}
                         </div>
                         <div className="flex space-x-2">
@@ -622,7 +700,9 @@ export default function CandidateProfileEdit() {
 
               <div className="mt-8">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold">Cursos Complementares</h3>
+                  <h3 className="text-lg font-semibold">
+                    Cursos Complementares
+                  </h3>
                   <Button variant="outline">
                     <Plus className="w-4 h-4 mr-2" />
                     Adicionar Curso
@@ -667,7 +747,9 @@ export default function CandidateProfileEdit() {
             <TabsContent value="skills" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Habilidades Técnicas</h3>
+                  <h3 className="text-lg font-semibold mb-4">
+                    Habilidades Técnicas
+                  </h3>
                   <div className="space-y-4">
                     <div>
                       <Label>Adicionar Habilidades</Label>
@@ -676,9 +758,15 @@ export default function CandidateProfileEdit() {
                           placeholder="Digite uma habilidade"
                           value={newSkill}
                           onChange={(e) => setNewSkill(e.target.value)}
-                          onKeyPress={(e) => e.key === 'Enter' && handleAddSkill()}
+                          onKeyPress={(e) =>
+                            e.key === "Enter" && handleAddSkill()
+                          }
                         />
-                        <Button type="button" onClick={handleAddSkill} disabled={!newSkill.trim()}>
+                        <Button
+                          type="button"
+                          onClick={handleAddSkill}
+                          disabled={!newSkill.trim()}
+                        >
                           <Plus className="w-4 h-4" />
                         </Button>
                       </div>
@@ -688,11 +776,17 @@ export default function CandidateProfileEdit() {
                       <h4 className="font-medium mb-3">Suas Habilidades</h4>
                       <div className="flex flex-wrap gap-2">
                         {skills.technical.map((skill) => (
-                          <Badge key={skill} variant="secondary" className="flex items-center space-x-2">
+                          <Badge
+                            key={skill}
+                            variant="secondary"
+                            className="flex items-center space-x-2"
+                          >
                             <span>{skill}</span>
                             <button
                               type="button"
-                              onClick={() => handleRemoveSkill(skill, 'technical')}
+                              onClick={() =>
+                                handleRemoveSkill(skill, "technical")
+                              }
                               className="text-red-500 hover:text-red-700"
                             >
                               <Trash2 size={12} />
@@ -714,9 +808,15 @@ export default function CandidateProfileEdit() {
                           placeholder="Digite um conhecimento"
                           value={newKnowledge}
                           onChange={(e) => setNewKnowledge(e.target.value)}
-                          onKeyPress={(e) => e.key === 'Enter' && handleAddKnowledge()}
+                          onKeyPress={(e) =>
+                            e.key === "Enter" && handleAddKnowledge()
+                          }
                         />
-                        <Button type="button" onClick={handleAddKnowledge} disabled={!newKnowledge.trim()}>
+                        <Button
+                          type="button"
+                          onClick={handleAddKnowledge}
+                          disabled={!newKnowledge.trim()}
+                        >
                           <Plus className="w-4 h-4" />
                         </Button>
                       </div>
@@ -726,7 +826,11 @@ export default function CandidateProfileEdit() {
                       <h4 className="font-medium mb-3">Seus Conhecimentos</h4>
                       <div className="flex flex-wrap gap-2">
                         {knowledgeSkills.map((knowledge) => (
-                          <Badge key={knowledge} variant="outline" className="flex items-center space-x-2">
+                          <Badge
+                            key={knowledge}
+                            variant="outline"
+                            className="flex items-center space-x-2"
+                          >
                             <span>{knowledge}</span>
                             <button
                               type="button"
@@ -743,23 +847,34 @@ export default function CandidateProfileEdit() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-
+              <div className="mt-8">
                 <div>
                   <h3 className="text-lg font-semibold mb-4">Idiomas</h3>
                   <div className="space-y-4">
                     {[
-                      { name: "Inglês", level: "Fluente - TOEFL 580", progress: 80 },
-                      { name: "Espanhol", level: "Intermediário", progress: 50 },
+                      {
+                        name: "Inglês",
+                        level: "Fluente - TOEFL 580",
+                        progress: 80,
+                      },
+                      {
+                        name: "Espanhol",
+                        level: "Intermediário",
+                        progress: 50,
+                      },
                     ].map((language, index) => (
                       <Card key={index}>
                         <CardContent className="p-4">
                           <div className="flex justify-between items-start">
                             <div className="flex-1">
                               <h4 className="font-semibold">{language.name}</h4>
-                              <Progress value={language.progress} className="my-2" />
-                              <p className="text-sm text-gray-600">{language.level}</p>
+                              <Progress
+                                value={language.progress}
+                                className="my-2"
+                              />
+                              <p className="text-sm text-gray-600">
+                                {language.level}
+                              </p>
                             </div>
                             <div className="flex space-x-2">
                               <Button variant="outline" size="sm">
@@ -788,17 +903,27 @@ export default function CandidateProfileEdit() {
                   <div>
                     <Label htmlFor="resume">Currículo (PDF) *</Label>
                     <Input id="resume" type="file" accept=".pdf" />
-                    <p className="text-sm text-gray-500 mt-1">Tamanho máximo: 5MB</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Tamanho máximo: 5MB
+                    </p>
                   </div>
 
                   <div>
                     <Label htmlFor="portfolio">Portfólio (Link)</Label>
-                    <Input id="portfolio" type="url" placeholder="https://meuportfolio.com" />
+                    <Input
+                      id="portfolio"
+                      type="url"
+                      placeholder="https://meuportfolio.com"
+                    />
                   </div>
 
                   <div>
                     <Label htmlFor="linkedin">LinkedIn</Label>
-                    <Input id="linkedin" type="url" placeholder="https://linkedin.com/in/seu-perfil" />
+                    <Input
+                      id="linkedin"
+                      type="url"
+                      placeholder="https://linkedin.com/in/seu-perfil"
+                    />
                   </div>
                 </div>
               </div>
@@ -808,7 +933,11 @@ export default function CandidateProfileEdit() {
 
         <div className="border-t bg-gray-50 px-6 py-4">
           <div className="flex justify-between">
-            <Button variant="outline" onClick={handlePrevious} disabled={currentTabIndex === 0}>
+            <Button
+              variant="outline"
+              onClick={handlePrevious}
+              disabled={currentTabIndex === 0}
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar
             </Button>
@@ -833,5 +962,5 @@ export default function CandidateProfileEdit() {
         </div>
       </Card>
     </div>
-  )
+  );
 }
