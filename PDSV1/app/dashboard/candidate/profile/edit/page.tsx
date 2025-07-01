@@ -48,12 +48,116 @@ import {
 
 export default function CandidateProfileEdit() {
   const [currentTab, setCurrentTab] = useState("info");
-  const [profileCompletion] = useState(65);
+  const [profileCompletion, setProfileCompletion] = useState(0);
+  const [personalData, setPersonalData] = useState<CandidatePersonalData>({
+    cpf: "",
+    fullName: "",
+    birthDate: "",
+    gender: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    cep: "",
+    about: "",
+  });
+  const [experiences, setExperiences] = useState<CandidateExperience[]>([]);
+  const [education, setEducation] = useState<CandidateEducation[]>([]);
+  const [skills, setSkills] = useState<CandidateSkills>({
+    technical: [],
+    soft: [],
+  });
+  const [documents, setDocuments] = useState<CandidateDocuments>({});
+  const [newSkill, setNewSkill] = useState("");
 
   const tabs = ["info", "experience", "education", "skills"];
   const currentTabIndex = tabs.indexOf(currentTab);
 
+  // Load existing data
+  useEffect(() => {
+    const currentCPF = getCurrentUserCPF();
+    if (currentCPF) {
+      const candidateData = getCandidateData(currentCPF);
+      if (candidateData) {
+        setPersonalData(candidateData.personal);
+        setExperiences(candidateData.experiences);
+        setEducation(candidateData.education);
+        setSkills(candidateData.skills);
+        setDocuments(candidateData.documents);
+        setProfileCompletion(calculateProfileCompletion(candidateData));
+      }
+    }
+  }, []);
+
+  const updatePersonalField = (
+    field: keyof CandidatePersonalData,
+    value: string,
+  ) => {
+    setPersonalData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSavePersonalData = () => {
+    if (!validateCPF(personalData.cpf)) {
+      alert("CPF inválido");
+      return;
+    }
+
+    const cleanCPF = personalData.cpf.replace(/\D/g, "");
+    const success = updateCandidatePersonalData(cleanCPF, personalData);
+
+    if (success) {
+      setCurrentUserCPF(cleanCPF);
+      alert("Dados pessoais salvos com sucesso!");
+
+      // Update profile completion
+      const updatedData = getCandidateData(cleanCPF);
+      if (updatedData) {
+        setProfileCompletion(calculateProfileCompletion(updatedData));
+      }
+    } else {
+      alert("Erro ao salvar dados pessoais");
+    }
+  };
+
+  const handleAddSkill = () => {
+    if (newSkill.trim()) {
+      const updatedSkills = {
+        ...skills,
+        technical: [...skills.technical, newSkill.trim()],
+      };
+      setSkills(updatedSkills);
+      setNewSkill("");
+
+      const currentCPF = getCurrentUserCPF();
+      if (currentCPF) {
+        updateCandidateSkills(currentCPF, updatedSkills);
+      }
+    }
+  };
+
+  const handleRemoveSkill = (
+    skillToRemove: string,
+    type: "technical" | "soft",
+  ) => {
+    const updatedSkills = {
+      ...skills,
+      [type]: skills[type].filter((skill) => skill !== skillToRemove),
+    };
+    setSkills(updatedSkills);
+
+    const currentCPF = getCurrentUserCPF();
+    if (currentCPF) {
+      updateCandidateSkills(currentCPF, updatedSkills);
+    }
+  };
+
   const handleNext = () => {
+    // Save current tab data before moving
+    if (currentTab === "info") {
+      handleSavePersonalData();
+    }
+
     if (currentTabIndex < tabs.length - 1) {
       setCurrentTab(tabs[currentTabIndex + 1]);
     }
