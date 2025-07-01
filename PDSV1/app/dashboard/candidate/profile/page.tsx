@@ -271,43 +271,37 @@ export default function CandidateProfile() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Technical Skills */}
                     <div>
-                      <h4 className="font-semibold mb-3">Conhecimentos</h4>
+                      <h4 className="font-semibold mb-3">Habilidades</h4>
                       <div className="flex flex-wrap gap-2">
-                        {[
-                          "HTML5/CSS3",
-                          "JavaScript (ES6+)",
-                          "React.js",
-                          "Node.js",
-                          "Python",
-                          "Django",
-                          "REST APIs",
-                          "Git/GitHub",
-                          "SQL/NoSQL",
-                          "Docker",
-                        ].map((skill) => (
-                          <Badge key={skill} variant="secondary">
-                            {skill}
-                          </Badge>
-                        ))}
+                        {candidateData.skills.technical.length > 0 ? (
+                          candidateData.skills.technical.map((skill) => (
+                            <Badge key={skill} variant="secondary">
+                              {skill}
+                            </Badge>
+                          ))
+                        ) : (
+                          <p className="text-sm text-gray-500">
+                            Nenhuma habilidade adicionada.
+                          </p>
+                        )}
                       </div>
                     </div>
 
-                    {/* Soft Skills */}
+                    {/* Knowledge Skills */}
                     <div>
-                      <h4 className="font-semibold mb-3">Habilidades</h4>
+                      <h4 className="font-semibold mb-3">Conhecimentos</h4>
                       <div className="flex flex-wrap gap-2">
-                        {[
-                          "Trabalho em equipe",
-                          "Comunicação",
-                          "Resolução de problemas",
-                          "Gestão de tempo",
-                          "Adaptabilidade",
-                          "Pensamento crítico",
-                        ].map((skill) => (
-                          <Badge key={skill} variant="outline">
-                            {skill}
-                          </Badge>
-                        ))}
+                        {candidateData.skills.soft.length > 0 ? (
+                          candidateData.skills.soft.map((knowledge) => (
+                            <Badge key={knowledge} variant="outline">
+                              {knowledge}
+                            </Badge>
+                          ))
+                        ) : (
+                          <p className="text-sm text-gray-500">
+                            Nenhum conhecimento adicionado.
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
