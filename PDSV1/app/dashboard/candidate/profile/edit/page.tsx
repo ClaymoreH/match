@@ -714,43 +714,65 @@ export default function CandidateProfileEdit() {
                   <h3 className="text-lg font-semibold">
                     Cursos Complementares
                   </h3>
-                  <Button variant="outline">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowCourseModal(true)}
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     Adicionar Curso
                   </Button>
                 </div>
 
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-2">Curso</th>
-                        <th className="text-left py-2">Instituição</th>
-                        <th className="text-left py-2">Carga Horária</th>
-                        <th className="text-left py-2">Ano</th>
-                        <th className="text-left py-2"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b">
-                        <td className="py-2">React Avançado</td>
-                        <td className="py-2">Alura</td>
-                        <td className="py-2">40h</td>
-                        <td className="py-2">2022</td>
-                        <td className="py-2">
-                          <div className="flex space-x-2">
-                            <Button variant="outline" size="sm">
-                              <Edit className="w-4 h-4" />
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                {courses.length > 0 ? (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left py-2">Curso</th>
+                          <th className="text-left py-2">Instituição</th>
+                          <th className="text-left py-2">Carga Horária</th>
+                          <th className="text-left py-2">Ano</th>
+                          <th className="text-left py-2"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {courses.map((course) => (
+                          <tr key={course.id} className="border-b">
+                            <td className="py-2">{course.name}</td>
+                            <td className="py-2">{course.institution}</td>
+                            <td className="py-2">{course.hours}h</td>
+                            <td className="py-2">{course.year}</td>
+                            <td className="py-2">
+                              <div className="flex space-x-2">
+                                <Button variant="outline" size="sm">
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleDeleteCourse(course.id)}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>Nenhum curso complementar adicionado ainda.</p>
+                    <Button
+                      variant="outline"
+                      className="mt-2"
+                      onClick={() => setShowCourseModal(true)}
+                    >
+                      Adicionar primeiro curso
+                    </Button>
+                  </div>
+                )}
               </div>
             </TabsContent>
 
