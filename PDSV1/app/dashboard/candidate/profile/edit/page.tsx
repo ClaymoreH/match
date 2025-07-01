@@ -301,6 +301,95 @@ export default function CandidateProfileEdit() {
     setShowEducationModal(false);
   };
 
+  const handleDeleteEducation = (educationId: string) => {
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
+
+    if (confirm("Tem certeza que deseja remover esta formação?")) {
+      const success = deleteCandidateEducation(currentCPF, educationId);
+      if (success) {
+        const updatedData = getCandidateData(currentCPF);
+        if (updatedData) {
+          setEducation(updatedData.education);
+        }
+      }
+    }
+  };
+
+  // Course management
+  const handleAddCourse = () => {
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
+
+    const success = addCandidateCourse(currentCPF, newCourse);
+    if (success) {
+      const updatedData = getCandidateData(currentCPF);
+      if (updatedData) {
+        setCourses(updatedData.courses);
+      }
+    }
+
+    setNewCourse({
+      name: "",
+      institution: "",
+      hours: 0,
+      year: "",
+    });
+    setShowCourseModal(false);
+  };
+
+  const handleDeleteCourse = (courseId: string) => {
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
+
+    if (confirm("Tem certeza que deseja remover este curso?")) {
+      const success = deleteCandidateCourse(currentCPF, courseId);
+      if (success) {
+        const updatedData = getCandidateData(currentCPF);
+        if (updatedData) {
+          setCourses(updatedData.courses);
+        }
+      }
+    }
+  };
+
+  // Language management
+  const handleAddLanguage = () => {
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
+
+    const success = addCandidateLanguage(currentCPF, newLanguage);
+    if (success) {
+      const updatedData = getCandidateData(currentCPF);
+      if (updatedData) {
+        setLanguages(updatedData.languages);
+      }
+    }
+
+    setNewLanguage({
+      name: "",
+      level: "",
+      proficiency: 0,
+      certification: "",
+    });
+    setShowLanguageModal(false);
+  };
+
+  const handleDeleteLanguage = (languageId: string) => {
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
+
+    if (confirm("Tem certeza que deseja remover este idioma?")) {
+      const success = deleteCandidateLanguage(currentCPF, languageId);
+      if (success) {
+        const updatedData = getCandidateData(currentCPF);
+        if (updatedData) {
+          setLanguages(updatedData.languages);
+        }
+      }
+    }
+  };
+
   // Knowledge skills management
   const handleAddKnowledge = () => {
     if (newKnowledge.trim() && !knowledgeSkills.includes(newKnowledge.trim())) {
