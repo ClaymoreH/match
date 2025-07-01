@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -442,7 +441,7 @@ export default function CandidateProfile() {
                         </h4>
                         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                           <p className="text-sm text-green-800">
-                            Sugestões personalizadas serão geradas pela IA para
+                            Sugest��es personalizadas serão geradas pela IA para
                             desenvolvimento profissional.
                           </p>
                         </div>
