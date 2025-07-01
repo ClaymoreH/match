@@ -192,6 +192,135 @@ export default function CandidateProfileEdit() {
     }
   };
 
+  // Experience management
+  const handleAddExperience = () => {
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
+
+    if (editingExperience) {
+      // Update existing experience
+      const updatedExperiences = experiences.map((exp) =>
+        exp.id === editingExperience.id
+          ? { ...newExperience, id: editingExperience.id }
+          : exp,
+      );
+      setExperiences(updatedExperiences);
+
+      const candidateData = getCandidateData(currentCPF);
+      if (candidateData) {
+        saveCandidateData({
+          ...candidateData,
+          experiences: updatedExperiences,
+        });
+      }
+    } else {
+      // Add new experience
+      const success = addCandidateExperience(currentCPF, newExperience);
+      if (success) {
+        const updatedData = getCandidateData(currentCPF);
+        if (updatedData) {
+          setExperiences(updatedData.experiences);
+        }
+      }
+    }
+
+    // Reset form
+    setNewExperience({
+      title: "",
+      company: "",
+      startDate: "",
+      endDate: "",
+      isCurrent: false,
+      description: "",
+    });
+    setEditingExperience(null);
+    setShowExperienceModal(false);
+  };
+
+  const handleEditExperience = (experience: CandidateExperience) => {
+    setNewExperience({
+      title: experience.title,
+      company: experience.company,
+      startDate: experience.startDate,
+      endDate: experience.endDate || "",
+      isCurrent: experience.isCurrent,
+      description: experience.description,
+    });
+    setEditingExperience(experience);
+    setShowExperienceModal(true);
+  };
+
+  const handleDeleteExperience = (experienceId: string) => {
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
+
+    if (confirm("Tem certeza que deseja remover esta experiência?")) {
+      const success = deleteCandidateExperience(currentCPF, experienceId);
+      if (success) {
+        const updatedData = getCandidateData(currentCPF);
+        if (updatedData) {
+          setExperiences(updatedData.experiences);
+        }
+      }
+    }
+  };
+
+  // Education management
+  const handleAddEducation = () => {
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) return;
+
+    const success = addCandidateEducation(currentCPF, newEducation);
+    if (success) {
+      const updatedData = getCandidateData(currentCPF);
+      if (updatedData) {
+        setEducation(updatedData.education);
+      }
+    }
+
+    setNewEducation({
+      degree: "",
+      institution: "",
+      completionYear: "",
+      description: "",
+    });
+    setShowEducationModal(false);
+  };
+
+  // Knowledge skills management
+  const handleAddKnowledge = () => {
+    if (newKnowledge.trim() && !knowledgeSkills.includes(newKnowledge.trim())) {
+      const updatedKnowledge = [...knowledgeSkills, newKnowledge.trim()];
+      setKnowledgeSkills(updatedKnowledge);
+      setNewKnowledge("");
+
+      const currentCPF = getCurrentUserCPF();
+      if (currentCPF) {
+        const updatedSkills = {
+          ...skills,
+          soft: updatedKnowledge, // Using soft skills array for knowledge
+        };
+        setSkills(updatedSkills);
+        updateCandidateSkills(currentCPF, updatedSkills);
+      }
+    }
+  };
+
+  const handleRemoveKnowledge = (knowledge: string) => {
+    const updatedKnowledge = knowledgeSkills.filter((k) => k !== knowledge);
+    setKnowledgeSkills(updatedKnowledge);
+
+    const currentCPF = getCurrentUserCPF();
+    if (currentCPF) {
+      const updatedSkills = {
+        ...skills,
+        soft: updatedKnowledge,
+      };
+      setSkills(updatedSkills);
+      updateCandidateSkills(currentCPF, updatedSkills);
+    }
+  };
+
   const handleNext = () => {
     // Save current tab data before moving
     if (currentTab === "info") {
