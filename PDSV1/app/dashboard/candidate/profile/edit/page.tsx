@@ -134,6 +134,8 @@ export default function CandidateProfileEdit() {
         setPersonalData(candidateData.personal);
         setExperiences(candidateData.experiences);
         setEducation(candidateData.education);
+        setCourses(candidateData.courses);
+        setLanguages(candidateData.languages);
         setSkills(candidateData.skills);
         setDocuments(candidateData.documents);
         setKnowledgeSkills(candidateData.skills.soft || []);
