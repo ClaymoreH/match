@@ -96,6 +96,29 @@ export interface BehavioralAnalysis {
     ethics: string;
     values: string;
   };
+  aiInsights?: {
+    profile: string;
+    profileSummary: string;
+    bigFiveDistribution: {
+      openness: number;
+      conscientiousness: number;
+      extraversion: number;
+      agreeableness: number;
+      neuroticism: number;
+    };
+    behavioralHighlights: {
+      communication: string;
+      decision: string;
+      leadership: string;
+      problemSolving: string;
+      adaptability: string;
+    };
+    suggestions: {
+      recommendedPositions: string[];
+      standoutTips: string[];
+      developmentAreas: string[];
+    };
+  };
   completedAt?: string;
 }
 
