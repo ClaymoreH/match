@@ -73,6 +73,8 @@ export default function CandidateProfileEdit() {
   });
   const [experiences, setExperiences] = useState<CandidateExperience[]>([]);
   const [education, setEducation] = useState<CandidateEducation[]>([]);
+  const [courses, setCourses] = useState<CandidateCourse[]>([]);
+  const [languages, setLanguages] = useState<CandidateLanguage[]>([]);
   const [skills, setSkills] = useState<CandidateSkills>({
     technical: [],
     soft: [],
