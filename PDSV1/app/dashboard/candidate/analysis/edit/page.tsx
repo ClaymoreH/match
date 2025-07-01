@@ -94,7 +94,7 @@ export default function CandidateAnalysisEdit() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const currentCPF = getCurrentUserCPF();
@@ -129,22 +129,47 @@ export default function CandidateAnalysisEdit() {
       return;
     }
 
-    const behavioralAnalysis: BehavioralAnalysis = {
-      section1: formData.section1,
-      section2: formData.section2,
-      section3: formData.section3,
-    };
+    setIsProcessing(true);
 
-    const success = updateCandidateBehavioralAnalysis(
-      currentCPF,
-      behavioralAnalysis,
-    );
+    try {
+      const behavioralAnalysis: BehavioralAnalysis = {
+        section1: formData.section1,
+        section2: formData.section2,
+        section3: formData.section3,
+      };
 
-    if (success) {
-      alert("Análise comportamental salva com sucesso!");
-      router.push("/dashboard/candidate/analysis");
-    } else {
-      alert("Erro ao salvar análise. Tente novamente.");
+      // First save the basic data
+      const basicSuccess = updateCandidateBehavioralAnalysis(
+        currentCPF,
+        behavioralAnalysis,
+      );
+
+      if (!basicSuccess) {
+        throw new Error("Erro ao salvar dados básicos");
+      }
+
+      // Then process with AI to generate insights
+      const aiSuccess = await processBehavioralAnalysis(
+        currentCPF,
+        behavioralAnalysis,
+      );
+
+      if (aiSuccess) {
+        alert(
+          "Análise comportamental processada com sucesso! Os insights foram gerados pela IA.",
+        );
+        router.push("/dashboard/candidate/profile");
+      } else {
+        alert(
+          "Dados salvos, mas houve erro na geração de insights. Tente novamente.",
+        );
+        router.push("/dashboard/candidate/analysis");
+      }
+    } catch (error) {
+      console.error("Error processing analysis:", error);
+      alert("Erro ao processar análise. Tente novamente.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -342,7 +367,7 @@ export default function CandidateAnalysisEdit() {
           </Label>
           <div className="grid grid-cols-3 gap-3">
             {[
-              "Inovação",
+              "Inova��ão",
               "Aprendizado",
               "Equilíbrio",
               "Impacto Social",
@@ -516,7 +541,7 @@ export default function CandidateAnalysisEdit() {
             <Label className="text-sm font-semibold text-gray-900 mb-3 block">
               Em uma situação onde há um conflito de prioridades ou opiniões
               fortes entre dois colegas de equipe que afeta o andamento do
-              projeto, como voc�� interviria ou o que você faria para ajudar a
+              projeto, como você interviria ou o que você faria para ajudar a
               resolver a situação e restabelecer a harmonia, mesmo que não seja
               seu papel direto de liderança?
             </Label>
