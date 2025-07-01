@@ -18,6 +18,11 @@ import {
   Github,
   Twitter,
 } from "lucide-react";
+import {
+  getCurrentUserData,
+  getCurrentUserCPF,
+  type CandidateData,
+} from "@/lib/storage";
 
 export default function CandidateProfile() {
   const [activeTab, setActiveTab] = useState("about");
