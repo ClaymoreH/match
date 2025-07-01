@@ -94,10 +94,72 @@ export default function CandidateAnalysisEdit() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Análise enviada com sucesso!");
-    router.push("/dashboard/candidate/analysis");
+
+    const currentCPF = getCurrentUserCPF();
+    if (!currentCPF) {
+      alert(
+        "Erro: CPF não encontrado. Por favor, complete seu perfil primeiro.",
+      );
+      router.push("/dashboard/candidate/profile/edit");
+      return;
+    }
+
+    // Validate required fields
+    const section1Fields = [
+      "collaboration",
+      "problemSolving",
+      "communication",
+      "initiative",
+      "adaptation",
+      "influence",
+      "learning",
+    ];
+    const section1Missing = section1Fields.some(
+      (field) => !formData.section1[field],
+    );
+
+    if (
+      section1Missing ||
+      !formData.section2.careerGoals ||
+      formData.section2.values.length === 0
+    ) {
+      alert("Por favor, complete todos os campos obrigatórios.");
+      return;
+    }
+
+    const behavioralAnalysis: BehavioralAnalysis = {
+      section1: formData.section1,
+      section2: formData.section2,
+      section3: formData.section3,
+    };
+
+    const success = updateCandidateBehavioralAnalysis(
+      currentCPF,
+      behavioralAnalysis,
+    );
+
+    if (success) {
+      alert("Análise comportamental salva com sucesso!");
+      router.push("/dashboard/candidate/analysis");
+    } else {
+      alert("Erro ao salvar análise. Tente novamente.");
+    }
   };
+
+  // Load existing data if available
+  useEffect(() => {
+    const currentCPF = getCurrentUserCPF();
+    if (currentCPF) {
+      const candidateData = getCandidateData(currentCPF);
+      if (candidateData?.behavioralAnalysis) {
+        setFormData({
+          section1: candidateData.behavioralAnalysis.section1,
+          section2: candidateData.behavioralAnalysis.section2,
+          section3: candidateData.behavioralAnalysis.section3,
+        });
+      }
+    }
+  }, []);
 
   const nextSection = () => {
     if (currentSection < 3) {
