@@ -26,6 +26,49 @@ import {
 
 export default function CandidateProfile() {
   const [activeTab, setActiveTab] = useState("about");
+  const [candidateData, setCandidateData] = useState<CandidateData | null>(
+    null,
+  );
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCandidateData = () => {
+      const data = getCurrentUserData();
+      setCandidateData(data);
+      setLoading(false);
+    };
+
+    loadCandidateData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="p-6 flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Carregando perfil...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!candidateData) {
+    return (
+      <div className="p-6 flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            Perfil não encontrado
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Complete seu cadastro para visualizar seu perfil.
+          </p>
+          <Link href="/dashboard/candidate/profile/edit">
+            <Button>Completar Cadastro</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6">
