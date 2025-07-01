@@ -23,6 +23,7 @@ import {
   getCandidateData,
   type BehavioralAnalysis,
 } from "@/lib/storage";
+import { processBehavioralAnalysis } from "@/lib/gemini";
 
 interface FormData {
   section1: Record<string, string>;
@@ -512,7 +513,7 @@ export default function CandidateAnalysisEdit() {
 
           <div>
             <Label className="text-sm font-semibold text-gray-900 mb-3 block">
-              Em uma situação onde há um conflito de prioridades ou opiniões
+              Em uma situação onde há um conflito de prioridades ou opini��es
               fortes entre dois colegas de equipe que afeta o andamento do
               projeto, como você interviria ou o que você faria para ajudar a
               resolver a situação e restabelecer a harmonia, mesmo que não seja
