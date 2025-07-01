@@ -1,43 +1,59 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
-import { Camera, Plus, Edit, Trash2, ArrowLeft, ArrowRight, Check } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import {
+  Camera,
+  Plus,
+  Edit,
+  Trash2,
+  ArrowLeft,
+  ArrowRight,
+  Check,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function CandidateProfileEdit() {
-  const [currentTab, setCurrentTab] = useState("info")
-  const [profileCompletion] = useState(65)
+  const [currentTab, setCurrentTab] = useState("info");
+  const [profileCompletion] = useState(65);
 
-  const tabs = ["info", "experience", "education", "skills"]
-  const currentTabIndex = tabs.indexOf(currentTab)
+  const tabs = ["info", "experience", "education", "skills"];
+  const currentTabIndex = tabs.indexOf(currentTab);
 
   const handleNext = () => {
     if (currentTabIndex < tabs.length - 1) {
-      setCurrentTab(tabs[currentTabIndex + 1])
+      setCurrentTab(tabs[currentTabIndex + 1]);
     }
-  }
+  };
 
   const handlePrevious = () => {
     if (currentTabIndex > 0) {
-      setCurrentTab(tabs[currentTabIndex - 1])
+      setCurrentTab(tabs[currentTabIndex - 1]);
     }
-  }
+  };
 
   return (
     <div className="p-6 space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Editar Perfil do Candidato</h1>
+        <h1 className="text-2xl font-bold text-gray-900">
+          Editar Perfil do Candidato
+        </h1>
         <nav className="flex space-x-2 text-sm text-gray-600 mt-2">
           <span>Candidato</span>
           <span>›</span>
@@ -50,7 +66,9 @@ export default function CandidateProfileEdit() {
           <div className="flex justify-between items-center">
             <CardTitle>Meu Perfil</CardTitle>
             <div className="flex items-center space-x-3">
-              <span className="text-sm text-gray-600">Completo: {profileCompletion}%</span>
+              <span className="text-sm text-gray-600">
+                Completo: {profileCompletion}%
+              </span>
               <Progress value={profileCompletion} className="w-32" />
             </div>
           </div>
@@ -83,7 +101,9 @@ export default function CandidateProfileEdit() {
                       <Camera size={16} />
                     </button>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">Formatos: JPG, PNG (Máx. 1MB)</p>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Formatos: JPG, PNG (Máx. 1MB)
+                  </p>
                   <Button variant="link" className="text-red-600 text-sm">
                     Remover foto
                   </Button>
@@ -95,7 +115,10 @@ export default function CandidateProfileEdit() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="fullName">Nome Completo *</Label>
-                      <Input id="fullName" placeholder="Digite seu nome completo" />
+                      <Input
+                        id="fullName"
+                        placeholder="Digite seu nome completo"
+                      />
                     </div>
                     <div>
                       <Label htmlFor="birthDate">Data de Nascimento *</Label>
@@ -118,7 +141,9 @@ export default function CandidateProfileEdit() {
                           <SelectItem value="female">Feminino</SelectItem>
                           <SelectItem value="male">Masculino</SelectItem>
                           <SelectItem value="other">Outro</SelectItem>
-                          <SelectItem value="prefer-not-to-say">Prefiro não dizer</SelectItem>
+                          <SelectItem value="prefer-not-to-say">
+                            Prefiro não dizer
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -127,7 +152,11 @@ export default function CandidateProfileEdit() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="email">E-mail *</Label>
-                      <Input id="email" type="email" placeholder="exemplo@email.com" />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="exemplo@email.com"
+                      />
                     </div>
                     <div>
                       <Label htmlFor="phone">Telefone *</Label>
@@ -137,7 +166,10 @@ export default function CandidateProfileEdit() {
 
                   <div>
                     <Label htmlFor="address">Endereço</Label>
-                    <Input id="address" placeholder="Rua, número, complemento" />
+                    <Input
+                      id="address"
+                      placeholder="Rua, número, complemento"
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -166,8 +198,14 @@ export default function CandidateProfileEdit() {
 
                   <div>
                     <Label htmlFor="about">Sobre mim</Label>
-                    <Textarea id="about" rows={3} placeholder="Fale um pouco sobre você..." />
-                    <p className="text-sm text-gray-500 mt-1">Máximo 500 caracteres</p>
+                    <Textarea
+                      id="about"
+                      rows={3}
+                      placeholder="Fale um pouco sobre você..."
+                    />
+                    <p className="text-sm text-gray-500 mt-1">
+                      Máximo 500 caracteres
+                    </p>
                   </div>
                 </div>
               </div>
@@ -176,7 +214,9 @@ export default function CandidateProfileEdit() {
             {/* Experience Tab */}
             <TabsContent value="experience" className="space-y-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">Experiência Profissional</h3>
+                <h3 className="text-lg font-semibold">
+                  Experiência Profissional
+                </h3>
                 <Button>
                   <Plus className="w-4 h-4 mr-2" />
                   Adicionar Experiência
@@ -196,7 +236,8 @@ export default function CandidateProfileEdit() {
                     title: "Desenvolvedor Front-end Pleno",
                     company: "Empresa ABC",
                     period: "Mar 2017 - Dez 2019 (2 anos 9 meses)",
-                    description: "Desenvolvimento de aplicações web responsivas utilizando HTML5, CSS3 e JavaScript.",
+                    description:
+                      "Desenvolvimento de aplicações web responsivas utilizando HTML5, CSS3 e JavaScript.",
                   },
                 ].map((experience, index) => (
                   <Card key={index}>
@@ -205,8 +246,12 @@ export default function CandidateProfileEdit() {
                         <div className="flex-1">
                           <h4 className="font-semibold">{experience.title}</h4>
                           <p className="text-blue-600">{experience.company}</p>
-                          <p className="text-sm text-gray-500">{experience.period}</p>
-                          <p className="text-sm text-gray-600 mt-2">{experience.description}</p>
+                          <p className="text-sm text-gray-500">
+                            {experience.period}
+                          </p>
+                          <p className="text-sm text-gray-600 mt-2">
+                            {experience.description}
+                          </p>
                         </div>
                         <div className="flex space-x-2">
                           <Button variant="outline" size="sm">
@@ -237,7 +282,9 @@ export default function CandidateProfileEdit() {
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="font-semibold">Bacharelado em Ciência da Computação</h4>
+                      <h4 className="font-semibold">
+                        Bacharelado em Ciência da Computação
+                      </h4>
                       <p className="text-blue-600">Universidade Federal</p>
                       <p className="text-sm text-gray-500">Concluído em 2016</p>
                     </div>
@@ -255,7 +302,9 @@ export default function CandidateProfileEdit() {
 
               <div className="mt-8">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold">Cursos Complementares</h3>
+                  <h3 className="text-lg font-semibold">
+                    Cursos Complementares
+                  </h3>
                   <Button variant="outline">
                     <Plus className="w-4 h-4 mr-2" />
                     Adicionar Curso
@@ -300,7 +349,9 @@ export default function CandidateProfileEdit() {
             <TabsContent value="skills" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Habilidades Técnicas</h3>
+                  <h3 className="text-lg font-semibold mb-4">
+                    Habilidades Técnicas
+                  </h3>
                   <div className="space-y-4">
                     <div>
                       <Label>Adicionar Habilidades</Label>
@@ -310,8 +361,19 @@ export default function CandidateProfileEdit() {
                     <div>
                       <h4 className="font-medium mb-3">Suas Habilidades</h4>
                       <div className="flex flex-wrap gap-2">
-                        {["JavaScript", "React", "HTML5", "CSS3", "Node.js", "Python"].map((skill) => (
-                          <Badge key={skill} variant="secondary" className="flex items-center space-x-2">
+                        {[
+                          "JavaScript",
+                          "React",
+                          "HTML5",
+                          "CSS3",
+                          "Node.js",
+                          "Python",
+                        ].map((skill) => (
+                          <Badge
+                            key={skill}
+                            variant="secondary"
+                            className="flex items-center space-x-2"
+                          >
                             <span>{skill}</span>
                             <button className="text-red-500 hover:text-red-700">
                               <Trash2 size={12} />
@@ -327,16 +389,29 @@ export default function CandidateProfileEdit() {
                   <h3 className="text-lg font-semibold mb-4">Idiomas</h3>
                   <div className="space-y-4">
                     {[
-                      { name: "Inglês", level: "Fluente - TOEFL 580", progress: 80 },
-                      { name: "Espanhol", level: "Intermediário", progress: 50 },
+                      {
+                        name: "Inglês",
+                        level: "Fluente - TOEFL 580",
+                        progress: 80,
+                      },
+                      {
+                        name: "Espanhol",
+                        level: "Intermediário",
+                        progress: 50,
+                      },
                     ].map((language, index) => (
                       <Card key={index}>
                         <CardContent className="p-4">
                           <div className="flex justify-between items-start">
                             <div className="flex-1">
                               <h4 className="font-semibold">{language.name}</h4>
-                              <Progress value={language.progress} className="my-2" />
-                              <p className="text-sm text-gray-600">{language.level}</p>
+                              <Progress
+                                value={language.progress}
+                                className="my-2"
+                              />
+                              <p className="text-sm text-gray-600">
+                                {language.level}
+                              </p>
                             </div>
                             <div className="flex space-x-2">
                               <Button variant="outline" size="sm">
@@ -365,17 +440,27 @@ export default function CandidateProfileEdit() {
                   <div>
                     <Label htmlFor="resume">Currículo (PDF) *</Label>
                     <Input id="resume" type="file" accept=".pdf" />
-                    <p className="text-sm text-gray-500 mt-1">Tamanho máximo: 5MB</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Tamanho máximo: 5MB
+                    </p>
                   </div>
 
                   <div>
                     <Label htmlFor="portfolio">Portfólio (Link)</Label>
-                    <Input id="portfolio" type="url" placeholder="https://meuportfolio.com" />
+                    <Input
+                      id="portfolio"
+                      type="url"
+                      placeholder="https://meuportfolio.com"
+                    />
                   </div>
 
                   <div>
                     <Label htmlFor="linkedin">LinkedIn</Label>
-                    <Input id="linkedin" type="url" placeholder="https://linkedin.com/in/seu-perfil" />
+                    <Input
+                      id="linkedin"
+                      type="url"
+                      placeholder="https://linkedin.com/in/seu-perfil"
+                    />
                   </div>
                 </div>
               </div>
@@ -385,7 +470,11 @@ export default function CandidateProfileEdit() {
 
         <div className="border-t bg-gray-50 px-6 py-4">
           <div className="flex justify-between">
-            <Button variant="outline" onClick={handlePrevious} disabled={currentTabIndex === 0}>
+            <Button
+              variant="outline"
+              onClick={handlePrevious}
+              disabled={currentTabIndex === 0}
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar
             </Button>
@@ -410,5 +499,5 @@ export default function CandidateProfileEdit() {
         </div>
       </Card>
     </div>
-  )
+  );
 }
