@@ -650,33 +650,53 @@ export default function CandidateProfileEdit() {
             <TabsContent value="education" className="space-y-6">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold">Formação Acadêmica</h3>
-                <Button>
+                <Button onClick={() => setShowEducationModal(true)}>
                   <Plus className="w-4 h-4 mr-2" />
                   Adicionar Formação
                 </Button>
               </div>
 
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-semibold">
-                        Bacharelado em Ciência da Computação
-                      </h4>
-                      <p className="text-blue-600">Universidade Federal</p>
-                      <p className="text-sm text-gray-500">Concluído em 2016</p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="sm">
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              {education.length > 0 ? (
+                education.map((edu) => (
+                  <Card key={edu.id}>
+                    <CardContent className="p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-semibold">{edu.degree}</h4>
+                          <p className="text-blue-600">{edu.institution}</p>
+                          <p className="text-sm text-gray-500">
+                            Concluído em {edu.completionYear}
+                          </p>
+                          {edu.description && (
+                            <p className="text-sm text-gray-600 mt-2">
+                              {edu.description}
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="sm">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <p>Nenhuma formação acadêmica adicionada ainda.</p>
+                  <Button
+                    variant="outline"
+                    className="mt-2"
+                    onClick={() => setShowEducationModal(true)}
+                  >
+                    Adicionar primeira formação
+                  </Button>
+                </div>
+              )}
 
               <div className="mt-8">
                 <div className="flex justify-between items-center mb-4">
