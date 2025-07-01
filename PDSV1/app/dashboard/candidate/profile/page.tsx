@@ -1,23 +1,34 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
-import { Mail, Phone, MapPin, Edit, Share2, Linkedin, Github, Twitter } from "lucide-react"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Edit,
+  Share2,
+  Linkedin,
+  Github,
+  Twitter,
+} from "lucide-react";
 
 export default function CandidateProfile() {
-  const [activeTab, setActiveTab] = useState("about")
+  const [activeTab, setActiveTab] = useState("about");
 
   return (
     <div className="p-6 space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Perfil do Candidato</h1>
+        <h1 className="text-2xl font-bold text-gray-900">
+          Perfil do Candidato
+        </h1>
         <nav className="flex space-x-2 text-sm text-gray-600 mt-2">
           <span>Candidato</span>
           <span>›</span>
@@ -40,7 +51,9 @@ export default function CandidateProfile() {
                   className="rounded-full border-4 border-white shadow-lg"
                 />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mt-4">Enzo Gabriel</h3>
+              <h3 className="text-xl font-bold text-gray-900 mt-4">
+                Enzo Gabriel
+              </h3>
               <p className="text-gray-600 mb-4">Desenvolvedor Full Stack</p>
 
               <div className="space-y-3 text-left">
@@ -59,19 +72,34 @@ export default function CandidateProfile() {
               </div>
 
               <div className="flex justify-center space-x-2 mt-4">
-                <Button size="sm" variant="outline" className="p-2 bg-transparent">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="p-2 bg-transparent"
+                >
                   <Linkedin className="w-4 h-4" />
                 </Button>
-                <Button size="sm" variant="outline" className="p-2 bg-transparent">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="p-2 bg-transparent"
+                >
                   <Github className="w-4 h-4" />
                 </Button>
-                <Button size="sm" variant="outline" className="p-2 bg-transparent">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="p-2 bg-transparent"
+                >
                   <Twitter className="w-4 h-4" />
                 </Button>
               </div>
 
               <div className="flex space-x-2 mt-6">
-                <Link href="/dashboard/candidate/profile/edit" className="flex-1">
+                <Link
+                  href="/dashboard/candidate/profile/edit"
+                  className="flex-1"
+                >
                   <Button size="sm" className="w-full">
                     <Edit className="w-4 h-4 mr-2" />
                     Editar Perfil
@@ -94,7 +122,9 @@ export default function CandidateProfile() {
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="about">Sobre</TabsTrigger>
                   <TabsTrigger value="experience">Experiência</TabsTrigger>
-                  <TabsTrigger value="behavior">Perfil Comportamental</TabsTrigger>
+                  <TabsTrigger value="behavior">
+                    Perfil Comportamental
+                  </TabsTrigger>
                 </TabsList>
               </Tabs>
             </CardHeader>
@@ -104,11 +134,16 @@ export default function CandidateProfile() {
                 {/* About Tab */}
                 <TabsContent value="about" className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold mb-3">Resumo Profissional</h3>
+                    <h3 className="text-lg font-semibold mb-3">
+                      Resumo Profissional
+                    </h3>
                     <p className="text-gray-600 leading-relaxed">
-                      Desenvolvedora Full Stack com 5 anos de experiência em criação de aplicações web responsivas e
-                      escaláveis. Especializada em JavaScript (React, Node.js) e Python (Django), com sólidos
-                      conhecimentos em arquitetura de software, bancos de dados relacionais e metodologias ágeis.
+                      Desenvolvedora Full Stack com 5 anos de experiência em
+                      criação de aplicações web responsivas e escaláveis.
+                      Especializada em JavaScript (React, Node.js) e Python
+                      (Django), com sólidos conhecimentos em arquitetura de
+                      software, bancos de dados relacionais e metodologias
+                      ágeis.
                     </p>
                   </div>
 
@@ -118,13 +153,21 @@ export default function CandidateProfile() {
                       <h4 className="font-semibold mb-3">Educação</h4>
                       <div className="space-y-4">
                         <div>
-                          <h5 className="font-medium">Bacharelado em Ciência da Computação</h5>
-                          <p className="text-sm text-gray-600">Universidade Federal XYZ</p>
+                          <h5 className="font-medium">
+                            Bacharelado em Ciência da Computação
+                          </h5>
+                          <p className="text-sm text-gray-600">
+                            Universidade Federal XYZ
+                          </p>
                           <p className="text-xs text-gray-500">2017 - 2021</p>
                         </div>
                         <div>
-                          <h5 className="font-medium">Pós-graduação em Engenharia de Software</h5>
-                          <p className="text-sm text-gray-600">Instituto Tecnológico ABC</p>
+                          <h5 className="font-medium">
+                            Pós-graduação em Engenharia de Software
+                          </h5>
+                          <p className="text-sm text-gray-600">
+                            Instituto Tecnológico ABC
+                          </p>
                           <p className="text-xs text-gray-500">2022 - 2023</p>
                         </div>
                       </div>
@@ -206,33 +249,51 @@ export default function CandidateProfile() {
 
                 {/* Experience Tab */}
                 <TabsContent value="experience" className="space-y-6">
-                  <h3 className="text-lg font-semibold">Experiência Profissional</h3>
+                  <h3 className="text-lg font-semibold">
+                    Experiência Profissional
+                  </h3>
 
                   <div className="space-y-6">
                     <div className="border-l-4 border-blue-500 pl-4">
-                      <h4 className="font-semibold text-blue-600">Desenvolvedora Full Stack Sênior</h4>
+                      <h4 className="font-semibold text-blue-600">
+                        Desenvolvedora Full Stack Sênior
+                      </h4>
                       <p className="font-medium">TechVision Solutions</p>
-                      <p className="text-sm text-gray-500 mb-2">2022 - Presente</p>
+                      <p className="text-sm text-gray-500 mb-2">
+                        2022 - Presente
+                      </p>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Liderança técnica de equipe de 5 desenvolvedores</li>
-                        <li>• Arquitetura e implementação de sistemas escaláveis</li>
-                        <li>• Migração de aplicações legadas para microserviços</li>
+                        <li>
+                          • Liderança técnica de equipe de 5 desenvolvedores
+                        </li>
+                        <li>
+                          • Arquitetura e implementação de sistemas escaláveis
+                        </li>
+                        <li>
+                          • Migração de aplicações legadas para microserviços
+                        </li>
                       </ul>
                     </div>
 
                     <div className="border-l-4 border-gray-400 pl-4">
-                      <h4 className="font-semibold text-gray-600">Desenvolvedora Front-end Pleno</h4>
+                      <h4 className="font-semibold text-gray-600">
+                        Desenvolvedora Front-end Pleno
+                      </h4>
                       <p className="font-medium">Digital Innovation Ltda</p>
                       <p className="text-sm text-gray-500 mb-2">2020 - 2022</p>
                       <ul className="text-sm text-gray-600 space-y-1">
                         <li>• Desenvolvimento de interfaces com React.js</li>
-                        <li>• Implementação de testes unitários e de integração</li>
+                        <li>
+                          • Implementação de testes unitários e de integração
+                        </li>
                         <li>• Otimização de performance de aplicações web</li>
                       </ul>
                     </div>
 
                     <div className="border-l-4 border-gray-300 pl-4">
-                      <h4 className="font-semibold text-gray-500">Estagiária em Desenvolvimento</h4>
+                      <h4 className="font-semibold text-gray-500">
+                        Estagiária em Desenvolvimento
+                      </h4>
                       <p className="font-medium">StartUp Tech</p>
                       <p className="text-sm text-gray-500 mb-2">2019 - 2020</p>
                       <ul className="text-sm text-gray-600 space-y-1">
@@ -246,7 +307,9 @@ export default function CandidateProfile() {
 
                 {/* Behavior Tab */}
                 <TabsContent value="behavior" className="space-y-6">
-                  <h3 className="text-lg font-semibold">Análise Comportamental</h3>
+                  <h3 className="text-lg font-semibold">
+                    Análise Comportamental
+                  </h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -268,9 +331,13 @@ export default function CandidateProfile() {
                     </div>
 
                     <div>
-                      <h4 className="font-semibold mb-3">Destaques Comportamentais</h4>
+                      <h4 className="font-semibold mb-3">
+                        Destaques Comportamentais
+                      </h4>
                       <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <p className="text-gray-500">Gráfico Radar - Chart.js</p>
+                        <p className="text-gray-500">
+                          Gráfico Radar - Chart.js
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -279,9 +346,10 @@ export default function CandidateProfile() {
                     <h4 className="font-semibold mb-3">Observações</h4>
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <p className="text-sm text-blue-800">
-                        Perfil analítico com forte tendência à estabilidade, demonstrando excelente capacidade de manter
-                        o foco em ambientes organizados. Habilidade de comunicação acima da média, com potencial para
-                        liderança situacional.
+                        Perfil analítico com forte tendência à estabilidade,
+                        demonstrando excelente capacidade de manter o foco em
+                        ambientes organizados. Habilidade de comunicação acima
+                        da média, com potencial para liderança situacional.
                       </p>
                     </div>
                   </div>
@@ -343,12 +411,16 @@ export default function CandidateProfile() {
                     <td className="py-3">
                       <div>
                         <p className="font-medium">{application.title}</p>
-                        <p className="text-sm text-gray-600">{application.description}</p>
+                        <p className="text-sm text-gray-600">
+                          {application.description}
+                        </p>
                       </div>
                     </td>
                     <td className="py-3">{application.company}</td>
                     <td className="py-3">
-                      <Badge className={application.statusColor}>{application.status}</Badge>
+                      <Badge className={application.statusColor}>
+                        {application.status}
+                      </Badge>
                     </td>
                     <td className="py-3">{application.date}</td>
                     <td className="py-3">
@@ -367,5 +439,5 @@ export default function CandidateProfile() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
