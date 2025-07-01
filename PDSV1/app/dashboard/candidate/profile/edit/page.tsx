@@ -970,51 +970,68 @@ export default function CandidateProfileEdit() {
 
               <div className="mt-8">
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Idiomas</h3>
-                  <div className="space-y-4">
-                    {[
-                      {
-                        name: "Inglês",
-                        level: "Fluente - TOEFL 580",
-                        progress: 80,
-                      },
-                      {
-                        name: "Espanhol",
-                        level: "Intermediário",
-                        progress: 50,
-                      },
-                    ].map((language, index) => (
-                      <Card key={index}>
-                        <CardContent className="p-4">
-                          <div className="flex justify-between items-start">
-                            <div className="flex-1">
-                              <h4 className="font-semibold">{language.name}</h4>
-                              <Progress
-                                value={language.progress}
-                                className="my-2"
-                              />
-                              <p className="text-sm text-gray-600">
-                                {language.level}
-                              </p>
-                            </div>
-                            <div className="flex space-x-2">
-                              <Button variant="outline" size="sm">
-                                <Edit className="w-4 h-4" />
-                              </Button>
-                              <Button variant="outline" size="sm">
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold">Idiomas</h3>
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowLanguageModal(true)}
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Adicionar Idioma
+                    </Button>
                   </div>
 
-                  <Button variant="outline" className="mt-4 bg-transparent">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Adicionar Idioma
-                  </Button>
+                  {languages.length > 0 ? (
+                    <div className="space-y-4">
+                      {languages.map((language) => (
+                        <Card key={language.id}>
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start">
+                              <div className="flex-1">
+                                <h4 className="font-semibold">
+                                  {language.name}
+                                </h4>
+                                <Progress
+                                  value={language.proficiency}
+                                  className="my-2"
+                                />
+                                <p className="text-sm text-gray-600">
+                                  {language.level}
+                                  {language.certification &&
+                                    ` - ${language.certification}`}
+                                </p>
+                              </div>
+                              <div className="flex space-x-2">
+                                <Button variant="outline" size="sm">
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() =>
+                                    handleDeleteLanguage(language.id)
+                                  }
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-gray-500">
+                      <p>Nenhum idioma adicionado ainda.</p>
+                      <Button
+                        variant="outline"
+                        className="mt-2"
+                        onClick={() => setShowLanguageModal(true)}
+                      >
+                        Adicionar primeiro idioma
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
 
