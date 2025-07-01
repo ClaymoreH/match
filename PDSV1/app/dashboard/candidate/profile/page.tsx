@@ -428,12 +428,6 @@ export default function CandidateProfile() {
 
       {/* Applications Section */}
       <Card>
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>Vagas em Andamento</CardTitle>
-            <Badge>3 candidaturas</Badge>
-          </div>
-        </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">
