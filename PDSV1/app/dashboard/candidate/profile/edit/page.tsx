@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -496,7 +497,7 @@ export default function CandidateProfileEdit() {
                     </button>
                   </div>
                   <p className="text-sm text-gray-600 mt-2">
-                    Formatos: JPG, PNG (Máx. 1MB)
+                    Formatos: JPG, PNG (M��x. 1MB)
                   </p>
                   <Button variant="link" className="text-red-600 text-sm">
                     Remover foto
