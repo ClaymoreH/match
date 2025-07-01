@@ -32,7 +32,7 @@ export async function generateBehavioralInsights(
   behavioralData: BehavioralAnalysis,
 ): Promise<BehavioralInsights> {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
 Como especialista em análise comportamental e psicologia organizacional, analise as respostas abaixo e gere um relatório estruturado em JSON.
@@ -98,7 +98,7 @@ GERE UM RELATÓRIO EM JSON com a seguinte estrutura EXATA:
   }
 }
 
-IMPORTANTE: 
+IMPORTANTE:
 - Retorne APENAS o JSON válido, sem texto adicional
 - Base a análise Big Five nas respostas autoavaliativas fornecidas
 - Seja específico e profissional nas descrições
