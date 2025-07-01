@@ -367,7 +367,7 @@ export default function CandidateAnalysisEdit() {
           </Label>
           <div className="grid grid-cols-3 gap-3">
             {[
-              "Inova��ão",
+              "Inovação",
               "Aprendizado",
               "Equilíbrio",
               "Impacto Social",
@@ -434,7 +434,7 @@ export default function CandidateAnalysisEdit() {
           <div>
             <Label className="text-sm font-semibold text-gray-900 mb-3 block">
               <strong>
-                Raciocínio Lógico e Resolução de Problemas Complexos:
+                Raciocínio Lógico e Resolu��ão de Problemas Complexos:
               </strong>{" "}
               Descreva como você abordaria a otimização de um processo de
               trabalho ineficiente que envolve múltiplas equipes e diferentes
@@ -546,7 +546,7 @@ export default function CandidateAnalysisEdit() {
               seu papel direto de liderança?
             </Label>
             <Textarea
-              placeholder="Descreva sua capacidade de mediação..."
+              placeholder="Descreva sua capacidade de media��ão..."
               value={formData.section3.conflictResolution || ""}
               onChange={(e) =>
                 updateSection3("conflictResolution", e.target.value)
@@ -770,9 +770,23 @@ export default function CandidateAnalysisEdit() {
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           ) : (
-            <Button type="submit" size="lg" className="flex items-center px-8">
-              <CheckCircle className="w-5 h-5 mr-2" />
-              Enviar Análise Completa
+            <Button
+              type="submit"
+              size="lg"
+              className="flex items-center px-8"
+              disabled={isProcessing}
+            >
+              {isProcessing ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Processando com IA...
+                </>
+              ) : (
+                <>
+                  <CheckCircle className="w-5 h-5 mr-2" />
+                  Enviar Análise Completa
+                </>
+              )}
             </Button>
           )}
         </div>
