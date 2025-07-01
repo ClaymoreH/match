@@ -240,22 +240,46 @@ export default function CandidateProfileEdit() {
                       <Input
                         id="fullName"
                         placeholder="Digite seu nome completo"
+                        value={personalData.fullName}
+                        onChange={(e) =>
+                          updatePersonalField("fullName", e.target.value)
+                        }
                       />
                     </div>
                     <div>
                       <Label htmlFor="birthDate">Data de Nascimento *</Label>
-                      <Input id="birthDate" type="date" />
+                      <Input
+                        id="birthDate"
+                        type="date"
+                        value={personalData.birthDate}
+                        onChange={(e) =>
+                          updatePersonalField("birthDate", e.target.value)
+                        }
+                      />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="cpf">CPF *</Label>
-                      <Input id="cpf" placeholder="000.000.000-00" />
+                      <Input
+                        id="cpf"
+                        placeholder="000.000.000-00"
+                        value={personalData.cpf}
+                        onChange={(e) =>
+                          updatePersonalField("cpf", formatCPF(e.target.value))
+                        }
+                        maxLength={14}
+                      />
                     </div>
                     <div>
                       <Label htmlFor="gender">Gênero</Label>
-                      <Select>
+                      <Select
+                        value={personalData.gender}
+                        onValueChange={(value) =>
+                          updatePersonalField("gender", value)
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione" />
                         </SelectTrigger>
@@ -278,11 +302,22 @@ export default function CandidateProfileEdit() {
                         id="email"
                         type="email"
                         placeholder="exemplo@email.com"
+                        value={personalData.email}
+                        onChange={(e) =>
+                          updatePersonalField("email", e.target.value)
+                        }
                       />
                     </div>
                     <div>
                       <Label htmlFor="phone">Telefone *</Label>
-                      <Input id="phone" placeholder="(XX) XXXXX-XXXX" />
+                      <Input
+                        id="phone"
+                        placeholder="(XX) XXXXX-XXXX"
+                        value={personalData.phone}
+                        onChange={(e) =>
+                          updatePersonalField("phone", e.target.value)
+                        }
+                      />
                     </div>
                   </div>
 
@@ -291,17 +326,33 @@ export default function CandidateProfileEdit() {
                     <Input
                       id="address"
                       placeholder="Rua, número, complemento"
+                      value={personalData.address}
+                      onChange={(e) =>
+                        updatePersonalField("address", e.target.value)
+                      }
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="city">Cidade</Label>
-                      <Input id="city" placeholder="Cidade" />
+                      <Input
+                        id="city"
+                        placeholder="Cidade"
+                        value={personalData.city}
+                        onChange={(e) =>
+                          updatePersonalField("city", e.target.value)
+                        }
+                      />
                     </div>
                     <div>
                       <Label htmlFor="state">Estado</Label>
-                      <Select>
+                      <Select
+                        value={personalData.state}
+                        onValueChange={(value) =>
+                          updatePersonalField("state", value)
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione" />
                         </SelectTrigger>
@@ -309,12 +360,25 @@ export default function CandidateProfileEdit() {
                           <SelectItem value="SP">São Paulo</SelectItem>
                           <SelectItem value="RJ">Rio de Janeiro</SelectItem>
                           <SelectItem value="MG">Minas Gerais</SelectItem>
+                          <SelectItem value="RS">Rio Grande do Sul</SelectItem>
+                          <SelectItem value="PR">Paraná</SelectItem>
+                          <SelectItem value="SC">Santa Catarina</SelectItem>
+                          <SelectItem value="BA">Bahia</SelectItem>
+                          <SelectItem value="GO">Goiás</SelectItem>
+                          <SelectItem value="ES">Espírito Santo</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div>
                       <Label htmlFor="cep">CEP</Label>
-                      <Input id="cep" placeholder="00000-000" />
+                      <Input
+                        id="cep"
+                        placeholder="00000-000"
+                        value={personalData.cep}
+                        onChange={(e) =>
+                          updatePersonalField("cep", e.target.value)
+                        }
+                      />
                     </div>
                   </div>
 
@@ -324,9 +388,14 @@ export default function CandidateProfileEdit() {
                       id="about"
                       rows={3}
                       placeholder="Fale um pouco sobre você..."
+                      value={personalData.about}
+                      onChange={(e) =>
+                        updatePersonalField("about", e.target.value)
+                      }
+                      maxLength={500}
                     />
                     <p className="text-sm text-gray-500 mt-1">
-                      Máximo 500 caracteres
+                      {personalData.about.length}/500 caracteres
                     </p>
                   </div>
                 </div>
