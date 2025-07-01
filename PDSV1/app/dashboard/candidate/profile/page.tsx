@@ -318,54 +318,52 @@ export default function CandidateProfile() {
                   </h3>
 
                   <div className="space-y-6">
-                    <div className="border-l-4 border-blue-500 pl-4">
-                      <h4 className="font-semibold text-blue-600">
-                        Desenvolvedora Full Stack Sênior
-                      </h4>
-                      <p className="font-medium">TechVision Solutions</p>
-                      <p className="text-sm text-gray-500 mb-2">
-                        2022 - Presente
+                    {candidateData.experiences.length > 0 ? (
+                      candidateData.experiences.map((experience, index) => (
+                        <div
+                          key={experience.id}
+                          className={`border-l-4 ${
+                            index === 0
+                              ? "border-blue-500"
+                              : index === 1
+                                ? "border-gray-400"
+                                : "border-gray-300"
+                          } pl-4`}
+                        >
+                          <h4
+                            className={`font-semibold ${
+                              index === 0
+                                ? "text-blue-600"
+                                : index === 1
+                                  ? "text-gray-600"
+                                  : "text-gray-500"
+                            }`}
+                          >
+                            {experience.title}
+                          </h4>
+                          <p className="font-medium">{experience.company}</p>
+                          <p className="text-sm text-gray-500 mb-2">
+                            {experience.startDate} -{" "}
+                            {experience.isCurrent
+                              ? "Presente"
+                              : experience.endDate}
+                          </p>
+                          {experience.description && (
+                            <div className="text-sm text-gray-600">
+                              {experience.description
+                                .split("\n")
+                                .map((line, i) => (
+                                  <p key={i}>• {line}</p>
+                                ))}
+                            </div>
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-500">
+                        Nenhuma experiência profissional adicionada ainda.
                       </p>
-                      <ul className="text-sm text-gray-600 space-y-1">
-                        <li>
-                          • Liderança técnica de equipe de 5 desenvolvedores
-                        </li>
-                        <li>
-                          • Arquitetura e implementação de sistemas escaláveis
-                        </li>
-                        <li>
-                          • Migração de aplicações legadas para microserviços
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div className="border-l-4 border-gray-400 pl-4">
-                      <h4 className="font-semibold text-gray-600">
-                        Desenvolvedora Front-end Pleno
-                      </h4>
-                      <p className="font-medium">Digital Innovation Ltda</p>
-                      <p className="text-sm text-gray-500 mb-2">2020 - 2022</p>
-                      <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Desenvolvimento de interfaces com React.js</li>
-                        <li>
-                          • Implementação de testes unitários e de integração
-                        </li>
-                        <li>• Otimização de performance de aplicações web</li>
-                      </ul>
-                    </div>
-
-                    <div className="border-l-4 border-gray-300 pl-4">
-                      <h4 className="font-semibold text-gray-500">
-                        Estagiária em Desenvolvimento
-                      </h4>
-                      <p className="font-medium">StartUp Tech</p>
-                      <p className="text-sm text-gray-500 mb-2">2019 - 2020</p>
-                      <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Desenvolvimento de features em Django</li>
-                        <li>• Manutenção de banco de dados PostgreSQL</li>
-                        <li>• Participação em sprints ágeis</li>
-                      </ul>
-                    </div>
+                    )}
                   </div>
                 </TabsContent>
 
