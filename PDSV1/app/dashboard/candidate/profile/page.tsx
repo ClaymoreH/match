@@ -373,48 +373,90 @@ export default function CandidateProfile() {
                     Análise Comportamental
                   </h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-semibold mb-3">Soft Skills</h4>
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span>Comunicação</span>
-                          <Badge>9/10</Badge>
+                  {candidateData.behavioralAnalysis ? (
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <h4 className="font-semibold mb-3">Perfil</h4>
+                          <div className="bg-gray-50 rounded-lg p-4">
+                            <p className="text-gray-600">
+                              Perfil em branco - será gerado pela IA
+                            </p>
+                          </div>
                         </div>
-                        <div className="flex justify-between items-center">
-                          <span>Trabalho em equipe</span>
-                          <Badge>8/10</Badge>
+
+                        <div>
+                          <h4 className="font-semibold mb-3">
+                            Resumo do Perfil
+                          </h4>
+                          <div className="bg-gray-50 rounded-lg p-4">
+                            <p className="text-gray-600">
+                              Resumo em branco - será gerado pela IA
+                            </p>
+                          </div>
                         </div>
-                        <div className="flex justify-between items-center">
-                          <span>Adaptabilidade</span>
-                          <Badge>9/10</Badge>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <h4 className="font-semibold mb-3">
+                            Distribuição de Traços
+                          </h4>
+                          <div className="h-48 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <p className="text-gray-500">
+                              Gráfico será gerado pela IA
+                            </p>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="font-semibold mb-3">
+                            Destaques Comportamentais
+                          </h4>
+                          <div className="space-y-2">
+                            <div className="bg-gray-50 rounded p-2">
+                              <p className="text-gray-600">
+                                Destaques serão gerados pela IA
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="font-semibold mb-3">
+                          Descrição do Perfil
+                        </h4>
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <p className="text-sm text-blue-800">
+                            Descrição detalhada será gerada pela IA baseada nas
+                            respostas da análise comportamental.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="font-semibold mb-3">
+                          Sugestões Baseadas
+                        </h4>
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                          <p className="text-sm text-green-800">
+                            Sugestões personalizadas serão geradas pela IA para
+                            desenvolvimento profissional.
+                          </p>
                         </div>
                       </div>
                     </div>
-
-                    <div>
-                      <h4 className="font-semibold mb-3">
-                        Destaques Comportamentais
-                      </h4>
-                      <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <p className="text-gray-500">
-                          Gráfico Radar - Chart.js
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold mb-3">Observações</h4>
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <p className="text-sm text-blue-800">
-                        Perfil analítico com forte tendência à estabilidade,
-                        demonstrando excelente capacidade de manter o foco em
-                        ambientes organizados. Habilidade de comunicação acima
-                        da média, com potencial para liderança situacional.
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-gray-500 mb-4">
+                        Análise comportamental não realizada ainda.
                       </p>
+                      <Link href="/dashboard/candidate/analysis/edit">
+                        <Button>Fazer Análise Comportamental</Button>
+                      </Link>
                     </div>
-                  </div>
+                  )}
                 </TabsContent>
               </Tabs>
             </CardContent>
