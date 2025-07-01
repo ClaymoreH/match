@@ -39,6 +39,8 @@ import {
   calculateProfileCompletion,
   formatCPF,
   validateCPF,
+  saveCandidateData,
+  deleteCandidateExperience,
   type CandidatePersonalData,
   type CandidateExperience,
   type CandidateEducation,
