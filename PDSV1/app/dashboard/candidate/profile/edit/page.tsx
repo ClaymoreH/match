@@ -546,27 +546,42 @@ export default function CandidateProfileEdit() {
                   <div className="space-y-4">
                     <div>
                       <Label>Adicionar Habilidades</Label>
-                      <Input placeholder="Digite uma habilidade e pressione Enter" />
+                      <div className="flex space-x-2">
+                        <Input
+                          placeholder="Digite uma habilidade"
+                          value={newSkill}
+                          onChange={(e) => setNewSkill(e.target.value)}
+                          onKeyPress={(e) =>
+                            e.key === "Enter" && handleAddSkill()
+                          }
+                        />
+                        <Button
+                          type="button"
+                          onClick={handleAddSkill}
+                          disabled={!newSkill.trim()}
+                        >
+                          <Plus className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-3">Suas Habilidades</h4>
                       <div className="flex flex-wrap gap-2">
-                        {[
-                          "JavaScript",
-                          "React",
-                          "HTML5",
-                          "CSS3",
-                          "Node.js",
-                          "Python",
-                        ].map((skill) => (
+                        {skills.technical.map((skill) => (
                           <Badge
                             key={skill}
                             variant="secondary"
                             className="flex items-center space-x-2"
                           >
                             <span>{skill}</span>
-                            <button className="text-red-500 hover:text-red-700">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleRemoveSkill(skill, "technical")
+                              }
+                              className="text-red-500 hover:text-red-700"
+                            >
                               <Trash2 size={12} />
                             </button>
                           </Badge>
