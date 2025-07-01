@@ -497,7 +497,7 @@ export default function CandidateProfileEdit() {
                     </button>
                   </div>
                   <p className="text-sm text-gray-600 mt-2">
-                    Formatos: JPG, PNG (M��x. 1MB)
+                    Formatos: JPG, PNG (Máx. 1MB)
                   </p>
                   <Button variant="link" className="text-red-600 text-sm">
                     Remover foto
@@ -870,9 +870,7 @@ export default function CandidateProfileEdit() {
             <TabsContent value="skills" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">
-                    Habilidades Técnicas
-                  </h3>
+                  <h3 className="text-lg font-semibold mb-4">Habilidades</h3>
                   <div className="space-y-4">
                     <div>
                       <Label>Adicionar Habilidades</Label>
