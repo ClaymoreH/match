@@ -298,6 +298,123 @@ export const addCandidateEducation = (
   return false;
 };
 
+export const updateCandidateEducation = (
+  cpf: string,
+  educationId: string,
+  education: Partial<CandidateEducation>,
+): boolean => {
+  const existingData = getCandidateData(cpf);
+
+  if (existingData) {
+    const updatedEducation = existingData.education.map((edu) =>
+      edu.id === educationId ? { ...edu, ...education } : edu,
+    );
+
+    return saveCandidateData({
+      ...existingData,
+      education: updatedEducation,
+    });
+  }
+  return false;
+};
+
+export const deleteCandidateEducation = (
+  cpf: string,
+  educationId: string,
+): boolean => {
+  const existingData = getCandidateData(cpf);
+
+  if (existingData) {
+    const filteredEducation = existingData.education.filter(
+      (edu) => edu.id !== educationId,
+    );
+
+    return saveCandidateData({
+      ...existingData,
+      education: filteredEducation,
+    });
+  }
+  return false;
+};
+
+export const addCandidateCourse = (
+  cpf: string,
+  course: Omit<CandidateCourse, "id">,
+): boolean => {
+  const existingData = getCandidateData(cpf);
+
+  if (existingData) {
+    const newCourse: CandidateCourse = {
+      ...course,
+      id: Date.now().toString(),
+    };
+
+    return saveCandidateData({
+      ...existingData,
+      courses: [...existingData.courses, newCourse],
+    });
+  }
+  return false;
+};
+
+export const deleteCandidateCourse = (
+  cpf: string,
+  courseId: string,
+): boolean => {
+  const existingData = getCandidateData(cpf);
+
+  if (existingData) {
+    const filteredCourses = existingData.courses.filter(
+      (course) => course.id !== courseId,
+    );
+
+    return saveCandidateData({
+      ...existingData,
+      courses: filteredCourses,
+    });
+  }
+  return false;
+};
+
+export const addCandidateLanguage = (
+  cpf: string,
+  language: Omit<CandidateLanguage, "id">,
+): boolean => {
+  const existingData = getCandidateData(cpf);
+
+  if (existingData) {
+    const newLanguage: CandidateLanguage = {
+      ...language,
+      id: Date.now().toString(),
+    };
+
+    return saveCandidateData({
+      ...existingData,
+      languages: [...existingData.languages, newLanguage],
+    });
+  }
+  return false;
+};
+
+export const deleteCandidateLanguage = (
+  cpf: string,
+  languageId: string,
+): boolean => {
+  const existingData = getCandidateData(cpf);
+
+  if (existingData) {
+    const filteredLanguages = existingData.languages.filter(
+      (lang) => lang.id !== languageId,
+    );
+
+    return saveCandidateData({
+      ...existingData,
+      languages: filteredLanguages,
+    });
+  }
+  return false;
+};
+
 export const updateCandidateSkills = (
   cpf: string,
   skills: CandidateSkills,
