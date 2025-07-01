@@ -27,6 +27,24 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  getCandidateData,
+  updateCandidatePersonalData,
+  addCandidateExperience,
+  addCandidateEducation,
+  updateCandidateSkills,
+  updateCandidateDocuments,
+  getCurrentUserCPF,
+  setCurrentUserCPF,
+  calculateProfileCompletion,
+  formatCPF,
+  validateCPF,
+  type CandidatePersonalData,
+  type CandidateExperience,
+  type CandidateEducation,
+  type CandidateSkills,
+  type CandidateDocuments,
+} from "@/lib/storage";
 
 export default function CandidateProfileEdit() {
   const [currentTab, setCurrentTab] = useState("info");
