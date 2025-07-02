@@ -28,6 +28,25 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    // Check if test users exist, if not create them automatically
+    ensureTestUsersExist();
+  }, []);
+
+  const ensureTestUsersExist = () => {
+    try {
+      const candidateExists = getUserByEmail("candidato@teste.com");
+      const companyExists = getUserByEmail("empresa@teste.com");
+
+      if (!candidateExists || !companyExists) {
+        createTestUsers();
+      }
+    } catch (error) {
+      console.log("Creating test users for first time...");
+      createTestUsers();
+    }
+  };
+
   const createTestUsers = () => {
     // Clear existing data
     clearAllStorage();
