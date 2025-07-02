@@ -370,180 +370,163 @@ export default function CandidateProfile() {
                 {/* Behavior Tab */}
                 <TabsContent value="behavior" className="space-y-6">
                   <h3 className="text-lg font-semibold">
-                    Análise Comportamental
+                    Resumo Comportamental
                   </h3>
 
-                  {candidateData.behavioralAnalysis ? (
+                  {candidateData.behavioralAnalysis?.aiInsights ? (
                     <div className="space-y-6">
-                      {candidateData.behavioralAnalysis.aiInsights ? (
-                        <>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                              <h4 className="font-semibold mb-3">
-                                Perfil Comportamental
-                              </h4>
-                              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <p className="text-sm text-blue-800 leading-relaxed">
-                                  {
-                                    candidateData.behavioralAnalysis.aiInsights
-                                      .profile
-                                  }
-                                </p>
-                              </div>
-                            </div>
-
-                            <div>
-                              <h4 className="font-semibold mb-3">
-                                Resumo do Perfil
-                              </h4>
-                              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                                <p className="text-sm text-green-800 font-medium">
-                                  {
-                                    candidateData.behavioralAnalysis.aiInsights
-                                      .profileSummary
-                                  }
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                              <h4 className="font-semibold mb-3">
-                                Distribuição de Traços (Big Five)
-                              </h4>
-                              <div className="space-y-3">
-                                {Object.entries(
-                                  candidateData.behavioralAnalysis.aiInsights
-                                    .bigFiveDistribution,
-                                ).map(([trait, value]) => (
-                                  <div key={trait}>
-                                    <div className="flex justify-between mb-1">
-                                      <span className="text-sm capitalize">
-                                        {trait === "openness"
-                                          ? "Abertura"
-                                          : trait === "conscientiousness"
-                                            ? "Conscienciosidade"
-                                            : trait === "extraversion"
-                                              ? "Extroversão"
-                                              : trait === "agreeableness"
-                                                ? "Amabilidade"
-                                                : "Neuroticismo"}
-                                      </span>
-                                      <span className="text-sm">{value}%</span>
-                                    </div>
-                                    <Progress value={value} className="h-2" />
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-
-                            <div>
-                              <h4 className="font-semibold mb-3">
-                                Destaques Comportamentais
-                              </h4>
-                              <div className="space-y-3">
-                                {Object.entries(
-                                  candidateData.behavioralAnalysis.aiInsights
-                                    .behavioralHighlights,
-                                ).map(([key, value]) => (
-                                  <div
-                                    key={key}
-                                    className="bg-gray-50 rounded p-3"
-                                  >
-                                    <p className="text-sm">
-                                      <span className="font-medium capitalize">
-                                        {key === "problemSolving"
-                                          ? "Resolução de Problemas"
-                                          : key === "communication"
-                                            ? "Comunicação"
-                                            : key === "decision"
-                                              ? "Tomada de Decisão"
-                                              : key === "leadership"
-                                                ? "Liderança"
-                                                : "Adaptabilidade"}
-                                        :
-                                      </span>{" "}
-                                      {value}
-                                    </p>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div>
-                              <h4 className="font-semibold mb-3">
-                                Posições Recomendadas
-                              </h4>
-                              <div className="space-y-2">
-                                {candidateData.behavioralAnalysis.aiInsights.suggestions.recommendedPositions.map(
-                                  (position, index) => (
-                                    <Badge
-                                      key={index}
-                                      variant="secondary"
-                                      className="block text-center py-2"
-                                    >
-                                      {position}
-                                    </Badge>
-                                  ),
-                                )}
-                              </div>
-                            </div>
-
-                            <div>
-                              <h4 className="font-semibold mb-3">
-                                Dicas para se Destacar
-                              </h4>
-                              <div className="space-y-2">
-                                {candidateData.behavioralAnalysis.aiInsights.suggestions.standoutTips.map(
-                                  (tip, index) => (
-                                    <div
-                                      key={index}
-                                      className="bg-yellow-50 border border-yellow-200 rounded p-2"
-                                    >
-                                      <p className="text-xs text-yellow-800">
-                                        • {tip}
-                                      </p>
-                                    </div>
-                                  ),
-                                )}
-                              </div>
-                            </div>
-
-                            <div>
-                              <h4 className="font-semibold mb-3">
-                                Áreas de Desenvolvimento
-                              </h4>
-                              <div className="space-y-2">
-                                {candidateData.behavioralAnalysis.aiInsights.suggestions.developmentAreas.map(
-                                  (area, index) => (
-                                    <div
-                                      key={index}
-                                      className="bg-orange-50 border border-orange-200 rounded p-2"
-                                    >
-                                      <p className="text-xs text-orange-800">
-                                        • {area}
-                                      </p>
-                                    </div>
-                                  ),
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-center py-8">
-                          <p className="text-gray-500 mb-4">
-                            Análise completada, mas insights ainda não foram
-                            gerados.
+                      {/* Profile Summary */}
+                      <div>
+                        <h4 className="font-semibold mb-3">Resumo do Perfil</h4>
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <p className="text-sm text-blue-800 font-medium leading-relaxed">
+                            {
+                              candidateData.behavioralAnalysis.aiInsights
+                                .profileSummary
+                            }
                           </p>
-                          <Button variant="outline">
-                            Gerar Insights com IA
-                          </Button>
                         </div>
-                      )}
+                      </div>
+
+                      {/* Big Five Radar Chart */}
+                      <div>
+                        <h4 className="font-semibold mb-3">
+                          Distribuição de Traços (Big Five)
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {/* Radar Chart Placeholder */}
+                          <div className="bg-gray-50 rounded-lg p-6 flex items-center justify-center">
+                            <div className="text-center">
+                              <div className="w-48 h-48 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mb-4">
+                                <div className="text-gray-600">
+                                  <svg
+                                    className="w-32 h-32"
+                                    viewBox="0 0 200 200"
+                                  >
+                                    {/* Pentagon for radar chart */}
+                                    <polygon
+                                      points="100,20 180,60 160,140 40,140 20,60"
+                                      fill="none"
+                                      stroke="#e5e7eb"
+                                      strokeWidth="2"
+                                    />
+                                    <polygon
+                                      points="100,40 160,70 150,120 50,120 40,70"
+                                      fill="none"
+                                      stroke="#e5e7eb"
+                                      strokeWidth="1"
+                                    />
+                                    <polygon
+                                      points="100,60 140,80 130,100 70,100 60,80"
+                                      fill="none"
+                                      stroke="#e5e7eb"
+                                      strokeWidth="1"
+                                    />
+
+                                    {/* Data points based on Big Five */}
+                                    <polygon
+                                      points={`100,${20 + (100 - candidateData.behavioralAnalysis.aiInsights.bigFiveDistribution.openness) * 0.8} ${20 + candidateData.behavioralAnalysis.aiInsights.bigFiveDistribution.conscientiousness * 0.6 + 60},${60 + (100 - candidateData.behavioralAnalysis.aiInsights.bigFiveDistribution.conscientiousness) * 0.4} ${160 - candidateData.behavioralAnalysis.aiInsights.bigFiveDistribution.extraversion * 0.2},${140 - (100 - candidateData.behavioralAnalysis.aiInsights.bigFiveDistribution.extraversion) * 0.4} ${40 + candidateData.behavioralAnalysis.aiInsights.bigFiveDistribution.agreeableness * 0.2},${140 - (100 - candidateData.behavioralAnalysis.aiInsights.bigFiveDistribution.agreeableness) * 0.4} ${20 + candidateData.behavioralAnalysis.aiInsights.bigFiveDistribution.neuroticism * 0.4},${60 + (100 - candidateData.behavioralAnalysis.aiInsights.bigFiveDistribution.neuroticism) * 0.2}`}
+                                      fill="rgba(59, 130, 246, 0.3)"
+                                      stroke="#3b82f6"
+                                      strokeWidth="2"
+                                    />
+
+                                    {/* Labels */}
+                                    <text
+                                      x="100"
+                                      y="15"
+                                      textAnchor="middle"
+                                      className="text-xs font-medium"
+                                    >
+                                      Abertura
+                                    </text>
+                                    <text
+                                      x="185"
+                                      y="65"
+                                      textAnchor="start"
+                                      className="text-xs font-medium"
+                                    >
+                                      Conscienc.
+                                    </text>
+                                    <text
+                                      x="165"
+                                      y="155"
+                                      textAnchor="middle"
+                                      className="text-xs font-medium"
+                                    >
+                                      Extroversão
+                                    </text>
+                                    <text
+                                      x="35"
+                                      y="155"
+                                      textAnchor="middle"
+                                      className="text-xs font-medium"
+                                    >
+                                      Amabilidade
+                                    </text>
+                                    <text
+                                      x="15"
+                                      y="65"
+                                      textAnchor="end"
+                                      className="text-xs font-medium"
+                                    >
+                                      Neuroticism.
+                                    </text>
+                                  </svg>
+                                </div>
+                              </div>
+                              <p className="text-xs text-gray-500">
+                                Gráfico Radar - Big Five
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Values List */}
+                          <div className="space-y-3">
+                            {Object.entries(
+                              candidateData.behavioralAnalysis.aiInsights
+                                .bigFiveDistribution,
+                            ).map(([trait, value]) => (
+                              <div key={trait}>
+                                <div className="flex justify-between mb-1">
+                                  <span className="text-sm font-medium">
+                                    {trait === "openness"
+                                      ? "Abertura"
+                                      : trait === "conscientiousness"
+                                        ? "Conscienciosidade"
+                                        : trait === "extraversion"
+                                          ? "Extroversão"
+                                          : trait === "agreeableness"
+                                            ? "Amabilidade"
+                                            : "Neuroticismo"}
+                                  </span>
+                                  <span className="text-sm font-semibold text-blue-600">
+                                    {value}%
+                                  </span>
+                                </div>
+                                <Progress value={value} className="h-3" />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Link to full analysis */}
+                      <div className="text-center">
+                        <Link href="/dashboard/candidate/analysis">
+                          <Button variant="outline">
+                            Ver Análise Completa
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  ) : candidateData.behavioralAnalysis ? (
+                    <div className="text-center py-8">
+                      <p className="text-gray-500 mb-4">
+                        Análise completada, mas insights ainda não foram
+                        gerados.
+                      </p>
+                      <Button variant="outline">Gerar Insights com IA</Button>
                     </div>
                   ) : (
                     <div className="text-center py-8">
