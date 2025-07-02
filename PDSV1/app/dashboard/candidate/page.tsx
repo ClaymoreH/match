@@ -135,7 +135,9 @@ export default function CandidateDashboard() {
                 <p className="text-sm font-medium text-gray-600">
                   Perfil Visto
                 </p>
-                <p className="text-2xl font-bold text-gray-900">45</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {statistics.profileViews}
+                </p>
               </div>
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
                 <Eye className="w-6 h-6 text-purple-600" />
