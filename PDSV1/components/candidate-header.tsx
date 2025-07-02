@@ -17,9 +17,72 @@ import {
 } from "@/lib/storage";
 
 export default function CandidateHeader() {
+  const router = useRouter();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+
+  const [user, setUser] = useState<any>(null);
+  const [candidate, setCandidate] = useState<any>(null);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    loadUserData();
+  }, []);
+
+  const loadUserData = () => {
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      router.push("/auth/login");
+      return;
+    }
+
+    setUser(currentUser);
+
+    if (currentUser.userType === "candidate") {
+      const candidateData = getCandidateData(currentUser.cpfOrCnpj);
+      setCandidate(candidateData);
+    }
+
+    // Load notifications
+    const userNotifications = getNotificationsByUserId(currentUser.id);
+    setNotifications(userNotifications);
+    setUnreadCount(getUnreadNotificationsCount(currentUser.id));
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
+  const handleMarkAllAsRead = () => {
+    if (user) {
+      markAllNotificationsAsRead(user.id);
+      setUnreadCount(0);
+      setNotifications((prev) =>
+        prev.map((notif) => ({ ...notif, isRead: true })),
+      );
+    }
+  };
+
+  const handleNotificationClick = (notification: Notification) => {
+    if (!notification.isRead) {
+      markNotificationAsRead(notification.id);
+      setUnreadCount((prev) => Math.max(0, prev - 1));
+      setNotifications((prev) =>
+        prev.map((notif) =>
+          notif.id === notification.id ? { ...notif, isRead: true } : notif,
+        ),
+      );
+    }
+  };
+
+  if (!user) return null;
+
+  const displayName =
+    candidate?.personal?.fullName || user.fullName || "Usuário";
+  const displayEmail = candidate?.personal?.email || user.email;
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
