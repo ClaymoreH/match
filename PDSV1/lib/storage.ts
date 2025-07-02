@@ -99,6 +99,11 @@ export interface BehavioralAnalysis {
   aiInsights?: {
     profile: string;
     profileSummary: string;
+    enneagramType: {
+      type: number;
+      name: string;
+      description: string;
+    };
     bigFiveDistribution: {
       openness: number;
       conscientiousness: number;
