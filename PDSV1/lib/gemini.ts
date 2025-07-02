@@ -5,8 +5,13 @@ import type { BehavioralAnalysis } from "./storage";
 const genAI = new GoogleGenerativeAI("AIzaSyDG0ZlgDkJDWg5VKqM8KIKr1PlGIZLKs44");
 
 export interface BehavioralInsights {
-  profile: string;
+  profile: string; // Perfil baseado no Eneagrama
   profileSummary: string;
+  enneagramType: {
+    type: number;
+    name: string;
+    description: string;
+  };
   bigFiveDistribution: {
     openness: number;
     conscientiousness: number;
