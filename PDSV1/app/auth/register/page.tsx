@@ -79,7 +79,7 @@ export default function RegisterPage() {
 
       if (!userId) {
         throw new Error(
-          "Erro ao criar usuário. Verifique se o email ou CPF/CNPJ já não estão cadastrados.",
+          "Erro ao criar usuário. Verifique se o email ou CPF/CNPJ já não estão cadastrados. Você pode tentar fazer login se já tem uma conta.",
         );
       }
 
