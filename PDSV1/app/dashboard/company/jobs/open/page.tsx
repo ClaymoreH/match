@@ -114,16 +114,6 @@ export default function OpenJobsPage() {
                   <SelectItem value="PMO">PMO</SelectItem>
                 </SelectContent>
               </Select>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full sm:w-32">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos</SelectItem>
-                  <SelectItem value="Ativa">Ativa</SelectItem>
-                  <SelectItem value="Pausada">Pausada</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
         </CardContent>
