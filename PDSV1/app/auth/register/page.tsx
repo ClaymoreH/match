@@ -20,6 +20,7 @@ import {
   formatCNPJ,
   validateCPF,
   validateCNPJ,
+  clearAllStorage,
   type User as UserType,
 } from "@/lib/storage";
 
