@@ -153,7 +153,9 @@ export default function CandidateDashboard() {
                 <p className="text-sm font-medium text-gray-600">
                   Taxa de Match
                 </p>
-                <p className="text-2xl font-bold text-gray-900">78%</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {statistics.matchRate}%
+                </p>
               </div>
               <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
                 <TrendingUp className="w-6 h-6 text-orange-600" />
