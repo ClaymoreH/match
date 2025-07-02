@@ -579,3 +579,184 @@ export const calculateProfileCompletion = (data: CandidateData): number => {
 
   return Math.round((completed / total) * 100);
 };
+
+// ========== COMPANY STORAGE FUNCTIONS ==========
+
+// Get all companies
+export const getAllCompanies = (): Record<string, CompanyData> => {
+  if (typeof window === "undefined") return {};
+
+  try {
+    const data = localStorage.getItem(COMPANIES_STORAGE_KEY);
+    return data ? JSON.parse(data) : {};
+  } catch (error) {
+    console.error("Error reading companies data:", error);
+    return {};
+  }
+};
+
+// Get company data by CNPJ
+export const getCompanyData = (cnpj: string): CompanyData | null => {
+  const companies = getAllCompanies();
+  const cleanCNPJ = cnpj.replace(/\D/g, "");
+  return companies[cleanCNPJ] || null;
+};
+
+// Save company data
+export const saveCompanyData = (data: CompanyData): boolean => {
+  if (typeof window === "undefined") return false;
+
+  try {
+    const companies = getAllCompanies();
+    const cleanCNPJ = data.cnpj.replace(/\D/g, "");
+
+    if (!validateCNPJ(cleanCNPJ)) {
+      throw new Error("CNPJ inválido");
+    }
+
+    const now = new Date().toISOString();
+    companies[cleanCNPJ] = {
+      ...data,
+      updatedAt: now,
+      createdAt: data.createdAt || now,
+    };
+
+    localStorage.setItem(COMPANIES_STORAGE_KEY, JSON.stringify(companies));
+    return true;
+  } catch (error) {
+    console.error("Error saving company data:", error);
+    return false;
+  }
+};
+
+// Current company management
+export const setCurrentCompanyCNPJ = (cnpj: string): void => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(CURRENT_COMPANY_CNPJ_KEY, cnpj.replace(/\D/g, ""));
+  }
+};
+
+export const getCurrentCompanyCNPJ = (): string | null => {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(CURRENT_COMPANY_CNPJ_KEY);
+};
+
+export const getCurrentCompanyData = (): CompanyData | null => {
+  const cnpj = getCurrentCompanyCNPJ();
+  return cnpj ? getCompanyData(cnpj) : null;
+};
+
+// ========== JOB STORAGE FUNCTIONS ==========
+
+// Get all jobs
+export const getAllJobs = (): Record<string, Job> => {
+  if (typeof window === "undefined") return {};
+
+  try {
+    const data = localStorage.getItem(JOBS_STORAGE_KEY);
+    return data ? JSON.parse(data) : {};
+  } catch (error) {
+    console.error("Error reading jobs data:", error);
+    return {};
+  }
+};
+
+// Get job by ID
+export const getJobById = (jobId: string): Job | null => {
+  const jobs = getAllJobs();
+  return jobs[jobId] || null;
+};
+
+// Get jobs by company CNPJ
+export const getJobsByCompany = (cnpj: string): Job[] => {
+  const jobs = getAllJobs();
+  const cleanCNPJ = cnpj.replace(/\D/g, "");
+  return Object.values(jobs).filter((job) => job.companyCnpj === cleanCNPJ);
+};
+
+// Get active jobs by company
+export const getActiveJobsByCompany = (cnpj: string): Job[] => {
+  return getJobsByCompany(cnpj).filter((job) => job.status === "active");
+};
+
+// Get closed jobs by company
+export const getClosedJobsByCompany = (cnpj: string): Job[] => {
+  return getJobsByCompany(cnpj).filter((job) => job.status === "closed");
+};
+
+// Save job
+export const saveJob = (job: Job): boolean => {
+  if (typeof window === "undefined") return false;
+
+  try {
+    const jobs = getAllJobs();
+    const now = new Date().toISOString();
+
+    jobs[job.id] = {
+      ...job,
+      updatedAt: now,
+      createdAt: job.createdAt || now,
+    };
+
+    localStorage.setItem(JOBS_STORAGE_KEY, JSON.stringify(jobs));
+    return true;
+  } catch (error) {
+    console.error("Error saving job:", error);
+    return false;
+  }
+};
+
+// Create new job
+export const createJob = (
+  jobData: Omit<Job, "id" | "createdAt" | "updatedAt">,
+): string | null => {
+  try {
+    const jobId = Date.now().toString();
+    const now = new Date().toISOString();
+
+    const job: Job = {
+      ...jobData,
+      id: jobId,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    const success = saveJob(job);
+    return success ? jobId : null;
+  } catch (error) {
+    console.error("Error creating job:", error);
+    return null;
+  }
+};
+
+// Update job status
+export const updateJobStatus = (
+  jobId: string,
+  status: Job["status"],
+): boolean => {
+  const job = getJobById(jobId);
+  if (!job) return false;
+
+  const updatedJob = {
+    ...job,
+    status,
+    closedAt: status === "closed" ? new Date().toISOString() : job.closedAt,
+  };
+
+  return saveJob(updatedJob);
+};
+
+// Delete job
+export const deleteJob = (jobId: string): boolean => {
+  if (typeof window === "undefined") return false;
+
+  try {
+    const jobs = getAllJobs();
+    delete jobs[jobId];
+    localStorage.setItem(JOBS_STORAGE_KEY, JSON.stringify(jobs));
+    return true;
+  } catch (error) {
+    console.error("Error deleting job:", error);
+    return false;
+  }
+};
