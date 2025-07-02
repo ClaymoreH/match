@@ -127,6 +127,48 @@ export interface BehavioralAnalysis {
   completedAt?: string;
 }
 
+// Company Interfaces
+export interface CompanyData {
+  cnpj: string;
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  cep: string;
+  foundedYear: string;
+  employeeCount: string;
+  about: string;
+  email: string;
+  phone: string;
+  website?: string;
+  industry: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Job Interfaces
+export interface Job {
+  id: string;
+  companyCnpj: string;
+  title: string;
+  area: string;
+  contractType: string; // CLT, PJ, Freelancer, Estágio
+  workModel: string; // Presencial, Remoto, Híbrido
+  city: string;
+  salary: string;
+  vacancies: number;
+  description: string;
+  requirements: string;
+  benefits?: string;
+  status: "active" | "closed" | "paused";
+  stages: string[]; // Etapas do processo seletivo
+  questions: string[]; // Perguntas da triagem
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+  closedAt?: string;
+}
+
 export interface CandidateData {
   personal: CandidatePersonalData;
   experiences: CandidateExperience[];
