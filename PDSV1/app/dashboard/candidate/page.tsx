@@ -37,6 +37,15 @@ export default function CandidateDashboard() {
   const [candidateData, setCandidateData] = useState<CandidateData | null>(
     null,
   );
+  const [statistics, setStatistics] = useState({
+    applications: 0,
+    interviews: 0,
+    profileViews: 0,
+    matchRate: 0,
+  });
+  const [recentApplications, setRecentApplications] = useState<
+    JobApplication[]
+  >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
