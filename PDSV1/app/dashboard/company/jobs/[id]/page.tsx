@@ -293,7 +293,7 @@ export default function JobVisualizerPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {currentCandidates.length === 0 ? (
+          {applications.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <p>Nenhum candidato nesta etapa.</p>
             </div>
@@ -306,10 +306,13 @@ export default function JobVisualizerPage() {
                       Nome
                     </th>
                     <th className="text-left py-3 px-4 font-medium text-gray-600">
-                      Currículo
+                      Email
                     </th>
                     <th className="text-left py-3 px-4 font-medium text-gray-600">
-                      Avaliação
+                      Status
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">
+                      Data da Aplicação
                     </th>
                     <th className="text-center py-3 px-4 font-medium text-gray-600">
                       Ações
@@ -317,52 +320,82 @@ export default function JobVisualizerPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentCandidates.map((candidate) => (
-                    <tr
-                      key={candidate.id}
-                      className="border-b hover:bg-gray-50"
-                    >
-                      <td className="py-3 px-4">{candidate.name}</td>
-                      <td className="py-3 px-4">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex items-center space-x-1 bg-transparent"
-                        >
-                          <FileText className="w-3 h-3" />
-                          <span>Ver</span>
-                        </Button>
-                      </td>
-                      <td className="py-3 px-4">
-                        <Badge
-                          className={getEvaluationColor(candidate.evaluation)}
-                        >
-                          {candidate.evaluation}
-                        </Badge>
-                      </td>
-                      <td className="py-3 px-4">
-                        <div className="flex items-center justify-center space-x-2">
-                          {nextStage && (
-                            <Button
-                              size="sm"
-                              className="flex items-center space-x-1"
-                            >
-                              <UserCheck className="w-3 h-3" />
-                              <span>Mover para {nextStage}</span>
-                            </Button>
+                  {applications.map((application) => {
+                    const candidate = candidates[application.candidateCpf];
+                    const applicationStatus = getApplicationStatus(application);
+
+                    return (
+                      <tr
+                        key={application.id}
+                        className="border-b hover:bg-gray-50"
+                      >
+                        <td className="py-3 px-4 font-medium">
+                          {candidate?.personal?.fullName ||
+                            "Nome não disponível"}
+                        </td>
+                        <td className="py-3 px-4">
+                          {candidate?.personal?.email || "Email não disponível"}
+                        </td>
+                        <td className="py-3 px-4">
+                          <Badge className={getStatusColor(applicationStatus)}>
+                            {applicationStatus === "pending"
+                              ? "Pendente"
+                              : applicationStatus === "approved"
+                                ? "Aprovado"
+                                : "Rejeitado"}
+                          </Badge>
+                        </td>
+                        <td className="py-3 px-4">
+                          {new Date(application.appliedAt).toLocaleDateString(
+                            "pt-BR",
                           )}
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            className="flex items-center space-x-1"
-                          >
-                            <UserX className="w-3 h-3" />
-                            <span>Desclassificar</span>
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="py-3 px-4">
+                          <div className="flex items-center justify-center space-x-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex items-center space-x-1 bg-transparent"
+                              asChild
+                            >
+                              <a
+                                href={`/dashboard/candidate/profile?cpf=${application.candidateCpf}`}
+                                target="_blank"
+                              >
+                                <FileText className="w-3 h-3" />
+                                <span>Ver Perfil</span>
+                              </a>
+                            </Button>
+                            {nextStage && applicationStatus === "pending" && (
+                              <Button
+                                size="sm"
+                                className="flex items-center space-x-1"
+                                onClick={() =>
+                                  handleMoveToNextStage(application.id)
+                                }
+                              >
+                                <UserCheck className="w-3 h-3" />
+                                <span>Mover para {nextStage}</span>
+                              </Button>
+                            )}
+                            {applicationStatus === "pending" && (
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                className="flex items-center space-x-1"
+                                onClick={() =>
+                                  handleRejectCandidate(application.id)
+                                }
+                              >
+                                <UserX className="w-3 h-3" />
+                                <span>Desclassificar</span>
+                              </Button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
