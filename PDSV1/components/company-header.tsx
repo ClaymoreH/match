@@ -182,7 +182,7 @@ export default function CompanyHeader() {
               </div>
               <div className="text-left">
                 <p className="text-sm text-gray-600">Olá,</p>
-                <p className="text-sm font-semibold">Acme RH</p>
+                <p className="text-sm font-semibold">{displayName}</p>
               </div>
             </Button>
           </DropdownMenuTrigger>
