@@ -71,12 +71,11 @@ export default function LoginPage() {
     );
 
     if (candidateId && companyId) {
-      alert(
-        "Usuários de teste criados!\n\nCandidato:\nEmail: candidato@teste.com\nSenha: 12345678\n\nEmpresa:\nEmail: empresa@teste.com\nSenha: 12345678",
-      );
-      setError("");
+      console.log("Test users created successfully");
+      return true;
     } else {
-      alert("Erro ao criar usuários de teste");
+      console.error("Failed to create test users");
+      return false;
     }
   };
 
