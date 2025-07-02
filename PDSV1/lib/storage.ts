@@ -795,3 +795,331 @@ export const deleteJob = (jobId: string): boolean => {
     return false;
   }
 };
+
+// Application Management Functions
+
+// Get all applications
+export const getAllApplications = (): Record<string, JobApplication> => {
+  if (typeof window === "undefined") return {};
+
+  try {
+    const data = localStorage.getItem(APPLICATIONS_STORAGE_KEY);
+    return data ? JSON.parse(data) : {};
+  } catch (error) {
+    console.error("Error reading applications data:", error);
+    return {};
+  }
+};
+
+// Get application by ID
+export const getApplicationById = (
+  applicationId: string,
+): JobApplication | null => {
+  const applications = getAllApplications();
+  return applications[applicationId] || null;
+};
+
+// Get applications by candidate CPF
+export const getApplicationsByCandidateCpf = (
+  cpf: string,
+): JobApplication[] => {
+  const applications = getAllApplications();
+  const cleanCPF = cpf.replace(/\D/g, "");
+  return Object.values(applications).filter(
+    (app) => app.candidateCpf === cleanCPF,
+  );
+};
+
+// Get applications by company CNPJ
+export const getApplicationsByCompanyCnpj = (
+  cnpj: string,
+): JobApplication[] => {
+  const applications = getAllApplications();
+  const cleanCNPJ = cnpj.replace(/\D/g, "");
+  return Object.values(applications).filter(
+    (app) => app.companyCnpj === cleanCNPJ,
+  );
+};
+
+// Get applications by job ID
+export const getApplicationsByJobId = (jobId: string): JobApplication[] => {
+  const applications = getAllApplications();
+  return Object.values(applications).filter((app) => app.jobId === jobId);
+};
+
+// Get applications by stage for a job
+export const getApplicationsByJobStage = (
+  jobId: string,
+  stage: string,
+): JobApplication[] => {
+  const applications = getApplicationsByJobId(jobId);
+  return applications.filter((app) => app.currentStage === stage);
+};
+
+// Create new job application
+export const createJobApplication = (
+  jobId: string,
+  candidateCpf: string,
+  answers: Record<string, string> = {},
+): string | null => {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const job = getJobById(jobId);
+    if (!job || job.status !== "active") {
+      throw new Error("Job not found or not active");
+    }
+
+    const cleanCPF = candidateCpf.replace(/\D/g, "");
+    const candidate = getCandidateData(cleanCPF);
+    if (!candidate) {
+      throw new Error("Candidate not found");
+    }
+
+    // Check if already applied
+    const existingApplications = getApplicationsByJobId(jobId);
+    const alreadyApplied = existingApplications.some(
+      (app) => app.candidateCpf === cleanCPF,
+    );
+    if (alreadyApplied) {
+      throw new Error("Already applied for this job");
+    }
+
+    const applications = getAllApplications();
+    const applicationId = `app_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const now = new Date().toISOString();
+
+    const newApplication: JobApplication = {
+      id: applicationId,
+      jobId,
+      candidateCpf: cleanCPF,
+      companyCnpj: job.companyCnpj,
+      status: "applied",
+      currentStage: job.stages[0] || "Triagem",
+      stageHistory: [
+        {
+          stage: job.stages[0] || "Triagem",
+          status: "pending",
+          date: now,
+        },
+      ],
+      answers,
+      appliedAt: now,
+      updatedAt: now,
+    };
+
+    applications[applicationId] = newApplication;
+    localStorage.setItem(
+      APPLICATIONS_STORAGE_KEY,
+      JSON.stringify(applications),
+    );
+    return applicationId;
+  } catch (error) {
+    console.error("Error creating application:", error);
+    return null;
+  }
+};
+
+// Update application stage
+export const updateApplicationStage = (
+  applicationId: string,
+  newStage: string,
+  status: "approved" | "rejected" = "approved",
+  notes?: string,
+): boolean => {
+  if (typeof window === "undefined") return false;
+
+  try {
+    const applications = getAllApplications();
+    const application = applications[applicationId];
+    if (!application) {
+      throw new Error("Application not found");
+    }
+
+    const now = new Date().toISOString();
+
+    // Update stage history
+    application.stageHistory.push({
+      stage: newStage,
+      status: "pending",
+      date: now,
+      notes,
+    });
+
+    // Update current stage and status
+    application.currentStage = newStage;
+    application.status = status === "approved" ? "reviewing" : "rejected";
+    application.updatedAt = now;
+
+    applications[applicationId] = application;
+    localStorage.setItem(
+      APPLICATIONS_STORAGE_KEY,
+      JSON.stringify(applications),
+    );
+    return true;
+  } catch (error) {
+    console.error("Error updating application stage:", error);
+    return false;
+  }
+};
+
+// User Management Functions
+
+// Get all users
+export const getAllUsers = (): Record<string, User> => {
+  if (typeof window === "undefined") return {};
+
+  try {
+    const data = localStorage.getItem(USERS_STORAGE_KEY);
+    return data ? JSON.parse(data) : {};
+  } catch (error) {
+    console.error("Error reading users data:", error);
+    return {};
+  }
+};
+
+// Get user by email
+export const getUserByEmail = (email: string): User | null => {
+  const users = getAllUsers();
+  return (
+    Object.values(users).find(
+      (user) => user.email.toLowerCase() === email.toLowerCase(),
+    ) || null
+  );
+};
+
+// Get user by CPF or CNPJ
+export const getUserByCpfOrCnpj = (cpfOrCnpj: string): User | null => {
+  const users = getAllUsers();
+  const cleanDoc = cpfOrCnpj.replace(/\D/g, "");
+  return (
+    Object.values(users).find((user) => user.cpfOrCnpj === cleanDoc) || null
+  );
+};
+
+// Create new user
+export const createUser = (
+  email: string,
+  password: string,
+  userType: "candidate" | "company",
+  cpfOrCnpj: string,
+  fullName: string,
+): string | null => {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const cleanDoc = cpfOrCnpj.replace(/\D/g, "");
+
+    // Validate document
+    if (userType === "candidate" && !validateCPF(cleanDoc)) {
+      throw new Error("CPF inválido");
+    }
+    if (userType === "company" && !validateCNPJ(cleanDoc)) {
+      throw new Error("CNPJ inválido");
+    }
+
+    // Check if email already exists
+    if (getUserByEmail(email)) {
+      throw new Error("Email já cadastrado");
+    }
+
+    // Check if CPF/CNPJ already exists
+    if (getUserByCpfOrCnpj(cleanDoc)) {
+      throw new Error("CPF/CNPJ já cadastrado");
+    }
+
+    const users = getAllUsers();
+    const userId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const now = new Date().toISOString();
+
+    const newUser: User = {
+      id: userId,
+      email: email.toLowerCase(),
+      password, // In production, this should be hashed
+      userType,
+      cpfOrCnpj: cleanDoc,
+      fullName,
+      isVerified: false,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    users[userId] = newUser;
+    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+    return userId;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return null;
+  }
+};
+
+// Authenticate user (login)
+export const authenticateUser = (
+  email: string,
+  password: string,
+): User | null => {
+  try {
+    const user = getUserByEmail(email);
+    if (!user) {
+      throw new Error("Usuário não encontrado");
+    }
+
+    // In production, compare hashed passwords
+    if (user.password !== password) {
+      throw new Error("Senha incorreta");
+    }
+
+    return user;
+  } catch (error) {
+    console.error("Error authenticating user:", error);
+    return null;
+  }
+};
+
+// Current session management
+export const setCurrentUser = (user: User): void => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+
+    // Also set the old keys for backward compatibility
+    if (user.userType === "candidate") {
+      setCurrentUserCPF(user.cpfOrCnpj);
+    } else {
+      setCurrentCompanyCNPJ(user.cpfOrCnpj);
+    }
+  }
+};
+
+export const getCurrentUser = (): User | null => {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const data = localStorage.getItem(CURRENT_USER_KEY);
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error("Error getting current user:", error);
+    return null;
+  }
+};
+
+export const logout = (): void => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(CURRENT_USER_KEY);
+    localStorage.removeItem(CURRENT_USER_CPF_KEY);
+    localStorage.removeItem(CURRENT_COMPANY_CNPJ_KEY);
+  }
+};
+
+// Check if user is authenticated
+export const isAuthenticated = (): boolean => {
+  return getCurrentUser() !== null;
+};
+
+// Get user dashboard URL based on type
+export const getUserDashboardUrl = (
+  userType: "candidate" | "company",
+): string => {
+  return userType === "candidate"
+    ? "/dashboard/candidate"
+    : "/dashboard/company";
+};
