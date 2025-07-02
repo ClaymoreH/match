@@ -6,66 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, FileText, UserCheck, UserX } from "lucide-react";
-import { getJobById, type Job } from "@/lib/storage";
-
-const candidatesData = {
-  Triagem: [
-    {
-      id: 1,
-      name: "Maria Silva",
-      evaluation: "Alta",
-      resume: "#",
-      status: "ativo",
-    },
-    {
-      id: 2,
-      name: "João Pereira",
-      evaluation: "Média",
-      resume: "#",
-      status: "ativo",
-    },
-    {
-      id: 3,
-      name: "Ana Costa",
-      evaluation: "Alta",
-      resume: "#",
-      status: "ativo",
-    },
-    {
-      id: 4,
-      name: "Pedro Santos",
-      evaluation: "Baixa",
-      resume: "#",
-      status: "ativo",
-    },
-  ],
-  "Teste Técnico": [
-    {
-      id: 5,
-      name: "Paula Souza",
-      evaluation: "Alta",
-      resume: "#",
-      status: "ativo",
-    },
-  ],
-  Entrevista: [
-    {
-      id: 6,
-      name: "Joana Silva",
-      evaluation: "Alta",
-      resume: "#",
-      status: "ativo",
-    },
-    {
-      id: 7,
-      name: "Marcos Pereira",
-      evaluation: "Média",
-      resume: "#",
-      status: "ativo",
-    },
-  ],
-  Finalistas: [],
-};
+import {
+  getJobById,
+  getApplicationsByJobStage,
+  getCandidateData,
+  updateApplicationStage,
+  type Job,
+  type JobApplication,
+} from "@/lib/storage";
 
 export default function JobVisualizerPage() {
   const params = useParams();
