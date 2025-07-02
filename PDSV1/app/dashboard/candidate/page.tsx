@@ -52,6 +52,15 @@ export default function CandidateDashboard() {
     const loadCandidateData = () => {
       const data = getCurrentUserData();
       setCandidateData(data);
+
+      if (data?.personal?.cpf) {
+        const stats = getCandidateStatistics(data.personal.cpf);
+        setStatistics(stats);
+
+        const applications = getRecentApplications(data.personal.cpf, 5);
+        setRecentApplications(applications);
+      }
+
       setLoading(false);
     };
 
