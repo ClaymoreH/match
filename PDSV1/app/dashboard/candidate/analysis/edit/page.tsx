@@ -158,7 +158,7 @@ export default function CandidateAnalysisEdit() {
         alert(
           "Análise comportamental processada com sucesso! Os insights foram gerados pela IA.",
         );
-        router.push("/dashboard/candidate/profile");
+        router.push("/dashboard/candidate");
       } else {
         alert(
           "Dados salvos, mas houve erro na geração de insights. Tente novamente.",
@@ -434,7 +434,7 @@ export default function CandidateAnalysisEdit() {
           <div>
             <Label className="text-sm font-semibold text-gray-900 mb-3 block">
               <strong>
-                Raciocínio Lógico e Resolu��ão de Problemas Complexos:
+                Raciocínio Lógico e Resolução de Problemas Complexos:
               </strong>{" "}
               Descreva como você abordaria a otimização de um processo de
               trabalho ineficiente que envolve múltiplas equipes e diferentes
@@ -546,7 +546,7 @@ export default function CandidateAnalysisEdit() {
               seu papel direto de liderança?
             </Label>
             <Textarea
-              placeholder="Descreva sua capacidade de media��ão..."
+              placeholder="Descreva sua capacidade de mediação..."
               value={formData.section3.conflictResolution || ""}
               onChange={(e) =>
                 updateSection3("conflictResolution", e.target.value)
