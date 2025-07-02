@@ -117,10 +117,23 @@ export default function CandidateAnalysis() {
         <CardHeader className="bg-blue-50">
           <CardTitle className="text-blue-800 flex items-center">
             <Brain className="w-5 h-5 mr-2" />
-            Perfil Comportamental Completo
+            {insights.enneagramType
+              ? `Perfil Eneagrama - Tipo ${insights.enneagramType.type}`
+              : "Perfil Comportamental Completo"}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
+          {insights.enneagramType && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+              <h4 className="font-semibold text-blue-800 mb-1">
+                Tipo {insights.enneagramType.type} -{" "}
+                {insights.enneagramType.name}
+              </h4>
+              <p className="text-sm text-blue-700">
+                {insights.enneagramType.description}
+              </p>
+            </div>
+          )}
           <div className="prose max-w-none">
             <p className="text-gray-700 leading-relaxed whitespace-pre-line">
               {insights.profile}
