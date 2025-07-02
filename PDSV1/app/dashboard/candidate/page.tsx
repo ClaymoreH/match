@@ -25,7 +25,11 @@ import {
 import {
   getCurrentUserData,
   getCurrentUserCPF,
+  getCandidateStatistics,
+  getRecentApplications,
+  getJobById,
   type CandidateData,
+  type JobApplication,
 } from "@/lib/storage";
 
 export default function CandidateDashboard() {
