@@ -1,21 +1,27 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import { Bell, Mail, User, LogOut } from "lucide-react"
-import { useState } from "react"
+import Image from "next/image";
+import Link from "next/link";
+import { Bell, Mail, User, LogOut } from "lucide-react";
+import { useState } from "react";
 
 export default function CandidateHeader() {
-  const [showNotifications, setShowNotifications] = useState(false)
-  const [showMessages, setShowMessages] = useState(false)
-  const [showProfile, setShowProfile] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <Link href="/dashboard/candidate">
-            <Image src="/assets/img/logo/matchjoblogo.png" alt="MatchJobs" width={120} height={30} className="h-auto" />
+            <Image
+              src="/assets/img/logo/matchjoblogo.png"
+              alt="MatchJobs"
+              width={120}
+              height={30}
+              className="h-auto"
+            />
           </Link>
         </div>
 
@@ -33,7 +39,9 @@ export default function CandidateHeader() {
                 <div className="p-4 border-b border-gray-200">
                   <div className="flex justify-between items-center">
                     <h3 className="font-semibold">Mensagens</h3>
-                    <button className="text-sm text-blue-600">Marcar todas como lidas</button>
+                    <button className="text-sm text-blue-600">
+                      Marcar todas como lidas
+                    </button>
                   </div>
                 </div>
                 <div className="max-h-64 overflow-y-auto">
@@ -91,7 +99,13 @@ export default function CandidateHeader() {
               onClick={() => setShowProfile(!showProfile)}
               className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg"
             >
-              <Image src="/assets/img/sauro.jpg" alt="Profile" width={32} height={32} className="rounded-full" />
+              <Image
+                src="/assets/img/sauro.jpg"
+                alt="Profile"
+                width={32}
+                height={32}
+                className="rounded-full"
+              />
               <div className="text-left">
                 <p className="text-sm text-gray-600">Olá,</p>
                 <p className="text-sm font-semibold">Enzo</p>
@@ -101,11 +115,22 @@ export default function CandidateHeader() {
               <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                 <div className="p-4 border-b border-gray-200">
                   <div className="flex items-center space-x-3">
-                    <Image src="/assets/img/sauro.jpg" alt="Profile" width={48} height={48} className="rounded-full" />
+                    <Image
+                      src="/assets/img/sauro.jpg"
+                      alt="Profile"
+                      width={48}
+                      height={48}
+                      className="rounded-full"
+                    />
                     <div>
                       <p className="font-semibold">Enzo</p>
-                      <p className="text-sm text-gray-600">enzogabriel@gmail.com</p>
-                      <Link href="/dashboard/candidate/profile" className="text-sm text-blue-600 hover:text-blue-800">
+                      <p className="text-sm text-gray-600">
+                        enzogabriel@gmail.com
+                      </p>
+                      <Link
+                        href="/dashboard/candidate"
+                        className="text-sm text-blue-600 hover:text-blue-800"
+                      >
                         Ver Perfil
                       </Link>
                     </div>
@@ -126,5 +151,5 @@ export default function CandidateHeader() {
         </div>
       </div>
     </header>
-  )
+  );
 }
