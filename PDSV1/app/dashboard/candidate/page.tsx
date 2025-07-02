@@ -562,7 +562,9 @@ export default function CandidateDashboard() {
         <CardHeader>
           <div className="flex justify-between items-center">
             <CardTitle>Candidaturas Recentes</CardTitle>
-            <Badge variant="secondary">{recentApplications.length} candidaturas</Badge>
+            <Badge variant="secondary">
+              {recentApplications.length} candidaturas
+            </Badge>
           </div>
         </CardHeader>
         <CardContent>
@@ -575,46 +577,74 @@ export default function CandidateDashboard() {
             ) : (
               recentApplications.map((application) => {
                 const job = getJobById(application.jobId);
-                const getStatusInfo = (status: string, currentStage: string) => {
+                const getStatusInfo = (
+                  status: string,
+                  currentStage: string,
+                ) => {
                   switch (status) {
-                    case 'applied':
-                      return { text: 'Candidatura enviada', color: 'bg-blue-100 text-blue-800' };
-                    case 'reviewing':
-                      return { text: currentStage || 'Em análise', color: 'bg-yellow-100 text-yellow-800' };
-                    case 'approved':
-                      return { text: 'Aprovado', color: 'bg-green-100 text-green-800' };
-                    case 'rejected':
-                      return { text: 'Não selecionado', color: 'bg-red-100 text-red-800' };
+                    case "applied":
+                      return {
+                        text: "Candidatura enviada",
+                        color: "bg-blue-100 text-blue-800",
+                      };
+                    case "reviewing":
+                      return {
+                        text: currentStage || "Em análise",
+                        color: "bg-yellow-100 text-yellow-800",
+                      };
+                    case "approved":
+                      return {
+                        text: "Aprovado",
+                        color: "bg-green-100 text-green-800",
+                      };
+                    case "rejected":
+                      return {
+                        text: "Não selecionado",
+                        color: "bg-red-100 text-red-800",
+                      };
                     default:
-                      return { text: 'Em processo', color: 'bg-gray-100 text-gray-800' };
+                      return {
+                        text: "Em processo",
+                        color: "bg-gray-100 text-gray-800",
+                      };
                   }
                 };
-                const statusInfo = getStatusInfo(application.status, application.currentStage);
+                const statusInfo = getStatusInfo(
+                  application.status,
+                  application.currentStage,
+                );
 
                 return (
-              <div
-                key={index}
-                className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
-              >
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900">
-                    {application.title}
-                  </h4>
-                  <p className="text-sm text-gray-600">{application.company}</p>
-                  <p className="text-xs text-gray-500">
-                    Aplicado em: {application.date}
-                  </p>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Badge className={application.statusColor}>
-                    {application.status}
-                  </Badge>
-                  <Button variant="outline" size="sm">
-                    Detalhes
-                  </Button>
-                </div>
-              </div>
-            ))}
+                  <div
+                    key={application.id}
+                    className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+                  >
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900">
+                        {job?.title || "Vaga não encontrada"}
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        {job?.area || "Área não informada"}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Aplicado em:{" "}
+                        {new Date(application.appliedAt).toLocaleDateString(
+                          "pt-BR",
+                        )}
+                      </p>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Badge className={statusInfo.color}>
+                        {statusInfo.text}
+                      </Badge>
+                      <Button variant="outline" size="sm">
+                        Detalhes
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
           <div className="mt-4 text-center">
             <Button variant="outline">Ver todas as candidaturas</Button>
