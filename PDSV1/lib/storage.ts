@@ -201,6 +201,24 @@ export interface User {
   updatedAt: string;
 }
 
+// Notification Interfaces
+export interface Notification {
+  id: string;
+  userId: string; // User ID who should receive the notification
+  type:
+    | "application"
+    | "interview"
+    | "profile_view"
+    | "job_update"
+    | "system"
+    | "message";
+  title: string;
+  message: string;
+  data?: Record<string, any>; // Additional data like job ID, application ID, etc.
+  isRead: boolean;
+  createdAt: string;
+}
+
 export interface CandidateData {
   personal: CandidatePersonalData;
   experiences: CandidateExperience[];
