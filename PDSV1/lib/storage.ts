@@ -1151,8 +1151,178 @@ export const clearAllStorage = (): void => {
     localStorage.removeItem(JOBS_STORAGE_KEY);
     localStorage.removeItem(APPLICATIONS_STORAGE_KEY);
     localStorage.removeItem(USERS_STORAGE_KEY);
+    localStorage.removeItem(NOTIFICATIONS_STORAGE_KEY);
     localStorage.removeItem(CURRENT_USER_KEY);
     localStorage.removeItem(CURRENT_USER_CPF_KEY);
     localStorage.removeItem(CURRENT_COMPANY_CNPJ_KEY);
   }
+};
+
+// Notification Management Functions
+
+// Get all notifications
+export const getAllNotifications = (): Record<string, Notification> => {
+  if (typeof window === "undefined") return {};
+
+  try {
+    const data = localStorage.getItem(NOTIFICATIONS_STORAGE_KEY);
+    return data ? JSON.parse(data) : {};
+  } catch (error) {
+    console.error("Error reading notifications data:", error);
+    return {};
+  }
+};
+
+// Get notifications by user ID
+export const getNotificationsByUserId = (userId: string): Notification[] => {
+  const notifications = getAllNotifications();
+  return Object.values(notifications)
+    .filter((notification) => notification.userId === userId)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+};
+
+// Get unread notifications count
+export const getUnreadNotificationsCount = (userId: string): number => {
+  const notifications = getNotificationsByUserId(userId);
+  return notifications.filter((notification) => !notification.isRead).length;
+};
+
+// Create notification
+export const createNotification = (
+  userId: string,
+  type: Notification["type"],
+  title: string,
+  message: string,
+  data?: Record<string, any>,
+): string | null => {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const notifications = getAllNotifications();
+    const notificationId = `notif_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const now = new Date().toISOString();
+
+    const newNotification: Notification = {
+      id: notificationId,
+      userId,
+      type,
+      title,
+      message,
+      data,
+      isRead: false,
+      createdAt: now,
+    };
+
+    notifications[notificationId] = newNotification;
+    localStorage.setItem(
+      NOTIFICATIONS_STORAGE_KEY,
+      JSON.stringify(notifications),
+    );
+    return notificationId;
+  } catch (error) {
+    console.error("Error creating notification:", error);
+    return null;
+  }
+};
+
+// Mark notification as read
+export const markNotificationAsRead = (notificationId: string): boolean => {
+  if (typeof window === "undefined") return false;
+
+  try {
+    const notifications = getAllNotifications();
+    const notification = notifications[notificationId];
+    if (!notification) return false;
+
+    notification.isRead = true;
+    notifications[notificationId] = notification;
+    localStorage.setItem(
+      NOTIFICATIONS_STORAGE_KEY,
+      JSON.stringify(notifications),
+    );
+    return true;
+  } catch (error) {
+    console.error("Error marking notification as read:", error);
+    return false;
+  }
+};
+
+// Mark all notifications as read for a user
+export const markAllNotificationsAsRead = (userId: string): boolean => {
+  if (typeof window === "undefined") return false;
+
+  try {
+    const notifications = getAllNotifications();
+    let updated = false;
+
+    Object.values(notifications).forEach((notification) => {
+      if (notification.userId === userId && !notification.isRead) {
+        notification.isRead = true;
+        updated = true;
+      }
+    });
+
+    if (updated) {
+      localStorage.setItem(
+        NOTIFICATIONS_STORAGE_KEY,
+        JSON.stringify(notifications),
+      );
+    }
+    return updated;
+  } catch (error) {
+    console.error("Error marking all notifications as read:", error);
+    return false;
+  }
+};
+
+// Calculate candidate statistics based on applications
+export const getCandidateStatistics = (
+  cpf: string,
+): {
+  applications: number;
+  interviews: number;
+  profileViews: number;
+  matchRate: number;
+} => {
+  const cleanCPF = cpf.replace(/\D/g, "");
+  const applications = getApplicationsByCandidateCpf(cleanCPF);
+
+  const stats = {
+    applications: applications.length,
+    interviews: applications.filter(
+      (app) =>
+        app.currentStage.toLowerCase().includes("entrevista") ||
+        app.currentStage.toLowerCase().includes("interview"),
+    ).length,
+    profileViews: Math.floor(Math.random() * 50) + applications.length * 2, // Mock for now
+    matchRate:
+      applications.length > 0
+        ? Math.floor(
+            (applications.filter((app) => app.status !== "rejected").length /
+              applications.length) *
+              100,
+          )
+        : 0,
+  };
+
+  return stats;
+};
+
+// Get recent applications for candidate
+export const getRecentApplications = (
+  cpf: string,
+  limit: number = 5,
+): JobApplication[] => {
+  const cleanCPF = cpf.replace(/\D/g, "");
+  const applications = getApplicationsByCandidateCpf(cleanCPF);
+
+  return applications
+    .sort(
+      (a, b) =>
+        new Date(b.appliedAt).getTime() - new Date(a.appliedAt).getTime(),
+    )
+    .slice(0, limit);
 };
