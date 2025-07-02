@@ -141,6 +141,11 @@ IMPORTANTE:
         "Perfil em processamento. A análise detalhada será gerada em breve baseada nas respostas fornecidas.",
       profileSummary:
         "Candidato com potencial para diversas áreas. Análise em processamento.",
+      enneagramType: {
+        type: 7,
+        name: "Em análise",
+        description: "Tipo do Eneagrama sendo determinado pela IA",
+      },
       bigFiveDistribution: {
         openness: behavioralData.section3.bigFive2 * 20,
         conscientiousness: behavioralData.section3.bigFive0 * 20,
