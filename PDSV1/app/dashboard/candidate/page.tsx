@@ -562,7 +562,9 @@ export default function CandidateDashboard() {
         <CardHeader>
           <div className="flex justify-between items-center">
             <CardTitle>Candidaturas Recentes</CardTitle>
-            <Badge variant="secondary">3 ativas</Badge>
+            <Badge variant="secondary">
+              {recentApplications.length} candidaturas
+            </Badge>
           </div>
         </CardHeader>
         <CardContent>
