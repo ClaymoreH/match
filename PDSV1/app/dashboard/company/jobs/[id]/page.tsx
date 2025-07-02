@@ -21,10 +21,18 @@ export default function JobVisualizerPage() {
   const [jobData, setJobData] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedStage, setSelectedStage] = useState("");
+  const [applications, setApplications] = useState<JobApplication[]>([]);
+  const [candidates, setCandidates] = useState<Record<string, any>>({});
 
   useEffect(() => {
     loadJob();
   }, [params.id]);
+
+  useEffect(() => {
+    if (jobData && selectedStage) {
+      loadApplicationsForStage();
+    }
+  }, [selectedStage, jobData]);
 
   const loadJob = () => {
     try {
@@ -39,6 +47,47 @@ export default function JobVisualizerPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadApplicationsForStage = () => {
+    if (!jobData || !selectedStage) return;
+
+    try {
+      const stageApplications = getApplicationsByJobStage(
+        jobData.id,
+        selectedStage,
+      );
+      setApplications(stageApplications);
+
+      // Load candidate data for each application
+      const candidateData: Record<string, any> = {};
+      stageApplications.forEach((app) => {
+        const candidate = getCandidateData(app.candidateCpf);
+        if (candidate) {
+          candidateData[app.candidateCpf] = candidate;
+        }
+      });
+      setCandidates(candidateData);
+    } catch (error) {
+      console.error("Error loading applications:", error);
+    }
+  };
+
+  const handleMoveToNextStage = (applicationId: string) => {
+    if (!jobData) return;
+
+    const currentIndex = jobData.stages.indexOf(selectedStage);
+    const nextStage = jobData.stages[currentIndex + 1];
+
+    if (nextStage) {
+      updateApplicationStage(applicationId, nextStage, "approved");
+      loadApplicationsForStage(); // Reload applications
+    }
+  };
+
+  const handleRejectCandidate = (applicationId: string) => {
+    updateApplicationStage(applicationId, selectedStage, "rejected");
+    loadApplicationsForStage(); // Reload applications
   };
 
   if (loading) {
