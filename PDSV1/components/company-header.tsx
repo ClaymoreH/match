@@ -1,15 +1,27 @@
-"use client"
+"use client";
 
-import { Bell, User } from "lucide-react"
-import Link from "next/link"
+import { Bell, User } from "lucide-react";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import {
+  getCurrentUser,
+  getCompanyData,
+  getNotificationsByUserId,
+  getUnreadNotificationsCount,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+  logout,
+  type Notification,
+} from "@/lib/storage";
 
 export default function CompanyHeader() {
   return (
@@ -34,7 +46,9 @@ export default function CompanyHeader() {
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                   <div>
-                    <p className="text-sm">Nova candidatura para "Dev Front-End"</p>
+                    <p className="text-sm">
+                      Nova candidatura para "Dev Front-End"
+                    </p>
                     <p className="text-xs text-gray-500">5 min atrás</p>
                   </div>
                 </div>
@@ -43,7 +57,9 @@ export default function CompanyHeader() {
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
                   <div>
-                    <p className="text-sm">Processo de UX Designer foi finalizado</p>
+                    <p className="text-sm">
+                      Processo de UX Designer foi finalizado
+                    </p>
                     <p className="text-xs text-gray-500">1 hora atrás</p>
                   </div>
                 </div>
@@ -52,7 +68,9 @@ export default function CompanyHeader() {
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
                   <div>
-                    <p className="text-sm">Vaga de Marketing sem atualização há 7 dias</p>
+                    <p className="text-sm">
+                      Vaga de Marketing sem atualização há 7 dias
+                    </p>
                     <p className="text-xs text-gray-500">Ontem</p>
                   </div>
                 </div>
@@ -83,7 +101,10 @@ export default function CompanyHeader() {
                 <div>
                   <h4 className="font-semibold">Acme RH</h4>
                   <p className="text-sm text-gray-600">rh@acme.com.br</p>
-                  <Link href="/dashboard/company" className="text-xs text-blue-600 hover:underline">
+                  <Link
+                    href="/dashboard/company"
+                    className="text-xs text-blue-600 hover:underline"
+                  >
                     Ver Perfil da Empresa
                   </Link>
                 </div>
@@ -99,5 +120,5 @@ export default function CompanyHeader() {
         </DropdownMenu>
       </div>
     </header>
-  )
+  );
 }
