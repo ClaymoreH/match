@@ -1,5 +1,5 @@
-// Storage utilities for candidate data management
-// Using CPF as the unique identifier
+// Storage utilities for candidate and company data management
+// Using CPF for candidates and CNPJ for companies as unique identifiers
 
 export interface CandidatePersonalData {
   cpf: string;
