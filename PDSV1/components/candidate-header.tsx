@@ -3,7 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Bell, Mail, User, LogOut } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+  getCurrentUser,
+  getCandidateData,
+  getNotificationsByUserId,
+  getUnreadNotificationsCount,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+  logout,
+  type Notification,
+} from "@/lib/storage";
 
 export default function CandidateHeader() {
   const [showNotifications, setShowNotifications] = useState(false);
