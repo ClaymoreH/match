@@ -562,36 +562,36 @@ export default function CandidateDashboard() {
         <CardHeader>
           <div className="flex justify-between items-center">
             <CardTitle>Candidaturas Recentes</CardTitle>
-            <Badge variant="secondary">
-              {recentApplications.length} candidaturas
-            </Badge>
+            <Badge variant="secondary">{recentApplications.length} candidaturas</Badge>
           </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {[
-              {
-                title: "Desenvolvedor Full Stack Pleno",
-                company: "Tech Solutions Ltda",
-                status: "Em análise",
-                date: "15/05/2024",
-                statusColor: "bg-yellow-100 text-yellow-800",
-              },
-              {
-                title: "Engenheiro de Software Python",
-                company: "InovaTech S.A.",
-                status: "Processo seletivo",
-                date: "22/05/2024",
-                statusColor: "bg-blue-100 text-blue-800",
-              },
-              {
-                title: "Front-end Developer",
-                company: "Digital Creative",
-                status: "Entrevista agendada",
-                date: "30/05/2024",
-                statusColor: "bg-green-100 text-green-800",
-              },
-            ].map((application, index) => (
+            {recentApplications.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                <p>Nenhuma candidatura ainda.</p>
+                <p className="text-sm">Comece a se candidatar para vagas!</p>
+              </div>
+            ) : (
+              recentApplications.map((application) => {
+                const job = getJobById(application.jobId);
+                const getStatusInfo = (status: string, currentStage: string) => {
+                  switch (status) {
+                    case 'applied':
+                      return { text: 'Candidatura enviada', color: 'bg-blue-100 text-blue-800' };
+                    case 'reviewing':
+                      return { text: currentStage || 'Em análise', color: 'bg-yellow-100 text-yellow-800' };
+                    case 'approved':
+                      return { text: 'Aprovado', color: 'bg-green-100 text-green-800' };
+                    case 'rejected':
+                      return { text: 'Não selecionado', color: 'bg-red-100 text-red-800' };
+                    default:
+                      return { text: 'Em processo', color: 'bg-gray-100 text-gray-800' };
+                  }
+                };
+                const statusInfo = getStatusInfo(application.status, application.currentStage);
+
+                return (
               <div
                 key={index}
                 className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
