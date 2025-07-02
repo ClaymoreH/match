@@ -250,7 +250,9 @@ export default function CandidateHeader() {
               />
               <div className="text-left">
                 <p className="text-sm text-gray-600">Olá,</p>
-                <p className="text-sm font-semibold">Enzo</p>
+                <p className="text-sm font-semibold">
+                  {displayName.split(" ")[0]}
+                </p>
               </div>
             </button>
             {showProfile && (
