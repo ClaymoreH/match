@@ -113,18 +113,23 @@ export default function JobVisualizerPage() {
     );
   }
 
-  const currentCandidates =
-    candidatesData[selectedStage as keyof typeof candidatesData] || [];
-  const currentStageIndex = jobData.stages.indexOf(selectedStage);
-  const nextStage = jobData.stages[currentStageIndex + 1];
+  const currentStageIndex = jobData?.stages.indexOf(selectedStage) || 0;
+  const nextStage = jobData?.stages[currentStageIndex + 1];
 
-  const getEvaluationColor = (evaluation: string) => {
-    switch (evaluation) {
-      case "Alta":
+  const getApplicationStatus = (application: JobApplication) => {
+    const currentStageHistory = application.stageHistory.find(
+      (h) => h.stage === selectedStage,
+    );
+    return currentStageHistory?.status || "pending";
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "approved":
         return "bg-green-100 text-green-800";
-      case "Média":
+      case "pending":
         return "bg-yellow-100 text-yellow-800";
-      case "Baixa":
+      case "rejected":
         return "bg-red-100 text-red-800";
       default:
         return "bg-gray-100 text-gray-800";
@@ -132,7 +137,8 @@ export default function JobVisualizerPage() {
   };
 
   const getStageCount = (stage: string) => {
-    return candidatesData[stage as keyof typeof candidatesData]?.length || 0;
+    if (!jobData) return 0;
+    return getApplicationsByJobStage(jobData.id, stage).length;
   };
 
   return (
