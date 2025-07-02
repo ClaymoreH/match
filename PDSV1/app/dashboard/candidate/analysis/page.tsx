@@ -97,14 +97,16 @@ export default function CandidateAnalysis() {
               </div>
               <div>
                 <h2 className="text-2xl font-bold">
-                  Eneagrama: Tipo {insights.enneagramType.type} -{" "}
-                  {insights.enneagramType.name}
+                  {insights.enneagramType
+                    ? `Eneagrama: Tipo ${insights.enneagramType.type} - ${insights.enneagramType.name}`
+                    : "Perfil Comportamental"}
                 </h2>
                 <p className="text-blue-100">{insights.profileSummary}</p>
               </div>
             </div>
             <Badge className="bg-white text-blue-600 px-4 py-2">
-              {insights.enneagramType.description}
+              {insights.enneagramType?.description ||
+                "Análise Comportamental Completa"}
             </Badge>
           </div>
         </CardContent>
