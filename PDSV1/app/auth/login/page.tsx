@@ -122,6 +122,16 @@ export default function LoginPage() {
                   crie uma nova conta
                 </Link>
               </p>
+
+              <div className="mt-4 p-3 bg-gray-100 rounded-lg">
+                <p className="text-xs text-gray-600 text-center">
+                  <strong>Para teste:</strong>
+                  <br />
+                  Candidato: candidato@teste.com / 12345678
+                  <br />
+                  Empresa: empresa@teste.com / 12345678
+                </p>
+              </div>
             </div>
 
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
