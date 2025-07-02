@@ -1123,3 +1123,17 @@ export const getUserDashboardUrl = (
     ? "/dashboard/candidate"
     : "/dashboard/company";
 };
+
+// Clear all storage data (for testing/debugging)
+export const clearAllStorage = (): void => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(CANDIDATES_STORAGE_KEY);
+    localStorage.removeItem(COMPANIES_STORAGE_KEY);
+    localStorage.removeItem(JOBS_STORAGE_KEY);
+    localStorage.removeItem(APPLICATIONS_STORAGE_KEY);
+    localStorage.removeItem(USERS_STORAGE_KEY);
+    localStorage.removeItem(CURRENT_USER_KEY);
+    localStorage.removeItem(CURRENT_USER_CPF_KEY);
+    localStorage.removeItem(CURRENT_COMPANY_CNPJ_KEY);
+  }
+};
