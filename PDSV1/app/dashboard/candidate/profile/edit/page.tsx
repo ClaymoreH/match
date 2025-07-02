@@ -1083,7 +1083,7 @@ export default function CandidateProfileEdit() {
             <div className="flex space-x-2">
               <Button variant="outline">Cancelar</Button>
               {currentTabIndex === tabs.length - 1 ? (
-                <Link href="/dashboard/candidate/profile">
+                <Link href="/dashboard/candidate">
                   <Button>
                     <Check className="w-4 h-4 mr-2" />
                     Finalizar Cadastro
