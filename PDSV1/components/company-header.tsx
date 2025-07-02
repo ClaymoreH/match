@@ -103,42 +103,72 @@ export default function CompanyHeader() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-80">
             <div className="p-3 border-b">
-              <h3 className="font-semibold">Você tem 3 notificações</h3>
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold">
+                  {notifications.length > 0
+                    ? `Você tem ${unreadCount} notificações`
+                    : "Nenhuma notificação"}
+                </h3>
+                {unreadCount > 0 && (
+                  <button
+                    onClick={handleMarkAllAsRead}
+                    className="text-sm text-blue-600 hover:text-blue-800"
+                  >
+                    Marcar todas como lidas
+                  </button>
+                )}
+              </div>
             </div>
             <div className="max-h-64 overflow-y-auto">
-              <DropdownMenuItem className="p-3 border-b">
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                  <div>
-                    <p className="text-sm">
-                      Nova candidatura para "Dev Front-End"
-                    </p>
-                    <p className="text-xs text-gray-500">5 min atrás</p>
-                  </div>
+              {notifications.length === 0 ? (
+                <div className="p-3 text-center text-gray-500">
+                  <p className="text-sm">Nenhuma notificação ainda.</p>
                 </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="p-3 border-b">
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                  <div>
-                    <p className="text-sm">
-                      Processo de UX Designer foi finalizado
-                    </p>
-                    <p className="text-xs text-gray-500">1 hora atrás</p>
-                  </div>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="p-3">
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
-                  <div>
-                    <p className="text-sm">
-                      Vaga de Marketing sem atualização há 7 dias
-                    </p>
-                    <p className="text-xs text-gray-500">Ontem</p>
-                  </div>
-                </div>
-              </DropdownMenuItem>
+              ) : (
+                notifications.slice(0, 10).map((notification) => (
+                  <DropdownMenuItem
+                    key={notification.id}
+                    className={`p-3 border-b cursor-pointer ${!notification.isRead ? "bg-blue-50" : ""}`}
+                    onClick={() => handleNotificationClick(notification)}
+                  >
+                    <div className="flex items-start space-x-3">
+                      <div
+                        className={`w-2 h-2 rounded-full mt-2 ${
+                          notification.type === "application"
+                            ? "bg-blue-500"
+                            : notification.type === "interview"
+                              ? "bg-green-500"
+                              : notification.type === "job_update"
+                                ? "bg-yellow-500"
+                                : "bg-gray-500"
+                        }`}
+                      ></div>
+                      <div>
+                        <p className="text-sm font-medium">
+                          {notification.title}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {notification.message}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(notification.createdAt).toLocaleDateString(
+                            "pt-BR",
+                            {
+                              day: "2-digit",
+                              month: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            },
+                          )}
+                        </p>
+                      </div>
+                      {!notification.isRead && (
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      )}
+                    </div>
+                  </DropdownMenuItem>
+                ))
+              )}
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
