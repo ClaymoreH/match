@@ -200,6 +200,19 @@ export const validateCPF = (cpf: string): boolean => {
   return digits.length === 11;
 };
 
+export const formatCNPJ = (cnpj: string): string => {
+  const digits = cnpj.replace(/\D/g, "");
+  return digits.replace(
+    /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
+    "$1.$2.$3/$4-$5",
+  );
+};
+
+export const validateCNPJ = (cnpj: string): boolean => {
+  const digits = cnpj.replace(/\D/g, "");
+  return digits.length === 14;
+};
+
 // Storage functions
 export const getAllCandidates = (): Record<string, CandidateData> => {
   if (typeof window === "undefined") return {};
