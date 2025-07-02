@@ -40,7 +40,7 @@ export async function generateBehavioralInsights(
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
-Como especialista em análise comportamental e psicologia organizacional, analise as respostas abaixo e gere um relatório estruturado em JSON.
+Como especialista em análise comportamental, psicologia organizacional e Eneagrama, analise as respostas abaixo e gere um relatório estruturado em JSON.
 
 DADOS DO CANDIDATO:
 
@@ -61,11 +61,11 @@ Objetivos de Carreira: ${behavioralData.section2.careerGoals}
 === SEÇÃO 3: ANÁLISE AVANÇADA ===
 Raciocínio Lógico: ${behavioralData.section3.logicalReasoning}
 Análise de Dados: ${behavioralData.section3.dataAnalysis}
-Big Five - Organização: ${behavioralData.section3.bigFive0}/5
+Big Five - Conscienciosidade: ${behavioralData.section3.bigFive0}/5
 Big Five - Extroversão: ${behavioralData.section3.bigFive1}/5
 Big Five - Abertura: ${behavioralData.section3.bigFive2}/5
-Big Five - Empatia: ${behavioralData.section3.bigFive3}/5
-Big Five - Estabilidade: ${behavioralData.section3.bigFive4}/5
+Big Five - Amabilidade: ${behavioralData.section3.bigFive3}/5
+Big Five - Estabilidade Emocional: ${behavioralData.section3.bigFive4}/5
 Habilidades Interpessoais: ${behavioralData.section3.interpersonalSkills}
 Resolução de Conflitos: ${behavioralData.section3.conflictResolution}
 Mentalidade de Crescimento: ${behavioralData.section3.growthMindset}
@@ -77,11 +77,22 @@ Inovação: ${behavioralData.section3.innovation}
 Ética: ${behavioralData.section3.ethics}
 Valores: ${behavioralData.section3.values}
 
+INSTRUÇÕES DE ANÁLISE:
+1. Determine o tipo do ENEAGRAMA mais provável (1-9) baseado nos padrões comportamentais
+2. Calcule os percentuais dos Big Five baseado nas autoavaliações e respostas contextuais
+3. Identifique características comportamentais que se destacam
+4. Sugira posições compatíveis com o perfil identificado
+
 GERE UM RELATÓRIO EM JSON com a seguinte estrutura EXATA:
 
 {
-  "profile": "Descrição detalhada do perfil comportamental (3-4 parágrafos)",
+  "profile": "Descrição detalhada do perfil ENEAGRAMA (3-4 parágrafos explicando o tipo, motivações e comportamentos)",
   "profileSummary": "Resumo em 2 linhas do perfil comportamental",
+  "enneagramType": {
+    "type": número de 1 a 9,
+    "name": "Nome do tipo (ex: O Perfeccionista, O Prestativo)",
+    "description": "Breve descrição do tipo identificado"
+  },
   "bigFiveDistribution": {
     "openness": número de 0 a 100,
     "conscientiousness": número de 0 a 100,
@@ -105,7 +116,8 @@ GERE UM RELATÓRIO EM JSON com a seguinte estrutura EXATA:
 
 IMPORTANTE:
 - Retorne APENAS o JSON válido, sem texto adicional
-- Base a análise Big Five nas respostas autoavaliativas fornecidas
+- Base a análise nos 9 tipos do Eneagrama e nos Big Five
+- Correlacione as respostas autoavaliativas com os padrões comportamentais
 - Seja específico e profissional nas descrições
 - Use linguagem positiva mas realista
 - As sugestões devem ser práticas e acionáveis
