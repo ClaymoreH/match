@@ -215,7 +215,25 @@ export default function RegisterPage() {
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               {error && (
                 <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
+                  <AlertDescription>
+                    {error}
+                    {error.includes("já cadastrado") && (
+                      <div className="mt-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            clearAllStorage();
+                            setError("");
+                            alert("Dados de teste limpos. Tente novamente.");
+                          }}
+                        >
+                          Limpar dados de teste
+                        </Button>
+                      </div>
+                    )}
+                  </AlertDescription>
                 </Alert>
               )}
 
