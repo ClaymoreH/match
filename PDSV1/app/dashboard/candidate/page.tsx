@@ -101,7 +101,9 @@ export default function CandidateDashboard() {
                 <p className="text-sm font-medium text-gray-600">
                   Candidaturas
                 </p>
-                <p className="text-2xl font-bold text-gray-900">12</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {statistics.applications}
+                </p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                 <Briefcase className="w-6 h-6 text-blue-600" />
