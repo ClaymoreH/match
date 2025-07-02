@@ -164,7 +164,17 @@ export default function LoginPage() {
                           type="button"
                           variant="outline"
                           size="sm"
-                          onClick={createTestUsers}
+                          onClick={() => {
+                            const success = createTestUsers();
+                            if (success) {
+                              alert(
+                                "Usuários de teste criados!\n\nCandidato: candidato@teste.com / 12345678\nEmpresa: empresa@teste.com / 12345678",
+                              );
+                              setError("");
+                            } else {
+                              alert("Erro ao criar usuários de teste");
+                            }
+                          }}
                         >
                           Criar usuários de teste
                         </Button>
