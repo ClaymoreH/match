@@ -218,6 +218,9 @@ export interface CandidateData {
 const CANDIDATES_STORAGE_KEY = "candidates_data";
 const COMPANIES_STORAGE_KEY = "companies_data";
 const JOBS_STORAGE_KEY = "jobs_data";
+const APPLICATIONS_STORAGE_KEY = "applications_data";
+const USERS_STORAGE_KEY = "users_data";
+const CURRENT_USER_KEY = "current_user";
 const CURRENT_USER_CPF_KEY = "current_user_cpf";
 const CURRENT_COMPANY_CNPJ_KEY = "current_company_cnpj";
 
