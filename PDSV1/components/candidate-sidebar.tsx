@@ -15,6 +15,7 @@ export default function CandidateSidebar() {
       title: "Dashboard",
       icon: Home,
       items: [
+        { name: "Perfil", href: "/dashboard/candidate" },
         { name: "Editar Perfil", href: "/dashboard/candidate/profile/edit" },
       ],
     },
