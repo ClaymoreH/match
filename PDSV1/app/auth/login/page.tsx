@@ -28,6 +28,38 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const createTestUsers = () => {
+    // Clear existing data
+    clearAllStorage();
+
+    // Create test candidate
+    const candidateId = createUser(
+      "candidato@teste.com",
+      "12345678",
+      "candidate",
+      "12345678901",
+      "João Silva",
+    );
+
+    // Create test company
+    const companyId = createUser(
+      "empresa@teste.com",
+      "12345678",
+      "company",
+      "12345678000195",
+      "Empresa Teste Ltda",
+    );
+
+    if (candidateId && companyId) {
+      alert(
+        "Usuários de teste criados!\n\nCandidato:\nEmail: candidato@teste.com\nSenha: 12345678\n\nEmpresa:\nEmail: empresa@teste.com\nSenha: 12345678",
+      );
+      setError("");
+    } else {
+      alert("Erro ao criar usuários de teste");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
