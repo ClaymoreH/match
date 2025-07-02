@@ -127,7 +127,21 @@ export default function LoginPage() {
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               {error && (
                 <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
+                  <AlertDescription>
+                    {error}
+                    {error.includes("não encontrado") && (
+                      <div className="mt-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={createTestUsers}
+                        >
+                          Criar usuários de teste
+                        </Button>
+                      </div>
+                    )}
+                  </AlertDescription>
                 </Alert>
               )}
 
