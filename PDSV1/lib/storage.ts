@@ -169,6 +169,38 @@ export interface Job {
   closedAt?: string;
 }
 
+// Application Interfaces
+export interface JobApplication {
+  id: string;
+  jobId: string;
+  candidateCpf: string;
+  companyCnpj: string;
+  status: "applied" | "reviewing" | "approved" | "rejected" | "withdrawn";
+  currentStage: string; // Current stage in the selection process
+  stageHistory: {
+    stage: string;
+    status: "pending" | "approved" | "rejected";
+    date: string;
+    notes?: string;
+  }[];
+  answers: Record<string, string>; // Answers to screening questions
+  appliedAt: string;
+  updatedAt: string;
+}
+
+// User Authentication Interfaces
+export interface User {
+  id: string;
+  email: string;
+  password: string; // In production, this should be hashed
+  userType: "candidate" | "company";
+  cpfOrCnpj: string; // CPF for candidates, CNPJ for companies
+  fullName: string; // Individual name or company name
+  isVerified: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface CandidateData {
   personal: CandidatePersonalData;
   experiences: CandidateExperience[];
