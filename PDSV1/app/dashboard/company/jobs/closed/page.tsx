@@ -1,93 +1,68 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Eye } from "lucide-react"
-
-// Mock data for demonstration
-const closedJobsData = [
-  {
-    id: "7",
-    title: "Desenvolvedor Front-end",
-    area: "Tecnologia",
-    closedDate: "15/06/2025",
-    status: "Encerrada",
-    reason: "Posição preenchida",
-  },
-  {
-    id: "8",
-    title: "Designer UI/UX",
-    area: "Design",
-    closedDate: "02/06/2025",
-    status: "Encerrada",
-    reason: "Posição preenchida",
-  },
-  {
-    id: "9",
-    title: "Analista de RH",
-    area: "Recursos Humanos",
-    closedDate: "28/05/2025",
-    status: "Encerrada",
-    reason: "Cancelada pela empresa",
-  },
-  {
-    id: "10",
-    title: "Gerente de Vendas",
-    area: "Comercial",
-    closedDate: "20/05/2025",
-    status: "Encerrada",
-    reason: "Posição preenchida",
-  },
-  {
-    id: "11",
-    title: "Analista Financeiro",
-    area: "Financeiro",
-    closedDate: "15/05/2025",
-    status: "Encerrada",
-    reason: "Posição preenchida",
-  },
-  {
-    id: "12",
-    title: "Coordenador de TI",
-    area: "Tecnologia",
-    closedDate: "10/05/2025",
-    status: "Encerrada",
-    reason: "Cancelada pela empresa",
-  },
-  {
-    id: "13",
-    title: "Especialista em SEO",
-    area: "Marketing",
-    closedDate: "05/05/2025",
-    status: "Encerrada",
-    reason: "Posição preenchida",
-  },
-  {
-    id: "14",
-    title: "Desenvolvedor Mobile",
-    area: "Tecnologia",
-    closedDate: "01/05/2025",
-    status: "Encerrada",
-    reason: "Posição preenchida",
-  },
-]
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Eye } from "lucide-react";
+import {
+  getCurrentCompanyCNPJ,
+  getJobsByCompany,
+  type Job,
+} from "@/lib/storage";
 
 export default function ClosedJobsPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [areaFilter, setAreaFilter] = useState("all")
-  const [monthFilter, setMonthFilter] = useState("all")
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [areaFilter, setAreaFilter] = useState("all");
+  const [monthFilter, setMonthFilter] = useState("all");
+  const [loading, setLoading] = useState(true);
 
-  const filteredJobs = closedJobsData.filter((job) => {
-    const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesArea = areaFilter === "all" || job.area === areaFilter
-    const matchesMonth = monthFilter === "all" || job.closedDate.includes(monthFilter)
-    return matchesSearch && matchesArea && matchesMonth
-  })
+  useEffect(() => {
+    loadJobs();
+  }, []);
+
+  const loadJobs = () => {
+    try {
+      const companyCNPJ = getCurrentCompanyCNPJ();
+      if (!companyCNPJ) {
+        setJobs([]);
+        setLoading(false);
+        return;
+      }
+
+      const allJobs = getJobsByCompany(companyCNPJ);
+      const closedJobs = allJobs.filter((job) => job.status === "closed");
+      setJobs(closedJobs);
+    } catch (error) {
+      console.error("Error loading jobs:", error);
+      setJobs([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredJobs = jobs.filter((job) => {
+    const matchesSearch = job.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesArea = areaFilter === "all" || job.area === areaFilter;
+    const closedDate = job.updatedAt
+      ? new Date(job.updatedAt).toLocaleDateString("pt-BR")
+      : "";
+    const matchesMonth =
+      monthFilter === "all" || closedDate.includes(monthFilter);
+    return matchesSearch && matchesArea && matchesMonth;
+  });
 
   return (
     <div className="p-6 space-y-6">
@@ -107,9 +82,12 @@ export default function ClosedJobsPage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
             <div>
               <h2 className="text-lg font-semibold">
-                Total de Vagas Encerradas: <span className="text-red-600">{filteredJobs.length}</span>
+                Total de Vagas Encerradas:{" "}
+                <span className="text-red-600">{filteredJobs.length}</span>
               </h2>
-              <p className="text-sm text-gray-600">Vagas arquivadas ou encerradas nos últimos meses.</p>
+              <p className="text-sm text-gray-600">
+                Vagas arquivadas ou encerradas nos últimos meses.
+              </p>
             </div>
 
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
@@ -128,7 +106,9 @@ export default function ClosedJobsPage() {
                   <SelectItem value="Tecnologia">Tecnologia</SelectItem>
                   <SelectItem value="Design">Design</SelectItem>
                   <SelectItem value="Marketing">Marketing</SelectItem>
-                  <SelectItem value="Recursos Humanos">Recursos Humanos</SelectItem>
+                  <SelectItem value="Recursos Humanos">
+                    Recursos Humanos
+                  </SelectItem>
                   <SelectItem value="Comercial">Comercial</SelectItem>
                   <SelectItem value="Financeiro">Financeiro</SelectItem>
                 </SelectContent>
@@ -159,41 +139,69 @@ export default function ClosedJobsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-medium text-gray-600">Cargo</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-600">Área</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-600">Data de Encerramento</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-600">Motivo</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-600">Status</th>
-                  <th className="text-center py-3 px-4 font-medium text-gray-600">Ações</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">
+                    Cargo
+                  </th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">
+                    Área
+                  </th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">
+                    Data de Encerramento
+                  </th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">
+                    Motivo
+                  </th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">
+                    Status
+                  </th>
+                  <th className="text-center py-3 px-4 font-medium text-gray-600">
+                    Ações
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {filteredJobs.map((job) => (
-                  <tr key={job.id} className="border-b hover:bg-gray-50">
-                    <td className="py-3 px-4 font-medium">{job.title}</td>
-                    <td className="py-3 px-4">{job.area}</td>
-                    <td className="py-3 px-4">{job.closedDate}</td>
-                    <td className="py-3 px-4 text-sm text-gray-600">{job.reason}</td>
-                    <td className="py-3 px-4">
-                      <Badge className="bg-red-100 text-red-800 hover:bg-red-100">{job.status}</Badge>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center justify-center">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          asChild
-                          className="flex items-center space-x-1 bg-transparent"
-                        >
-                          <Link href={`/dashboard/company/jobs/${job.id}`}>
-                            <Eye className="w-3 h-3" />
-                            <span>Ver</span>
-                          </Link>
-                        </Button>
-                      </div>
+                {loading ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-gray-500">
+                      Carregando vagas...
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  filteredJobs.map((job) => (
+                    <tr key={job.id} className="border-b hover:bg-gray-50">
+                      <td className="py-3 px-4 font-medium">{job.title}</td>
+                      <td className="py-3 px-4">{job.area}</td>
+                      <td className="py-3 px-4">
+                        {job.updatedAt
+                          ? new Date(job.updatedAt).toLocaleDateString("pt-BR")
+                          : "-"}
+                      </td>
+                      <td className="py-3 px-4 text-sm text-gray-600">
+                        Vaga encerrada
+                      </td>
+                      <td className="py-3 px-4">
+                        <Badge className="bg-red-100 text-red-800 hover:bg-red-100">
+                          Encerrada
+                        </Badge>
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="flex items-center justify-center">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            asChild
+                            className="flex items-center space-x-1 bg-transparent"
+                          >
+                            <Link href={`/dashboard/company/jobs/${job.id}`}>
+                              <Eye className="w-3 h-3" />
+                              <span>Ver</span>
+                            </Link>
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -210,7 +218,11 @@ export default function ClosedJobsPage() {
               <Button variant="outline" size="sm" disabled>
                 Anterior
               </Button>
-              <Button variant="outline" size="sm" className="bg-blue-50 text-blue-600">
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-blue-50 text-blue-600"
+              >
                 1
               </Button>
               <Button variant="outline" size="sm">
@@ -227,5 +239,5 @@ export default function ClosedJobsPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
