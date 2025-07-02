@@ -150,20 +150,86 @@ export default function CandidateHeader() {
             {showNotifications && (
               <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                 <div className="p-4 border-b border-gray-200">
-                  <h3 className="font-semibold">Você tem 2 notificações</h3>
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-semibold">
+                      {notifications.length > 0
+                        ? `Você tem ${unreadCount} notificações`
+                        : "Nenhuma notificação"}
+                    </h3>
+                    {unreadCount > 0 && (
+                      <button
+                        onClick={handleMarkAllAsRead}
+                        className="text-sm text-blue-600 hover:text-blue-800"
+                      >
+                        Marcar todas como lidas
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <div className="max-h-64 overflow-y-auto">
-                  <div className="p-4 hover:bg-gray-50 border-b border-gray-100">
-                    <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <User size={16} className="text-blue-600" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm">Novo usuário registrado</p>
-                        <p className="text-xs text-gray-500">5 min atrás</p>
-                      </div>
+                  {notifications.length === 0 ? (
+                    <div className="p-4 text-center text-gray-500">
+                      <p className="text-sm">Nenhuma notificação ainda.</p>
                     </div>
-                  </div>
+                  ) : (
+                    notifications.slice(0, 10).map((notification) => (
+                      <div
+                        key={notification.id}
+                        onClick={() => handleNotificationClick(notification)}
+                        className={`p-4 hover:bg-gray-50 border-b border-gray-100 cursor-pointer ${
+                          !notification.isRead ? "bg-blue-50" : ""
+                        }`}
+                      >
+                        <div className="flex items-start space-x-3">
+                          <div
+                            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              notification.type === "application"
+                                ? "bg-blue-100"
+                                : notification.type === "interview"
+                                  ? "bg-green-100"
+                                  : notification.type === "profile_view"
+                                    ? "bg-purple-100"
+                                    : "bg-gray-100"
+                            }`}
+                          >
+                            <User
+                              size={16}
+                              className={
+                                notification.type === "application"
+                                  ? "text-blue-600"
+                                  : notification.type === "interview"
+                                    ? "text-green-600"
+                                    : notification.type === "profile_view"
+                                      ? "text-purple-600"
+                                      : "text-gray-600"
+                              }
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">
+                              {notification.title}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {notification.message}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {new Date(
+                                notification.createdAt,
+                              ).toLocaleDateString("pt-BR", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </p>
+                          </div>
+                          {!notification.isRead && (
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             )}
