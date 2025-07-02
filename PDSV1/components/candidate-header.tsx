@@ -267,10 +267,8 @@ export default function CandidateHeader() {
                       className="rounded-full"
                     />
                     <div>
-                      <p className="font-semibold">Enzo</p>
-                      <p className="text-sm text-gray-600">
-                        enzogabriel@gmail.com
-                      </p>
+                      <p className="font-semibold">{displayName}</p>
+                      <p className="text-sm text-gray-600">{displayEmail}</p>
                       <Link
                         href="/dashboard/candidate"
                         className="text-sm text-blue-600 hover:text-blue-800"
