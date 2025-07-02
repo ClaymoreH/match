@@ -279,13 +279,13 @@ export default function CandidateHeader() {
                   </div>
                 </div>
                 <div className="p-2">
-                  <Link
-                    href="/"
-                    className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded"
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded w-full text-left"
                   >
                     <LogOut size={16} />
                     <span>Logout</span>
-                  </Link>
+                  </button>
                 </div>
               </div>
             )}
