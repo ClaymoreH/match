@@ -15,6 +15,8 @@ import {
   authenticateUser,
   setCurrentUser,
   getUserDashboardUrl,
+  createUser,
+  clearAllStorage,
 } from "@/lib/storage";
 
 export default function LoginPage() {
